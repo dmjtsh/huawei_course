@@ -1,9 +1,7 @@
-#include <stdio.h>
-#include <assert.h>
+#include <cstdlib>
 
+#include "io.h"
 #include "test.h"
-#include "equation_solver.h"
-#include "utilities.h"
 
 /*
 *
@@ -14,54 +12,22 @@
 *
 */
 
-void coeffs_input(EquationCoeffs* coeffs)
-{
-	assert(coeffs != NULL);
-
-	printf("%s", "Dimas quadratic equation solver\n");
-	size_t right_inputs = 0;
-	do
-	{
-		printf("%s", "Enter coeffs(a, b, c) :\n");
-		right_inputs = scanf_s("%lf %lf %lf", &coeffs->a, &coeffs->b, &coeffs->c);
-		if (right_inputs != 3)
-			clean_buffer();
-	} while (right_inputs != 3);
-
-}
-
-void roots_output(int number_of_roots, EquationRoots roots)
-{
-	switch (number_of_roots)
-	{
-	case INFINITE_ROOTS:
-		printf("%s", "Infinite number of roots");
-		break;
-	case ZERO_ROOTS:
-		printf("%s", "No roots");
-		break;
-	case ONE_ROOT:
-		printf("x: %lf", roots.x1);
-		break;
-	case TWO_ROOTS:
-		printf("x1: %lf x2: %lf", roots.x1, roots.x2);
-		break;
-	default:
-		printf("Error, incorrect input");
-		break;
-	}
-}
-
 int main()
 {
 	EquationCoeffs coeffs;
 	EquationRoots roots;
 
-	run_tests(&roots);
+	coeffs.a = 0.0; coeffs.b = 0.0; coeffs.c = 0.0;
+	roots.x1 = 0.0; roots.x2 = 0.0;
 
-	coeffs_input(&coeffs);
-	size_t number_of_roots = solve_equation(coeffs, &roots);
-	roots_output(number_of_roots, roots);
+	#ifdef _DEBUG
+	run_tests();
+	#endif
 
+	input_coeffs(&coeffs);
+	size_t number_of_roots = solve_quadratic_equation(&coeffs, &roots);
+	output_roots(number_of_roots, &roots);
+	
+	system("pause");
 	return 0;
 }

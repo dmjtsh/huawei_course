@@ -1,54 +1,36 @@
 #include <assert.h>
 #include <stdio.h>
+#include <cstdlib>
 
-#include "equation_objects.h"
-#include "equation_solver.h"
 #include "utilities.h"
+#include "io.h"
 
-void run_tests(EquationRoots* roots)
+void run_tests()
 {
 	FILE* tests_file = NULL;
-	FILE* answers_file = NULL;
-	fopen_s(&tests_file, "tests/test.txt", "r");
-	fopen_s(&answers_file, "tests/answers.txt", "r");
+	fopen_s(&tests_file, "tests/tests.txt", "r");
 
 	assert(tests_file != NULL);
-	assert(answers_file != NULL);
-	assert(roots != NULL);
 
-	EquationCoeffs test_coeffs;
+
+	EquationRoots test_roots;
 	EquationRoots answer_roots;
-	int answer_num_roots = 0;
+	EquationCoeffs test_coeffs;
 
-	while (fscanf_s(tests_file, "%lf %lf %lf", &test_coeffs.a, &test_coeffs.b, &test_coeffs.c) != EOF
-		&& fscanf_s(answers_file, "%lf %lf %d", &answer_roots.x1, &answer_roots.x2, &answer_num_roots) != EOF)
+	test_roots.x1 = 0.0; test_roots.x2 = 0.0;
+	answer_roots.x1 = 0.0; answer_roots.x2 = 0.0;
+	test_coeffs.a = 0.0; test_coeffs.b = 0.0; test_coeffs.c = 0.0;
+
+	int answer_num_roots = 0;
+	
+	size_t test_counter = 1;
+	size_t mistakes_number = 0;
+	while (fscanf_s(tests_file, "%lf %lf %lf %lf %lf %d", &test_coeffs.a, &test_coeffs.b, &test_coeffs.c,
+		&answer_roots.x1, &answer_roots.x2, &answer_num_roots) != EOF)
 	{
-		int number_of_roots = solve_equation(test_coeffs, roots);
-		if (number_of_roots == answer_num_roots)
-		{
-			switch (number_of_roots)
-			{
-			case INFINITE_ROOTS:
-			case ZERO_ROOTS:
-				printf("%s", "YES\n");
-				break;
-			case ONE_ROOT:
-				if (is_equal(roots->x1, answer_roots.x1))
-					printf("%s", "YES\n");
-				else
-					printf("%s", "No\n");
-				break;
-			case TWO_ROOTS:
-				if (is_equal(roots->x1, answer_roots.x1) && is_equal(roots->x2, answer_roots.x2))
-					printf("%s", "YES\n");
-				else
-					printf("%s", "NO\n");
-				break;
-			default:
-				printf("%s", "ERROR\n");
-			}
-		}
-		else
-			printf("%s", "N1\n");
+			int test_num_roots = solve_quadratic_equation(&test_coeffs, &test_roots);
+			output_test_result(test_num_roots, &test_roots, answer_num_roots, &answer_roots, test_counter);
+			test_counter++;
 	}
+	printf("%s", "Tests finished!\n");
 }

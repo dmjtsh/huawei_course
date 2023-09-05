@@ -1,3 +1,1 @@
-#include "equation_objects.h"
-
-void run_tests(EquationRoots* roots);
+void run_tests();

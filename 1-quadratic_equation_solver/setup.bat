@@ -1,0 +1,1 @@
+g++ equation_solver.cpp equation_solver.h io.cpp io.h main.cpp test.cpp test.h utilities.cpp utilities.h -o Quadratic_Solver
