@@ -1,7 +1,9 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "test.h"
+#include "equation_objects.h"
+#include "equation_solver.h"
+#include "utilities.h"
 
 void run_tests(EquationRoots* roots)
 {

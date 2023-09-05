@@ -1,7 +1,3 @@
-
-#include "equation_structs.h"
-#include "constants.h"
-#include "equation_solver.h"
-#include "program_functions.h"
+#include "equation_objects.h"
 
 void run_tests(EquationRoots* roots);

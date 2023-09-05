@@ -2,6 +2,8 @@
 #include <assert.h>
 
 #include "test.h"
+#include "equation_solver.h"
+#include "utilities.h"
 
 /*
 *
@@ -12,7 +14,7 @@
 *
 */
 
-void input(EquationCoeffs* coeffs)
+void coeffs_input(EquationCoeffs* coeffs)
 {
 	assert(coeffs != NULL);
 
@@ -28,7 +30,7 @@ void input(EquationCoeffs* coeffs)
 
 }
 
-void answer(int number_of_roots, EquationRoots roots)
+void roots_output(int number_of_roots, EquationRoots roots)
 {
 	switch (number_of_roots)
 	{
@@ -57,9 +59,9 @@ int main()
 
 	run_tests(&roots);
 
-	input(&coeffs);
+	coeffs_input(&coeffs);
 	size_t number_of_roots = solve_equation(coeffs, &roots);
-	answer(number_of_roots, roots);
+	roots_output(number_of_roots, roots);
 
 	return 0;
 }
