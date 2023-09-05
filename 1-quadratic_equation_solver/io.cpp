@@ -23,6 +23,8 @@ void input_coeffs(EquationCoeffs* coeffs)
 
 void output_roots(int num_roots, EquationRoots* roots)
 {
+	assert(roots != NULL);
+
 	switch (num_roots)
 	{
 	case INFINITE_ROOTS:
@@ -45,6 +47,9 @@ void output_roots(int num_roots, EquationRoots* roots)
 
 void output_test_result(int test_num_roots, EquationRoots* test_roots, int answer_num_roots, EquationRoots* answer_roots, size_t test_counter)
 {
+	assert(test_roots != NULL);
+	assert(answer_roots != NULL);
+
 	if (test_num_roots == answer_num_roots)
 	{
 		switch (test_num_roots)

@@ -1,10 +1,12 @@
 #include <assert.h>
 #include <math.h>
+
 #include "equation_solver.h"
 #include "utilities.h"
 
 int solve_linear_equation(EquationCoeffs* coeffs, EquationRoots* roots)
 {
+	assert(coeffs != NULL);
 	assert(roots != NULL);
 
 	double b = coeffs->b;
@@ -31,6 +33,7 @@ int solve_linear_equation(EquationCoeffs* coeffs, EquationRoots* roots)
 
 int solve_quadratic_equation(EquationCoeffs* coeffs, EquationRoots* roots)
 {
+	assert(coeffs != NULL);
 	assert(roots != NULL);
 
 	double a = coeffs->a;
