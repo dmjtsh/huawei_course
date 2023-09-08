@@ -14,11 +14,8 @@
 
 int main()
 {
-	EquationCoeffs coeffs;
-	EquationRoots roots;
-
-	coeffs.a = 0.0; coeffs.b = 0.0; coeffs.c = 0.0;
-	roots.x1 = 0.0; roots.x2 = 0.0;
+	EquationCoeffs coeffs = { NAN, NAN, NAN };
+	EquationRoots   roots = { NAN, NAN };
 
 	#ifdef _DEBUG
 	run_tests();

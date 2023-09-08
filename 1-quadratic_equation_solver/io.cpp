@@ -9,11 +9,11 @@ void input_coeffs(EquationCoeffs* coeffs)
 {
 	assert(coeffs != NULL);
 
-	printf("%s", "Dimas quadratic equation solver\n");
+	printf("%s", "DIMAS -- Digital Index Massive Algebraic Solver -- quadratic equation solver\n");
 	size_t right_inputs = 0;
 	do
 	{
-		printf("%s", "Enter coeffs(a, b, c) :\n");
+		printf("%s", "Enter coeffs (a b c) :\n");
 		right_inputs = scanf_s("%lf %lf %lf", &coeffs->a, &coeffs->b, &coeffs->c);
 		if (right_inputs != 3)
 			clean_buffer();
@@ -57,6 +57,7 @@ void output_test_result(int test_num_roots, EquationRoots* test_roots, int answe
 		case INFINITE_ROOTS:
 		case ZERO_ROOTS:
 			break;
+
 		case ONE_ROOT:
 			if (!is_equal(test_roots->x1, answer_roots->x1))
 			{
@@ -66,6 +67,7 @@ void output_test_result(int test_num_roots, EquationRoots* test_roots, int answe
 				printf("-----------------\n");
 			}
 			break;
+
 		case TWO_ROOTS:
 			if (!is_equal(test_roots->x1, answer_roots->x1) || !is_equal(test_roots->x2, answer_roots->x2))
 			{
@@ -76,6 +78,7 @@ void output_test_result(int test_num_roots, EquationRoots* test_roots, int answe
 				printf("-----------------\n");
 			}
 			break;
+
 		default:
 			printf("-----------------\n");
 			printf("Test number %zu\nERROR.\nSomething wrong happend\n", test_counter);

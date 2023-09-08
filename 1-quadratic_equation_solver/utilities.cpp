@@ -5,7 +5,11 @@ const double EPSILON = 1e-3;
 
 void clean_buffer()
 {
-	while (getchar() != '\n') { ; }
+	char buff_char = getchar();
+	while (buff_char != EOF && buff_char != '\n')
+	{ 
+		buff_char = getchar(); 
+	}
 }
 
 bool is_equal(double first_num, double second_num)

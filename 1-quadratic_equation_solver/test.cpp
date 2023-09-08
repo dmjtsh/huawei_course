@@ -13,13 +13,9 @@ void run_tests()
 	assert(tests_file != NULL);
 
 
-	EquationRoots test_roots;
-	EquationRoots answer_roots;
-	EquationCoeffs test_coeffs;
-
-	test_roots.x1 = 0.0; test_roots.x2 = 0.0;
-	answer_roots.x1 = 0.0; answer_roots.x2 = 0.0;
-	test_coeffs.a = 0.0; test_coeffs.b = 0.0; test_coeffs.c = 0.0;
+	EquationRoots test_roots = { NAN, NAN };
+	EquationRoots answer_roots = { NAN, NAN };
+	EquationCoeffs test_coeffs = { NAN, NAN, NAN };
 
 	int answer_num_roots = 0;
 	
