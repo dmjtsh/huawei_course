@@ -1,37 +1,33 @@
 #include <assert.h>
 #include <cstdlib>
 
-#include "poem.h"
+#include "io.h"
 #include "utilities.h"
 
-void initialize_pointers(char* strings_pointers[], int strings_num, char* poem_text, int poem_size)
+void InitializePointers(Poem* poem)
 {
-	assert(poem_text != NULL);
-	assert(strings_num != -1);
-	assert(poem_size != -1);
+	assert(poem->poem_text != NULL);
+	assert(poem->strings_num != -1);
+	assert(poem->poem_size != -1);
 
-	char** strings_pointers = (char**)calloc(strings_num, sizeof(char*));
-	assert(strings_pointers != NULL);
+	poem->strings = (char**)calloc(poem->strings_num, sizeof(char*));
+	assert(poem->strings != NULL);
 
-	strings_pointers[0] = poem_text;
+	poem->strings[0] = poem->poem_text;
 	size_t strings_counter = 1;
 
-	char* start_ch = poem_text;
-	char* current_ch = poem_text;
-	while (current_ch - start_ch <= poem_size)
+	char* start_p = poem->poem_text;
+	for(char* current_p = start_p; current_p - start_p <= poem->poem_size; current_p++)
 	{
-		if (*current_ch == '\n')
+		if (*current_p == '\n')
 		{
-			*current_ch = '\0';
-			current_ch++;
-			strings_pointers[strings_counter] = current_ch;
+			*current_p = '\0';
 
-			assert(strings_pointers[strings_counter] != NULL);
+			poem->strings[strings_counter] = current_p + 1;
+			assert(poem->strings[strings_counter] != NULL);
 
 			strings_counter++;
 		}
-		else
-			current_ch++;
 	}
 }
 
@@ -44,11 +40,11 @@ void initialize_poem(Poem* poem, char* file_name)
 	assert(poem->poem_size != -1);
 	poem->poem_text = get_file_text(file_name);
 	assert(poem->poem_text != NULL);
+	
+	poem->strings_num = count_text_indents(poem->poem_text);
+	assert(poem->strings_num != -1);
 
-	int strings_num = count_text_indents(poem->poem_text);
-	assert(strings_num != -1);
-
-	initialize_pointers(poem->strings, strings_num, poem->poem_text, poem->poem_size);
+	InitializePointers(poem);
 }
 
 void destroy_poem(Poem* poem)
@@ -56,10 +52,5 @@ void destroy_poem(Poem* poem)
 	assert(poem != NULL);
 
 	free(poem->poem_text);
-	for (size_t i = 0; i < poem->strings_num; i++)
-	{
-		free(poem->strings[i]);
-	}
-
-	free(poem->strings);
+//	free(poem->strings);
 }

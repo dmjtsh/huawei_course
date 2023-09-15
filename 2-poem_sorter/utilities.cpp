@@ -1,16 +1,17 @@
 #include <stdio.h>
-#include <sys\stat.h>
 #include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <time.h>
+
 
 int get_file_size(char* file_name)
 {
     if (!file_name)
         return -1;
 
-    FILE* file = fopen(file_name, "r"); 
+    FILE* file = NULL;
+    fopen_s(&file, file_name, "r");
     if (!file)
         return -1;
 
@@ -25,16 +26,20 @@ int get_file_size(char* file_name)
 
 char* get_file_text(char* file_name)
 {
-    assert(file_name != NULL);
+    if(!file_name)
+        return NULL;
     int file_size = get_file_size(file_name);
-    assert(file_size == -1);
+    assert(file_size != -1);
 
 
-    FILE* file = fopen(file_name, "r");
-    assert(file != NULL);
+    FILE* file = NULL;
+    fopen_s(&file, file_name, "r");
+    if (!file)
+        return NULL;
 
     char* text = (char*)calloc(file_size, sizeof(char));
-    assert(text != NULL);
+    if (!text)
+        return NULL;
     fread(text, sizeof(char), file_size, file);
 
     fclose(file);

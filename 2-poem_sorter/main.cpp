@@ -3,19 +3,21 @@
 #include <assert.h>
 #include <cstdlib>
 
-#include "utilities.h"
 #include "poem_sorter.h"
-#include "io.h"
 
 
 int main(int argc, char** argv)
 {
-	Poem poem = {NAN, NAN, NULL, NULL};
+	Poem poem = {0, 0, NULL, NULL};
+	assert(argc <= 1);
 
-//	initialize_poem(&poem, argv);
+	char file_name[] = "poems/onegin.txt";
+	initialize_poem(&poem, file_name);//argv[1]);
 
 	sort_poem(&poem);
+	print_poem(&poem);
 
 	destroy_poem(&poem);
+
 	return 0;
 }

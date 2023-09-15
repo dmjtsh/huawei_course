@@ -2,20 +2,22 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <cstdlib>
+#include <cstring>
+
 #include "utilities.h"
+#include "io.h"
 
-#include "poem.h"
-
-void swap(int* num1, int* num2)
+void strings_swap(char** str1, char** str2)
 {
-	assert(num1 != NULL);
-	assert(num2 != NULL);
-	int tmp = *num1;
-	*num1 = *num2;
-	*num2 = tmp;
+	assert(str1 != NULL);
+	assert(str2 != NULL);
+
+	char* tmp_p = *str1;
+	*str1 = *str2;
+	*str2 = tmp_p;
 }
 
-size_t partition(int data[], size_t left, size_t right)
+size_t partition(char* data[], size_t left, size_t right, void* comporator)
 {
 	assert(data != NULL);
 
@@ -23,18 +25,19 @@ size_t partition(int data[], size_t left, size_t right)
 	size_t l_index = left;
 
 	size_t pivot_index = borders_rand(left, right);
-
-	int pivot = data[pivot_index];
+	
+	char* pivot = data[pivot_index];
+	assert(pivot != NULL);
 	while (l_index < r_index)
 	{
-		while (data[l_index] < pivot && l_index < r_index)
+		while (strcmp(data[l_index], pivot) < 0 && l_index < r_index)
 		{
 			l_index++;
 			assert(l_index <= right);
 			assert(l_index >= left);
 		}
 
-		while (data[r_index] > pivot && l_index < r_index)
+		while (strcmp(data[r_index], pivot) > 0 && l_index < r_index)
 		{
 			r_index--;
 			assert(r_index <= right);
@@ -43,33 +46,35 @@ size_t partition(int data[], size_t left, size_t right)
 
 		if (l_index < r_index)
 		{
-			swap(&data[l_index], &data[r_index]);
+			strings_swap(&data[l_index], &data[r_index]);
 		}
-		if (data[l_index] == data[r_index])
+
+		if (strcmp(data[l_index], data[r_index]) == 0)
 			l_index++;
+
+
 	}
 	return r_index;
 }
 
 
-void quick_sort(int data[], size_t left, size_t right)
+void quick_sort(char* data[], size_t left, size_t right, void* comporator)
 {
 	assert(data != NULL);
 
 	if (right <= left)
 		return;
 
-	size_t mid = partition(data, left, right);
+	size_t mid = partition(data, left, right, comporator);
 
-	quick_sort(data, mid + 1, right);
+	quick_sort(data, mid + 1, right, comporator);
 	if (mid != 0)
-		quick_sort(data, left, mid - 1);
-
+		quick_sort(data, left, mid - 1, comporator);
 
 }
 
 void sort_poem(Poem* poem)
 {
-	;
-	// SORT PROCESS ... //
+	assert(poem != NULL);
+	quick_sort(poem->strings, 0, poem->strings_num, strcmp);
 }

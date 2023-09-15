@@ -1,1 +1,5 @@
-void print_poem(char** poem_pointers);
+#include "poem.h"
+
+void print_str(char* str);
+
+void print_poem(Poem* poem);
