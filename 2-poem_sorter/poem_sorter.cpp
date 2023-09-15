@@ -4,52 +4,72 @@
 #include <cstdlib>
 #include "utilities.h"
 
-char** initialize_pointers(char* poem, size_t file_size)
+#include "poem.h"
+
+void swap(int* num1, int* num2)
 {
-	assert(poem != NULL);
+	assert(num1 != NULL);
+	assert(num2 != NULL);
+	int tmp = *num1;
+	*num1 = *num2;
+	*num2 = tmp;
+}
 
-	size_t strings_p_size = 2;
-	char** strings_pointers = (char**)calloc(sizeof(char*), strings_p_size);
-	strings_pointers[0] = poem;
+size_t partition(int data[], size_t left, size_t right)
+{
+	assert(data != NULL);
 
-	char* poem_start = poem;
-	while (poem - poem_start <= file_size)
+	size_t r_index = right;
+	size_t l_index = left;
+
+	size_t pivot_index = borders_rand(left, right);
+
+	int pivot = data[pivot_index];
+	while (l_index < r_index)
 	{
-		if (*poem == '\n')
+		while (data[l_index] < pivot && l_index < r_index)
 		{
-			*poem = '\0';
-			strings_pointers[strings_p_size-1] = ++poem; //      ??????????????????????
-			strings_pointers = (char**)realloc(strings_pointers, ++strings_p_size*sizeof(char)); //      ??????????????????????
-			assert(strings_pointer != NULL);
+			l_index++;
+			assert(l_index <= right);
+			assert(l_index >= left);
 		}
-		else
-			poem++;
+
+		while (data[r_index] > pivot && l_index < r_index)
+		{
+			r_index--;
+			assert(r_index <= right);
+			assert(r_index >= left);
+		}
+
+		if (l_index < r_index)
+		{
+			swap(&data[l_index], &data[r_index]);
+		}
+		if (data[l_index] == data[r_index])
+			l_index++;
 	}
-
-	return strings_pointers;
+	return r_index;
 }
 
-char* get_file_text(FILE* file, size_t file_size)
-{
-	assert(file != NULL);
 
-	char* text = (char*)calloc(file_size, sizeof(char));
-	fread(text, sizeof(char), file_size, file); //      ??????????????????????
-	
-	return text;
+void quick_sort(int data[], size_t left, size_t right)
+{
+	assert(data != NULL);
+
+	if (right <= left)
+		return;
+
+	size_t mid = partition(data, left, right);
+
+	quick_sort(data, mid + 1, right);
+	if (mid != 0)
+		quick_sort(data, left, mid - 1);
+
+
 }
 
-char** sort_poem(FILE* poem_file)
+void sort_poem(Poem* poem)
 {
-	assert(poem_file != NULL);
-
-	size_t file_size = get_file_size(poem_file);
-	char* poem = get_file_text(poem_file, file_size);
-	assert(poem != NULL);
-
-	char** strings_pointers = initialize_pointers(poem, file_size);
-	
+	;
 	// SORT PROCESS ... //
-
-	return strings_pointers;
 }

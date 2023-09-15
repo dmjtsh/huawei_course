@@ -1,19 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <cstdlib>
 
+#include "utilities.h"
 #include "poem_sorter.h"
 #include "io.h"
 
-int main()
+
+int main(int argc, char** argv)
 {
-	const char* file_path = "poems/onegin.txt";
-	FILE* poem_file = NULL;
-	fopen_s(&poem_file, file_path, "r");
+	Poem poem = {NAN, NAN, NULL, NULL};
 
-	assert(poem_file != NULL);
+//	initialize_poem(&poem, argv);
 
-	char** sorted_poem_pointers = sort_poem(poem_file);
+	sort_poem(&poem);
 
-	print_poem(sorted_poem_pointers);
+	destroy_poem(&poem);
+	return 0;
 }
