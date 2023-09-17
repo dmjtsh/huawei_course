@@ -10,7 +10,7 @@ void inititalize_strings(Poem* poem)
 	assert(poem->strings_num != -1);
 	assert(poem->poem_size != -1);
 
-	poem->strings = (char**)calloc(poem->strings_num+10, sizeof(char*));
+	poem->strings = (char**)calloc(poem->strings_num+1, sizeof(char*));
 	assert(poem->strings != NULL);
 
 	poem->strings[0] = poem->poem_text;
@@ -45,6 +45,8 @@ void initialize_poem(Poem* poem, const char* file_name)
 
 void record_poem(Poem* poem, const char* file_path)
 {
+
+	poem->poem_text;
 	assert(poem != NULL);
 	FILE* file_to_record = NULL;
 	fopen_s(&file_to_record, file_path, "w");

@@ -123,6 +123,7 @@ void sort_poem(Poem* poem, int sort_order)
 		size_t strings_counter = 0;
 
 		char* start_p = poem->poem_text;
+		poem->strings[strings_counter] = start_p;
 		for (char* current_p = start_p; current_p - start_p <= poem->poem_size; current_p++)
 			if (*current_p == '\0')
 			{

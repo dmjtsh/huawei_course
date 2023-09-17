@@ -25,8 +25,9 @@ int main(int argc, char** argv)
 	sort_poem(&poem, REVERSE);
 	record_poem(&poem, "reverse_sorted_poem.txt");
 	print_poem(&poem);
-
 	sort_poem(&poem, ORIGINAL);
+
+	poem.poem_text;
 	record_poem(&poem, "original_poem.txt");
 	print_poem(&poem);
 
