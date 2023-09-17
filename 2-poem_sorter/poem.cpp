@@ -43,24 +43,6 @@ void initialize_poem(Poem* poem, const char* file_name)
 	inititalize_strings(poem);
 }
 
-void record_poem(Poem* poem, const char* file_path)
-{
-
-	poem->poem_text;
-	assert(poem != NULL);
-	FILE* file_to_record = NULL;
-	fopen_s(&file_to_record, file_path, "w");
-	assert(file_to_record != NULL);
-	
-	for (size_t counter_strings = 0; counter_strings <= poem->strings_num; counter_strings++)
-	{
-		fputs(poem->strings[counter_strings], file_to_record);
-		fputs("\n", file_to_record);
-	}
-
-	fclose(file_to_record);
-}
-
 void destroy_poem(Poem* poem)
 {
 	assert(poem != NULL);
