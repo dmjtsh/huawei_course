@@ -5,7 +5,7 @@
 #include <time.h>
 
 
-int get_file_size(char* file_name)
+int get_file_size(const char* file_name)
 {
     if (!file_name)
         return -1;
@@ -24,7 +24,7 @@ int get_file_size(char* file_name)
 }
 
 
-char* get_file_text(char* file_name)
+char* get_file_text(const char* file_name)
 {
     if(!file_name)
         return NULL;
@@ -46,28 +46,28 @@ char* get_file_text(char* file_name)
     return text;
 }
 
-int count_text_indents(char* text)
+int count_text_strings(const char* text)
 {
     if (!text)
         return -1;
     int text_size = strlen(text);
 
     size_t indents_num = 0;
-    char* start_ch = text;
-    char* current_ch = text;
-    while (current_ch - start_ch <= text_size)
-    {
-        if (*current_ch == '\n')
+
+    for (const char* current_p = text; current_p - text <= text_size; current_p++)
+        if (*current_p == '\n')
             indents_num++;
-        current_ch++;
-    }
 
     return indents_num;
 }
 
 size_t borders_rand(size_t left, size_t right)
 {
-    time_t t;
-    srand((unsigned)time(&t));
+    static bool is_seed_set = 0;
+    if (!is_seed_set)
+    {
+        time_t t;
+        srand((unsigned)time(&t));
+    }
     return (left + rand() % (right - left));;
 }
