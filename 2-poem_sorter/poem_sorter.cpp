@@ -35,9 +35,11 @@ void swap_p(void* obj1, void* obj2, size_t elem_size)
 
 const char* skip_non_letters(const char* str)
 {
-	for (; (*str < 65 || *str > 122) && *str != '\0'; str++) { ; }
+	for (; !(*str >= 65 && *str <= 90) && !(*str >= 97 && *str <= 122) && *str != '\0'; str++) { ; }
 	return str;
 }
+
+
 
 int poem_strings_сomparator(const void* str1, const void* str2) {
 	assert(str1 != NULL);
@@ -57,7 +59,13 @@ int poem_strings_сomparator(const void* str1, const void* str2) {
 	assert(((PoemString*)str2)->len == strlen(((PoemString*)str2)->str));
 	// DEBUG
 
-	return strcmp (((PoemString*)str1)->str, ((PoemString*)str2)->str);
+	return strcmp (skip_non_letters(((PoemString*)str1)->str), skip_non_letters(((PoemString*)str2)->str));
+}
+
+const char* r_skip_non_letters(const char* str, const char* end_of_str)
+{
+	for (; !(*end_of_str >= 65 && *end_of_str <= 90) && !(*end_of_str >= 97 && *end_of_str <= 122) && end_of_str != str; end_of_str--) { ; }
+	return end_of_str;
 }
 
 int r_poem_strings_comparator(const void* str1, const void* str2)
@@ -65,12 +73,11 @@ int r_poem_strings_comparator(const void* str1, const void* str2)
 	assert(str1 != NULL);
 	assert(str2 != NULL);
 
-	char* end_of_str1 = ((PoemString*)str1)->str + ((PoemString*)str1)->len - 1;
-	char* end_of_str2 = ((PoemString*)str2)->str + ((PoemString*)str2)->len - 1;
+	const char* end_of_str1 = ((PoemString*)str1)->str + ((PoemString*)str1)->len - 1;
+	const char* end_of_str2 = ((PoemString*)str2)->str + ((PoemString*)str2)->len - 1;
 
-	char* temp_end_of_str1 = NULL;
-	char* temp_end_of_str2 = NULL;
-
+	end_of_str1 = r_skip_non_letters(((PoemString*)str1)->str, end_of_str1);
+	end_of_str2 = r_skip_non_letters(((PoemString*)str2)->str, end_of_str2);
 
 	// DEBUG
 	printf("func{R_STRINGS_COMPARATOR} : STRING_1 : STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
