@@ -10,14 +10,15 @@ void print_str(const char* str)
 	printf("%s\n", str);
 }
 
-void print_poem(Poem* poem)
+void print_poem(Poem* poem, const char* name)
 {
 	assert(poem != NULL);
 
 	printf("\n");
-	for (size_t counter_strings = 0; counter_strings <= poem->strings_num; counter_strings++)
+	for (size_t strings_counter = 0; strings_counter < poem->strings_num; strings_counter++)
 	{
-		print_str(poem->strings[counter_strings]);
+		printf("%s", name);
+		print_str(poem->poem_strings[strings_counter].str);
 	}
 }
 
@@ -30,9 +31,9 @@ void record_poem(Poem* poem, const char* file_path)
 	fopen_s(&file_to_record, file_path, "w");
 	assert(file_to_record != NULL);
 
-	for (size_t counter_strings = 0; counter_strings <= poem->strings_num; counter_strings++)
+	for (size_t strings_counter = 0; strings_counter < poem->strings_num; strings_counter++)
 	{
-		fputs(poem->strings[counter_strings], file_to_record);
+		fputs(poem->poem_strings[strings_counter].str, file_to_record);
 		fputs("\n", file_to_record);
 	}
 

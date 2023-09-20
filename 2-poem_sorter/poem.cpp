@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <string.h>
 #include <cstdlib>
 
 #include "io.h"
@@ -10,21 +11,36 @@ void inititalize_strings(Poem* poem)
 	assert(poem->strings_num != -1);
 	assert(poem->poem_size != -1);
 
-	poem->strings = (char**)calloc(poem->strings_num+1, sizeof(char*));
-	assert(poem->strings != NULL);
+	poem->poem_strings = (PoemString*)calloc(poem->strings_num+1, sizeof(PoemString));
 
-	poem->strings[0] = poem->poem_text;
+	assert(poem->poem_strings != NULL);
+
+	poem->poem_strings[0].str = poem->poem_text;
+
 	size_t strings_counter = 0;
 
 	char* start_p = poem->poem_text;
 	for (char* current_p = start_p; current_p - start_p <= poem->poem_size; current_p++)
+	{
+		poem->poem_strings[strings_counter].len++;
+		
 		if (*current_p == '\n')
 		{
 			*current_p = '\0';
-
-			poem->strings[++strings_counter] = current_p + 1;
-			assert(poem->strings[strings_counter] != NULL);
+			poem->poem_strings[strings_counter].len--;
+			
+			// DEBUG
+			printf(" INITIALIZE STRINGS : STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
+				poem->strings_num,
+				poem->poem_strings[strings_counter].len, strlen(poem->poem_strings[strings_counter].str),
+				poem->poem_strings[strings_counter].str);
+			assert(poem->poem_strings[strings_counter].len == strlen(poem->poem_strings[strings_counter].str));
+			// DEBUG
+			
+			poem->poem_strings[++strings_counter].str = current_p + 1;
+			assert(poem->poem_strings[strings_counter].str != NULL);
 		}
+	}
 }
 
 void initialize_poem(Poem* poem, const char* file_name)
@@ -46,7 +62,9 @@ void initialize_poem(Poem* poem, const char* file_name)
 void destroy_poem(Poem* poem)
 {
 	assert(poem != NULL);
+	assert(poem->poem_strings != NULL);
+	assert(poem->poem_text != NULL);
 
-	free(poem->strings);
+	free(poem->poem_strings);
 	free(poem->poem_text);
 }

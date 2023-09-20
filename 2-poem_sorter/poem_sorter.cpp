@@ -1,4 +1,4 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <cstdlib>
@@ -9,37 +9,83 @@
 
 enum SortOrders {ORIGINAL = 0, STRAIGHT = 1, REVERSE = -1};
 
-void swap_p(void** obj1, void** obj2)
+void swap_p(void* obj1, void* obj2, size_t elem_size)
 {
 	assert(obj1 != NULL);
 	assert(obj2 != NULL);
 
-	void* tmp_p = *obj1;
-	*obj1 = *obj2;
-	*obj2 = tmp_p;
+	// DEBUG
+	printf("func{swap_p} OLD STR1: [%p] | string: %s | len: %d\n", obj1 ,((PoemString*)obj1)->str, ((PoemString*)obj1)->len);
+	printf("func{swap_p} OLD STR2: [%p] | string: %s | len: %d\n", obj2, ((PoemString*)obj2)->str, ((PoemString*)obj2)->len);
+	// DEBUG
+
+	for (size_t i = 0; i < elem_size; i++)
+	{
+		char tmp = NULL;
+		tmp = ((char*)obj1)[i];
+		((char*)obj1)[i] = ((char*)obj2)[i];
+		((char*)obj2)[i] = tmp;
+	}
+
+	// DEBUG
+	printf("func{swap_p} NEW STR1: [%p] | string: %s | len: %d\n", obj1, ((PoemString*)obj1)->str, ((PoemString*)obj1)->len);
+	printf("func{swap_p} NEW STR2: [%p] | string: %s | len: %d\n", obj2, ((PoemString*)obj2)->str, ((PoemString*)obj2)->len);
+	// DEBUG
 }
 
-int strings_ñomparator(const void* str1, const void* str2) {
+const char* skip_non_letters(const char* str)
+{
+	for (; (*str < 65 || *str > 122) && *str != '\0'; str++) { ; }
+	return str;
+}
+
+int poem_strings_Ñomparator(const void* str1, const void* str2) {
 	assert(str1 != NULL);
 	assert(str2 != NULL);
 
-	return strcmp((const char*)str1, (const char*)str2);
+	// DEBUG
+	char* end_of_str1 = ((PoemString*)str1)->str + ((PoemString*)str1)->len - 1;
+	char* end_of_str2 = ((PoemString*)str2)->str + ((PoemString*)str2)->len - 1;
+
+	printf("func{STRINGS_COMPARATOR} : STRING_1 : STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
+		((PoemString*)str1)->str, ((PoemString*)str1)->len, strlen(((PoemString*)str1)->str), ((PoemString*)str1)->str);
+	printf("func{STRINGS_COMPARATOR} : STRING_2 : STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
+		((PoemString*)str2)->str, ((PoemString*)str2)->len, strlen(((PoemString*)str2)->str), ((PoemString*)str2)->str);
+
+
+	assert(((PoemString*)str1)->len == strlen(((PoemString*)str1)->str));
+	assert(((PoemString*)str2)->len == strlen(((PoemString*)str2)->str));
+	// DEBUG
+
+	return strcmp (((PoemString*)str1)->str, ((PoemString*)str2)->str);
 }
-int reverse_strings_comparator(const void* str1, const void* str2)
+
+int r_poem_strings_comparator(const void* str1, const void* str2)
 {
 	assert(str1 != NULL);
 	assert(str2 != NULL);
 
-	char* end_of_str1 = NULL;
-	char* end_of_str2 = NULL;
-	for (end_of_str1 = (char*)str1; *(end_of_str1+1) != '\0'; end_of_str1++) { ; }
-	for (end_of_str2 = (char*)str2; *(end_of_str2+1) != '\0'; end_of_str2++) { ; }
+	char* end_of_str1 = ((PoemString*)str1)->str + ((PoemString*)str1)->len - 1;
+	char* end_of_str2 = ((PoemString*)str2)->str + ((PoemString*)str2)->len - 1;
 
+	char* temp_end_of_str1 = NULL;
+	char* temp_end_of_str2 = NULL;
+
+
+	// DEBUG
+	printf("func{R_STRINGS_COMPARATOR} : STRING_1 : STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
+		((PoemString*)str1)->str, ((PoemString*)str1)->len, strlen(((PoemString*)str1)->str), ((PoemString*)str1)->str);
+	printf("func{R_STRINGS_COMPARATOR} : STRING_2 : STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
+		((PoemString*)str2)->str, ((PoemString*)str2)->len, strlen(((PoemString*)str2)->str), ((PoemString*)str2)->str);
+
+	assert(((PoemString*)str1)->len == strlen(((PoemString*)str1)->str));
+	assert(((PoemString*)str2)->len == strlen(((PoemString*)str2)->str));
+	// DEBUG
 
 	assert(end_of_str1 != NULL);
 	assert(end_of_str2 != NULL);
 
-	while (end_of_str1 != (char*)str1 && end_of_str2 != (char*)str2)
+	while (end_of_str1 != ((PoemString*)str1)->str && end_of_str2 != ((PoemString*)str2)->str)
 	{
 		if (*end_of_str1 > *end_of_str2)
 			return 1;
@@ -48,14 +94,14 @@ int reverse_strings_comparator(const void* str1, const void* str2)
 		end_of_str1--;
 		end_of_str2--;
 	}
-	if (end_of_str1 != (char*)str1 && end_of_str2 == (char*)str2)
+	if (end_of_str1 != ((PoemString*)str1)->str && end_of_str2 == ((PoemString*)str2)->str)
 		return 1;
-	if (end_of_str1 == (char*)str1 && end_of_str2 != (char*)str2)
+	if (end_of_str1 == ((PoemString*)str1)->str && end_of_str2 != ((PoemString*)str2)->str)
 		return -1;
 	return 0;
 }
 
-size_t partition(void* data[], size_t left, size_t right, int comparator(const void* a, const void* b))
+size_t partition(void* data, size_t left, size_t right, int comparator(const void* a, const void* b), size_t elem_size)
 {
 	assert(data != NULL);
 
@@ -64,18 +110,21 @@ size_t partition(void* data[], size_t left, size_t right, int comparator(const v
 
 	size_t pivot_index = borders_rand(left, right);
 	
-	void* pivot = data[pivot_index];
+	void* pivot = calloc(1, elem_size);
+	assert(pivot != NULL);
+	memcpy(pivot, (void*)((size_t) data + pivot_index * elem_size), elem_size);
+
 	assert(pivot != NULL);
 	while (l_index < r_index)
 	{
-		while (comparator(data[l_index], pivot) < 0 && l_index < r_index)
+		while (l_index < r_index &&  comparator((void*)((size_t)data + l_index * elem_size), pivot) < 0)
 		{
 			l_index++;
 			assert(l_index <= right);
 			assert(l_index >= left);
 		}
 
-		while (comparator(data[r_index], pivot) > 0 && l_index < r_index)
+		while (l_index < r_index && comparator((void*)((size_t)data + r_index * elem_size), pivot) > 0 )
 		{
 			r_index--;
 			assert(r_index <= right);
@@ -83,52 +132,53 @@ size_t partition(void* data[], size_t left, size_t right, int comparator(const v
 		}
 
 		if (l_index < r_index)
-		{
-			swap_p(&data[l_index], &data[r_index]);
-		}
+			swap_p((void*)((size_t)data + l_index * elem_size), (void*)((size_t)data + r_index * elem_size), elem_size);
+		else
+			break;
 
-		if (comparator(data[l_index], data[r_index]) == 0)
+		if (comparator((void*)((size_t)data + l_index * elem_size), (void*)((size_t)data + r_index * elem_size)) == 0)
 			l_index++;
-
-
 	}
+	free(pivot);
 	return r_index;
 }
 
 
-void quick_sort(void* data[], size_t left, size_t right, int comparator(const void* a, const void* b))
+void quick_sort(void* data, size_t left, size_t right, int comparator(const void* a, const void* b), size_t elem_size)
 {
 	assert(data != NULL);
 
 	if (right <= left)
 		return;
-
-	size_t mid = partition(data, left, right, comparator);
-
-	quick_sort(data, mid + 1, right, comparator);
-	if (mid != 0)
-		quick_sort(data, left, mid - 1, comparator);
-
-}
-
-void sort_poem(Poem* poem, int sort_order)
-{
-	assert(poem != NULL);
-	if (sort_order == STRAIGHT)
-		quick_sort((void**)(poem->strings), 0, poem->strings_num, strings_ñomparator);
-	else if (sort_order == REVERSE)
-		quick_sort((void**)(poem->strings), 0, poem->strings_num, reverse_strings_comparator);
-	else if (sort_order == ORIGINAL)
+	else if (right - left == 1)
 	{
-		size_t strings_counter = 0;
+		//DEBUG
+		fprintf(stderr, "func{QUICK_SORT} : STRING_1 : PointerSTR1 %p | ", (PoemString*)((size_t)data + left * elem_size));
 
-		char* start_p = poem->poem_text;
-		poem->strings[strings_counter] = start_p;
-		for (char* current_p = start_p; current_p - start_p <= poem->poem_size; current_p++)
-			if (*current_p == '\0')
-			{
-				poem->strings[++strings_counter] = current_p + 1;
-				assert(poem->strings[strings_counter] != NULL);
-			}
+		fprintf(stderr, "STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
+			((PoemString*)((size_t)data + left * elem_size))->str,
+			((PoemString*)((size_t)data + left * elem_size))->len,
+			strlen(((PoemString*)((size_t)data + left * elem_size))->str),
+			(((PoemString*)((size_t)data + left * elem_size))->str));
+
+		fprintf(stderr, "func{QUICK_SORT} : STRING_2 : PointerSTR1 %p |", (PoemString*)((size_t)data + right * elem_size));
+
+		fprintf(stderr, "STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
+			((PoemString*)((size_t)data + right * elem_size))->str,
+			((PoemString*)((size_t)data + right * elem_size))->len,
+			strlen(((PoemString*)((size_t)data + right * elem_size))->str),
+			(((PoemString*)((size_t)data + right * elem_size))->str));
+		// DEBUG
+
+		int compare_res = comparator((void*)((size_t)data + left * elem_size), (void*)((size_t)data + right * elem_size));
+		if (compare_res > 0)
+			swap_p((void*)((size_t)data + left * elem_size), (void*)((size_t)data + right * elem_size), elem_size);
+		return;
 	}
+	size_t mid = partition(data, left, right, comparator, elem_size);
+
+	quick_sort(data, mid + 1, right, comparator, elem_size);
+	if (mid != 0)
+		quick_sort(data, left, mid - 1, comparator, elem_size);
+
 }
