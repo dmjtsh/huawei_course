@@ -11,7 +11,7 @@ int get_file_size(const char* file_name)
         return -1;
 
     FILE* file = NULL;
-    fopen_s(&file, file_name, "r");
+    fopen_s(&file, file_name, "rb");
     if (!file)
         return -1;
 
@@ -31,16 +31,16 @@ char* get_file_text(const char* file_name)
     int file_size = get_file_size(file_name);
     assert(file_size != -1);
 
-
     FILE* file = NULL;
-    fopen_s(&file, file_name, "r");
+    fopen_s(&file, file_name, "rb");
     if (!file)
         return NULL;
 
     char* text = (char*)calloc(file_size, sizeof(char));
     if (!text)
         return NULL;
-    fread(text, sizeof(char), file_size, file);
+    
+    size_t n_chars = fread(text, sizeof(char), file_size, file);
 
     fclose(file);
     return text;
@@ -68,6 +68,7 @@ size_t borders_rand(size_t left, size_t right)
     {
         time_t t;
         srand((unsigned)time(&t));
+        is_seed_set = 1;
     }
     return (left + rand() % (right - left));;
 }

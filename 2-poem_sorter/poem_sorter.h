@@ -5,8 +5,7 @@
 
 enum SortOrders {ORIGINAL = 0, STRAIGHT = 1, REVERSE = -1 };
 
-
-int poem_strings_ñomparator(const void* str1, const void* str2);
+int poem_strings_comparator(const void* str1, const void* str2);
 
 int r_poem_strings_comparator(const void* str1, const void* str2);
 

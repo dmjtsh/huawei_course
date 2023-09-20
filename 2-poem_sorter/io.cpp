@@ -34,7 +34,6 @@ void record_poem(Poem* poem, const char* file_path)
 	for (size_t strings_counter = 0; strings_counter < poem->strings_num; strings_counter++)
 	{
 		fputs(poem->poem_strings[strings_counter].str, file_to_record);
-		fputs("\n", file_to_record);
 	}
 
 	fclose(file_to_record);

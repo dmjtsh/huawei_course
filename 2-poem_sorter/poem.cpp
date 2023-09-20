@@ -28,15 +28,6 @@ void inititalize_strings(Poem* poem)
 		{
 			*current_p = '\0';
 			poem->poem_strings[strings_counter].len--;
-			
-			// DEBUG
-			printf(" INITIALIZE STRINGS : STR [%04zu] | len: %03zu | strlen: %03zu | string: '%s'\n",
-				poem->strings_num,
-				poem->poem_strings[strings_counter].len, strlen(poem->poem_strings[strings_counter].str),
-				poem->poem_strings[strings_counter].str);
-			assert(poem->poem_strings[strings_counter].len == strlen(poem->poem_strings[strings_counter].str));
-			// DEBUG
-			
 			poem->poem_strings[++strings_counter].str = current_p + 1;
 			assert(poem->poem_strings[strings_counter].str != NULL);
 		}
