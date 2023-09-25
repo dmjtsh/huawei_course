@@ -23,11 +23,15 @@ int StackDump(Stack* stk, const char* file_name, const size_t line, const char* 
 		stk->stack_creation_inf.file, 
 		stk->stack_creation_inf.line, 
 		stk->stack_creation_inf.file);
+
 	printf("{\n");
-	
+
+	if ((stk->errors & STACK_LCANARY_DMG))
+		printf("\033[31mStack Left Canary DAMAGED\033[0m\n");
+	if ((stk->errors & STACK_RCANARY_DMG))
+		printf("\033[31mStack Right Canary DAMAGED\033[0m\n");
 	if (stk->errors & STACK_SIZE_GREATER_CAPACITY)
 		printf("\033[31mStack Size GREATER Capacity\033[0m\n");
-
 	if (stk->errors & STACK_SIZE_LESS_ONE)
 		printf("\033[31mStack Size Less One\033[0m\n");
 
@@ -36,6 +40,11 @@ int StackDump(Stack* stk, const char* file_name, const size_t line, const char* 
 
 	if (!(stk->errors & STACK_DATA_NULL))
 	{
+		if (stk->errors & STACK_DATA_LCANARY_DMG)
+			printf("\033[31mStack DATA Left Canary DAMAGED\033[0m\n");
+		if (stk->errors & STACK_DATA_RCANARY_DMG)
+			printf("\033[31mStack DATA Right Canary DAMAGED\033[0m\n");
+
 		printf("data[%p]\n", stk->data);
 		printf("  {\n");
 		for (size_t i = 0; i < stk->capacity; i++)
@@ -44,8 +53,12 @@ int StackDump(Stack* stk, const char* file_name, const size_t line, const char* 
 	}
 	else
 		printf("\033[31mStack Data is NULL\033[0m\n");
+
 	printf("}\n");
 	printf("\033[32mReturning back...\033[0m\n\n");
+
+	stk->errors = 0;
+	return 1;
 }
 
 int StackOk(Stack* stk)
@@ -53,17 +66,24 @@ int StackOk(Stack* stk)
 	if (!stk)
 		return 0;
 
+	if (stk->size > stk->capacity)
+		stk->errors |= STACK_SIZE_GREATER_CAPACITY;
+	if (stk->left_canary != STACK_CANARY_NUM)
+		stk->errors |= STACK_LCANARY_DMG;
+	if ((stk->right_canary != STACK_CANARY_NUM))
+		stk->errors |= STACK_RCANARY_DMG;
 	if (!stk->data)
 	{
 		stk->errors |= STACK_DATA_NULL;
 		return 0;
 	}
+	if (((Canary_t*)stk->data)[-1] != STACK_DATA_CANARY_NUM)
+		stk->errors |= STACK_DATA_LCANARY_DMG;
+	if (stk->data[stk->capacity] != STACK_DATA_CANARY_NUM)
+		stk->errors |= STACK_DATA_RCANARY_DMG;
 
-	if (stk->size > stk->capacity)
-	{
-		stk->errors |= STACK_SIZE_GREATER_CAPACITY;
+	if (stk->errors)
 		return 0;
-	}
 
 	return 1;
 }
@@ -75,9 +95,28 @@ int StackBeforePopOk(Stack* stk)
 
 	if (stk->size < 1)
 	{
-		(stk->errors) |= STACK_SIZE_LESS_ONE;
+		stk->errors |= STACK_SIZE_LESS_ONE;
 		return 0;
 	}
+	return 1;
+}
+
+int StackDataRealloc(Stack* stk, size_t new_capacity)
+{
+	if (!stk)
+		return 0;
+
+	if (stk->data != NULL)
+		stk->data = (Elem_t*)((size_t)stk->data-sizeof(Canary_t));
+	stk->data = (Elem_t*)realloc(stk->data, new_capacity * sizeof(Elem_t) + 2 * sizeof(Canary_t));
+
+	stk->data = (Elem_t*)((size_t)stk->data + sizeof(Canary_t));
+
+	((Canary_t*)stk->data)[-1] = STACK_DATA_CANARY_NUM;
+	stk->data[new_capacity] =    STACK_DATA_CANARY_NUM;
+
+	stk->capacity = new_capacity;
+
 	return 1;
 }
 
@@ -94,8 +133,7 @@ Elem_t StackPop(Stack* stk)
 
 	if (stk->capacity > (stk->size+1) * 4)
 	{
-		stk->capacity /= 4;
-		stk->data = (Elem_t*)realloc(stk->data, stk->capacity * sizeof(Elem_t)); 
+		StackDataRealloc(stk, stk->capacity / 4); 
 
 		if (!StackOk(stk))
 		{
@@ -121,9 +159,8 @@ int StackPush(Stack* stk, Elem_t elem)
 	}
 
 	if (stk->capacity <= stk->size)
-	{
-		stk->capacity *= 2;
-		stk->data = (Elem_t*)realloc(stk->data, stk->capacity * sizeof(Elem_t));
+	{ 
+		StackDataRealloc(stk, stk->capacity * 2);
 
 		if (!StackOk(stk))
 		{
@@ -145,14 +182,15 @@ int StackDtor(Stack* stk)
 	assert(stk != NULL);
 	assert(stk->data != NULL);
 
-	stk->stack_creation_inf.line = 0;
-	stk->stack_creation_inf.file = NULL;
-	stk->stack_creation_inf.func = NULL;
+	stk->stack_creation_inf.line =     0;
+	stk->stack_creation_inf.file =     NULL;
+	stk->stack_creation_inf.func =     NULL;
 	stk->stack_creation_inf.var_name = NULL;
 
+	stk->data = (Elem_t*)((size_t)stk->data - sizeof(Canary_t));
 	free(stk->data);
 	stk->capacity = 0;
-	stk->size = 0;
+	stk->size =     0;
 	stk->errors = STACK_NULL + STACK_DATA_NULL + STACK_SIZE_LESS_ONE + STACK_SIZE_GREATER_CAPACITY;
 	return 0;
 }
@@ -163,14 +201,17 @@ int StackCtor(Stack* stk, const char* var_name, const char* file_name, size_t li
 	assert(stk != NULL);
 
 	stk->stack_creation_inf.var_name = var_name;
-	stk->stack_creation_inf.file = file_name;
-	stk->stack_creation_inf.line = line;
-	stk->stack_creation_inf.func = func_name;
+	stk->stack_creation_inf.file =     file_name;
+	stk->stack_creation_inf.line =     line;
+	stk->stack_creation_inf.func =     func_name;
+
+	stk->left_canary =  STACK_CANARY_NUM;
+	stk->right_canary = STACK_CANARY_NUM;
 
 	size_t start_capacity = 2;
-	stk->data = (Elem_t*)calloc(start_capacity, sizeof(Elem_t));
-	stk->capacity = start_capacity;
-	stk->size = 0;
+	StackDataRealloc(stk, start_capacity);
+
+	stk->size =   0;
 	stk->errors = 0;
 
 	return 0;

@@ -17,6 +17,11 @@ void run_tests(Stack* stk)
 
 	StackPush(stk, 6);
 	StackPush(stk, 5);
+	stk->left_canary = 0;
+	stk->right_canary = 0;
+	((Canary_t*)stk->data)[-1] = 0;
+	stk->data[stk->capacity] = 0;
+
 	StackPush(stk, 9);
 
 	print_stack_elems(stk);
