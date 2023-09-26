@@ -74,6 +74,11 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	}
 	stk->data = new_data;
 	stk->data = (Elem_t*)((size_t)stk->data + sizeof(Canary_t));
+	
+	// FILL WITH POISON
+	Elem_t* tmp = (Elem_t*)((size_t)stk->data + sizeof(Elem_t) * stk->size);
+	for (size_t i = 0; i < new_capacity - stk->size; i++)
+		tmp[i] = POISON_ELEM;
 
 	((Canary_t*)stk->data)[-1] = STACK_DATA_CANARY_NUM;
 	stk->data[new_capacity] =    STACK_DATA_CANARY_NUM;
@@ -109,7 +114,7 @@ int StackPop(Stack* stk, Elem_t* deleted_elem)
 	}
 
 	Elem_t ret_value = stk->data[--stk->size];
-	stk->data[stk->size] = 0;
+	stk->data[stk->size] = POISON_ELEM;
 
 	if (stk->capacity > (stk->size+1) * 4)
 		StackDataRealloc(stk, stk->capacity / 4);

@@ -3,9 +3,10 @@
 
 #include "stack.h"
 
+#define PRINT_DATA(i, stk_data_elem)  printf("  [%zu] = " ELEM_T_SPECIFIER, i, stk_data_elem)
+
 #ifdef _DEBUG
 #define STACK_DUMP(stk)               StackDump (stk, __FILE__, __LINE__, __func__)
-#define PRINT_DATA(i, stk_data_elem)  printf("  [%zu] = %d\n", i, stk_data_elem)
 
 void PrintStackErrors(unsigned errors);
 

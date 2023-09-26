@@ -2,6 +2,7 @@
 #define STACK_H
 
 typedef int Elem_t;
+#define ELEM_T_SPECIFIER "%d"
 
 #ifdef _DEBUG
 
@@ -10,20 +11,21 @@ typedef int Elem_t;
 #define StackCtor(stack) STACK_CTOR ((stack), #stack, __FILE__, __LINE__, __func__)
 
 typedef unsigned long long Canary_t;
+const Elem_t POISON_ELEM = 666;
 
 enum StackErrorBits {
-	STACK_NULL = 1 << 0,
-	STACK_DATA_NULL = 1 << 1,
-	STACK_SIZE_GREATER_CAPACITY = 1 << 2,
-	STACK_SIZE_LESS_ONE = 1 << 3,
-	STACK_LCANARY_DMG = 1 << 4,
-	STACK_RCANARY_DMG = 1 << 5,
-	STACK_DATA_LCANARY_DMG = 1 << 5,
-	STACK_DATA_RCANARY_DMG = 1 << 6,
-	STACK_HASH_MISMATCH = 1 << 7,
-	STACK_REALLOC_ERROR = 1 << 8,
-	STACK_BAD_CAPACITY = 1 << 9,
-	STACK_BAD_SIZE = 1 << 10
+	STACK_NULL                   = 1 << 0,
+	STACK_DATA_NULL              = 1 << 1,
+	STACK_SIZE_GREATER_CAPACITY  = 1 << 2,
+	STACK_SIZE_LESS_ONE          = 1 << 3,
+	STACK_LCANARY_DMG            = 1 << 4,
+	STACK_RCANARY_DMG            = 1 << 5,
+	STACK_DATA_LCANARY_DMG       = 1 << 5,
+	STACK_DATA_RCANARY_DMG       = 1 << 6,
+	STACK_HASH_MISMATCH          = 1 << 7,
+	STACK_REALLOC_ERROR          = 1 << 8,
+	STACK_BAD_CAPACITY           = 1 << 9,
+	STACK_BAD_SIZE               = 1 << 10
 };
 
 enum CanaryConstants { STACK_CANARY_NUM = 0xAB0BA228, STACK_DATA_CANARY_NUM = 0xAB0BA322 };

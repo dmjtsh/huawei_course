@@ -44,7 +44,12 @@ int StackDump(Stack* stk, const char* file_name, const size_t line, const char* 
 		printf("data[%p]\n", stk->data);
 		printf("  {\n");
 		for (size_t i = 0; i < stk->capacity; i++)
+		{
 			PRINT_DATA(i, stk->data[i]);
+			if (stk->data[i] == POISON_ELEM)
+				printf(" ( POISON )");
+			printf("\n");
+		}
 		printf("  }\n");
 	}
 	printf("}\n");
@@ -58,6 +63,7 @@ void PrintStackElems(Stack* stk)
 {
 	for (size_t i = 0; i < stk->size; i++)
 	{
-		printf("elem[%zu] = %d\n", i, stk->data[i]);
+		PRINT_DATA(i, stk->data[i]);
+		printf("\n");
 	}
 }
