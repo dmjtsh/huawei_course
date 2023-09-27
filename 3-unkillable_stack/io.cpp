@@ -55,6 +55,7 @@ int StackDumpToFile(Stack* stk, const char* file_name, const size_t line, const 
         stk->stack_creation_inf.file);
 
     PrintStackErrorsToFile(stk->errors, log_file);
+    stk->errors &= ~STACK_SIZE_LESS_ONE; // BECAUSE IT IS MISTAKE FOR ONLY PRINT, YOU DONT NEED TO FIX IT
 
     fprintf(log_file, "{\n");
     fprintf(log_file, "size = %zu\n", stk->size);
@@ -75,7 +76,6 @@ int StackDumpToFile(Stack* stk, const char* file_name, const size_t line, const 
     fprintf(log_file, "}\n");
 
     fprintf(log_file, "Returning back...\n\n");
-    stk->errors = 0;
 
     fclose(log_file);
     return 0;

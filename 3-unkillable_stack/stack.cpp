@@ -17,24 +17,44 @@ int StackState(Stack* stk)
 		return -1;
 
 	if (stk->size > stk->capacity)                           stk->errors |= STACK_SIZE_GREATER_CAPACITY;
+	else                                                     stk->errors &= ~STACK_SIZE_GREATER_CAPACITY;
+
 	if (stk->left_canary != STACK_CANARY_NUM)                stk->errors |= STACK_LCANARY_DMG;
+	else                                                     stk->errors &= ~STACK_LCANARY_DMG;
+
 	if ((stk->right_canary != STACK_CANARY_NUM))             stk->errors |= STACK_RCANARY_DMG;
+	else                                                     stk->errors &= ~STACK_RCANARY_DMG;
 
 	if (!stk->data)
 	{ 
 		stk->errors |= STACK_DATA_NULL;
 		return -1;
 	}
+	else
+		stk->errors &= ~STACK_DATA_NULL;
+
 	if (((Canary_t*)stk->data)[-1] != STACK_DATA_CANARY_NUM) stk->errors |= STACK_DATA_LCANARY_DMG;
+	else                                                     stk->errors &= ~STACK_DATA_LCANARY_DMG;
+
 	if (stk->data[stk->capacity] != STACK_DATA_CANARY_NUM)   stk->errors |= STACK_DATA_RCANARY_DMG;
+	else                                                     stk->errors &= ~STACK_DATA_RCANARY_DMG;
 
 	Hash_t old_hash = stk->hash;
 	Hash_t new_hash = StackHash(stk);
-	if (old_hash != new_hash)                                stk->errors |= STACK_HASH_MISMATCH;
-	else stk->hash = old_hash;
+
+	if (old_hash != new_hash)
+		stk->errors |= STACK_HASH_MISMATCH;
+	else
+	{
+		stk->hash = old_hash;
+		stk->errors &= ~STACK_HASH_MISMATCH;
+	}
 
 	if (stk->size >= STACK_MAX_SIZE)                         stk->errors |= STACK_BAD_SIZE;
+	else                                                     stk->errors &= ~STACK_BAD_SIZE;
+
 	if (stk->capacity >= STACK_MAX_SIZE)                     stk->errors |= STACK_BAD_CAPACITY;
+	else                                                     stk->errors &= ~STACK_BAD_CAPACITY;
 
 	if (stk->errors)
 		return -1;
@@ -123,7 +143,7 @@ int StackPop(Stack* stk, Elem_t* deleted_elem)
 
 	stk->hash = StackHash(stk);
 
-	stack_state = StackStateBeforePop(stk);
+	stack_state = StackState(stk);
 	STACK_DUMP_TO_FILE(stk);
 	if (stack_state)
 		return -1;
