@@ -3,14 +3,16 @@
 
 #include "stack.h"
 
-#define PRINT_DATA(i, stk_data_elem)  printf("  [%zu] = " ELEM_T_SPECIFIER, i, stk_data_elem)
+#define PRINT_DATA(i, stk_data_elem)                printf("  [%zu] = " ELEM_T_SPECIFIER, i, stk_data_elem)
+
 
 #ifdef _DEBUG
-#define STACK_DUMP(stk)               StackDump (stk, __FILE__, __LINE__, __func__)
+#define PRINT_DATA_TO_FILE(file, i, stk_data_elem)  fprintf(file, "  [%zu] = " ELEM_T_SPECIFIER, i, stk_data_elem)
+#define STACK_DUMP_TO_FILE(stk)                     StackDumpToFile (stk, __FILE__, __LINE__, __func__)
 
-void PrintStackErrors(unsigned errors);
+void PrintStackErrorsToFile(unsigned errors, FILE* log_file);
 
-int StackDump(Stack* stk, const char* file_name, const size_t line, const char* func_name);
+int StackDumpToFile(Stack* stk, const char* file_name, const size_t line, const char* func_name);
 #endif
 
 void PrintStackElems(Stack* stk);

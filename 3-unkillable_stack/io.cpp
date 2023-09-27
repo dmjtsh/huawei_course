@@ -3,61 +3,84 @@
 #include "io.h"
 
 #ifdef _DEBUG
-void PrintStackErrors(unsigned errors)
+void PrintStackErrorsToFile(unsigned errors, FILE* log_file)
 {
-	if (errors & STACK_LCANARY_DMG)           printf("\033[31mStack Left Canary DAMAGED\033[0m\n");
-	if (errors & STACK_RCANARY_DMG)           printf("\033[31mStack Right Canary DAMAGED\033[0m\n");
-	if (errors & STACK_SIZE_GREATER_CAPACITY) printf("\033[31mStack Size GREATER Capacity\033[0m\n");
-	if (errors & STACK_SIZE_LESS_ONE)         printf("\033[31mStack Size LESS One\033[0m\n");
-	if (errors & STACK_DATA_LCANARY_DMG)      printf("\033[31mStack Data Left Canary DAMAGED\033[0m\n");
-	if (errors & STACK_DATA_RCANARY_DMG)      printf("\033[31mStack Data Right Canary DAMAGED\033[0m\n");
-	if (errors & STACK_HASH_MISMATCH)         printf("\033[31mStack Hash DIFFERENCE\033[0m\n");
-	if (errors & STACK_REALLOC_ERROR)		  printf("\033[31mStack REALLOC ERROR\033[0m\n");
-	if (errors & STACK_BAD_SIZE)		      printf("\033[31mStack Size TOO BIG\033[0m\n");
-	if (errors & STACK_BAD_CAPACITY)		  printf("\033[31mStack Capacity TOO BIG\033[0m\n");
+    if (errors == 0)
+        fprintf(log_file, "-----------NO_ERRORS-----------\n");
+    else
+    {
+        fprintf(log_file, "-------------ERRORS------------\n");
+        if (errors & STACK_LCANARY_DMG)           fprintf(log_file, "Stack Left Canary DAMAGED\n");
+        if (errors & STACK_RCANARY_DMG)           fprintf(log_file, "Stack Right Canary DAMAGED\n");
+        if (errors & STACK_SIZE_GREATER_CAPACITY) fprintf(log_file, "Stack Size GREATER Capacity\n");
+        if (errors & STACK_SIZE_LESS_ONE)         fprintf(log_file, "Stack Size LESS One\n");
+        if (errors & STACK_DATA_LCANARY_DMG)      fprintf(log_file, "Stack Data Left Canary DAMAGED\n");
+        if (errors & STACK_DATA_RCANARY_DMG)      fprintf(log_file, "Stack Data Right Canary DAMAGED\n");
+        if (errors & STACK_HASH_MISMATCH)         fprintf(log_file, "Stack Hash DIFFERENCE\n");
+        if (errors & STACK_REALLOC_ERROR)         fprintf(log_file, "Stack REALLOC ERROR\n");
+        if (errors & STACK_BAD_SIZE)              fprintf(log_file, "Stack Size TOO BIG\n");
+        if (errors & STACK_BAD_CAPACITY)          fprintf(log_file, "Stack Capacity TOO BIG\n");
+        fprintf(log_file, "----------END_OF_ERRORS--------\n");
+    }
 }
 
-int StackDump(Stack* stk, const char* file_name, const size_t line, const char* func_name)
+int StackDumpToFile(Stack* stk, const char* file_name, const size_t line, const char* func_name)
 {
-	printf("\n\033[32mOoops, something wrong happend, that called StackDump\033[0m\n");
-	printf("called from func: %s(%zu) file: %s\n", func_name, line, file_name);
-	if (!stk)
-	{
-		printf("\033[31mStack Pointer is NULL. No data in Stack\033[0m\n");
-		printf("\033[32mReturning back...\033[0m\n\n");
-		return 0;
-	}
-	printf("Stack [%p], \"%s\" from func: %s(%zu) file: %s\n",
-		stk,
-		stk->stack_creation_inf.var_name,
-		stk->stack_creation_inf.file,
-		stk->stack_creation_inf.line,
-		stk->stack_creation_inf.file);
+    static size_t num_dump_call = 1;
+    static FILE* log_file = NULL;
 
-	PrintStackErrors(stk->errors);
+    if (num_dump_call == 1)
+        fopen_s(&log_file, "log.txt", "w");
+    else
+        fopen_s(&log_file, "log.txt", "a");
+    if (!log_file)
+    {
+        printf("OPENING or CREATING FILE ERROR\n");
+        return -1;
+    }
 
-	printf("{\n");
-	printf("size = %zu\n", stk->size);
-	printf("capacity = %zu\n", stk->capacity);
-	if (!(stk->errors & STACK_DATA_NULL))
-	{
-		printf("data[%p]\n", stk->data);
-		printf("  {\n");
-		for (size_t i = 0; i < stk->capacity; i++)
-		{
-			PRINT_DATA(i, stk->data[i]);
-			if (stk->data[i] == POISON_ELEM)
-				printf(" ( POISON )");
-			printf("\n");
-		}
-		printf("  }\n");
-	}
-	printf("}\n");
+    fprintf(log_file, "\nSTACK DUMP CALL #%zu\n", num_dump_call++);
+    fprintf(log_file, "Called from FUNC: %s(%zu)\nFILE: %s\n", func_name, line, file_name);
+    if (!stk)
+    {
+        fprintf(log_file, "Stack Pointer is NULL. No data in Stack\n");
+        fprintf(log_file, "Returning back...\n\n");
+        return 0;
+    }
+    fprintf(log_file, "Stack [%p], \"%s\" from FUNC: %s(%zu)\nFILE: %s\n",
+        stk,
+        stk->stack_creation_inf.var_name,
+        stk->stack_creation_inf.file,
+        stk->stack_creation_inf.line,
+        stk->stack_creation_inf.file);
 
-	printf("\033[32mReturning back...\033[0m\n\n");
-	stk->errors = 0;
-	return 0;
+    PrintStackErrorsToFile(stk->errors, log_file);
+
+    fprintf(log_file, "{\n");
+    fprintf(log_file, "size = %zu\n", stk->size);
+    fprintf(log_file, "capacity = %zu\n", stk->capacity);
+    if (!(stk->errors & STACK_DATA_NULL))
+    {
+        fprintf(log_file, "data[%p]\n", stk->data);
+        fprintf(log_file, "  {\n");
+        for (size_t i = 0; i < stk->capacity; i++)
+        {
+            PRINT_DATA_TO_FILE(log_file, i, stk->data[i]);
+            if (stk->data[i] == POISON_ELEM)
+                fprintf(log_file, " ( POISON )");
+            fprintf(log_file, "\n");
+        }
+        fprintf(log_file, "  }\n");
+    }
+    fprintf(log_file, "}\n");
+
+    fprintf(log_file, "Returning back...\n\n");
+    stk->errors = 0;
+
+    fclose(log_file);
+    return 0;
 }
+
 #endif
 void PrintStackElems(Stack* stk)
 {

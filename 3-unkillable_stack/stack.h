@@ -25,7 +25,8 @@ enum StackErrorBits {
 	STACK_HASH_MISMATCH          = 1 << 7,
 	STACK_REALLOC_ERROR          = 1 << 8,
 	STACK_BAD_CAPACITY           = 1 << 9,
-	STACK_BAD_SIZE               = 1 << 10
+	STACK_BAD_SIZE               = 1 << 10,
+	STACK_DELETED				 = 1 << 11
 };
 
 enum CanaryConstants { STACK_CANARY_NUM = 0xAB0BA228, STACK_DATA_CANARY_NUM = 0xAB0BA322 };
@@ -51,8 +52,8 @@ struct Stack
 	StackCreationInfo stack_creation_inf;
 
 	Elem_t* data;
-	Hash_t  hash;
 
+	Hash_t  hash;
 	Canary_t right_canary;
 };
 

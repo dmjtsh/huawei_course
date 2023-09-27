@@ -11,7 +11,7 @@ Hash_t StackHash(Stack* stk)
 	return Hash(stk, sizeof(Stack)) + Hash(stk->data, stk->size * sizeof(Elem_t));
 }
 
-int StackNotOk(Stack* stk)
+int StackState(Stack* stk)
 {
 	if (!stk)
 		return -1;
@@ -42,9 +42,9 @@ int StackNotOk(Stack* stk)
 	return 0;
 }
 
-int StackBeforePopNotOk(Stack* stk)
+int StackStateBeforePop(Stack* stk)
 {
-	if (StackNotOk(stk) && stk == NULL)
+	if (StackState(stk) && stk == NULL)
 		return -1;
 
 	if (stk->size < 1)
@@ -110,11 +110,10 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 #ifdef _DEBUG
 int StackPop(Stack* stk, Elem_t* deleted_elem)
 {
-	if (StackBeforePopNotOk(stk))
-	{
-		STACK_DUMP(stk);
+	int stack_state = StackStateBeforePop(stk);
+	STACK_DUMP_TO_FILE(stk);
+	if (stack_state)
 		return -1;
-	}
 
 	Elem_t ret_value = stk->data[--stk->size];
 	stk->data[stk->size] = POISON_ELEM;
@@ -124,11 +123,10 @@ int StackPop(Stack* stk, Elem_t* deleted_elem)
 
 	stk->hash = StackHash(stk);
 
-	if (StackNotOk(stk))
-	{
-		STACK_DUMP(stk);
+	stack_state = StackStateBeforePop(stk);
+	STACK_DUMP_TO_FILE(stk);
+	if (stack_state)
 		return -1;
-	}
 
 	*deleted_elem = ret_value;
 	return 0;
@@ -154,11 +152,10 @@ int StackPop(Stack* stk, Elem_t* deleted_elem)
 #ifdef _DEBUG
 int StackPush(Stack* stk, Elem_t elem)
 {
-	if (StackNotOk(stk))
-	{
-		STACK_DUMP(stk);
+	int stack_state = StackState(stk);
+	STACK_DUMP_TO_FILE(stk);
+	if (stack_state)
 		return -1;
-	}
 
 	if (stk->capacity <= stk->size)
 		StackDataRealloc(stk, stk->capacity * 2);
@@ -166,11 +163,10 @@ int StackPush(Stack* stk, Elem_t elem)
 	stk->data[stk->size++] = elem;
 	stk->hash = StackHash(stk);
 
-	if (StackNotOk(stk))
-	{
-		STACK_DUMP(stk);
+	stack_state = StackState(stk);
+	STACK_DUMP_TO_FILE(stk);
+	if (stack_state)
 		return -1;
-	}
 
 	return 0;
 }
@@ -190,7 +186,11 @@ int StackPush(Stack* stk, Elem_t elem)
 #ifdef _DEBUG
 int STACK_CTOR(Stack* stk, const char* var_name, const char* file_name, size_t line, const char* func_name)
 {
-	assert(stk != NULL);
+	if (!stk)
+	{
+		STACK_DUMP_TO_FILE(stk);
+		return -1;
+	}
 
 	stk->stack_creation_inf.var_name = var_name;
 	stk->stack_creation_inf.file     = file_name;
@@ -207,12 +207,19 @@ int STACK_CTOR(Stack* stk, const char* var_name, const char* file_name, size_t l
 	stk->errors = 0;
 
 	stk->hash = StackHash(stk);
+
+	int stack_state = StackState(stk);
+	STACK_DUMP_TO_FILE(stk);
+	if (stack_state)
+		return -1;
+
 	return 0;
 }
 #else
 int StackCtor(Stack* stk)
 {
-	assert(stk != NULL);
+	if (!stk)
+		return -1;
 
 	size_t start_capacity = 2;
 	if (StackDataRealloc(stk, start_capacity) == -1)
@@ -227,8 +234,11 @@ int StackCtor(Stack* stk)
 #ifdef _DEBUG
 int StackDtor(Stack* stk)
 {
-	assert(stk != NULL);
-	assert(stk->data != NULL);
+
+	int stack_state = StackState(stk);
+	STACK_DUMP_TO_FILE(stk);
+	if (stack_state)
+		return -1;
 
 	stk->stack_creation_inf.line     = 0;
 	stk->stack_creation_inf.file     = NULL;
@@ -246,8 +256,8 @@ int StackDtor(Stack* stk)
 #else
 int StackDtor(Stack* stk)
 {
-	assert(stk != NULL);
-	assert(stk->data != NULL);
+	if (!stk || !stk->data)
+		return -1;
 
 	free(stk->data);
 
