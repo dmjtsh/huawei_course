@@ -66,6 +66,9 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	if (stk->data != NULL) // IF NOT FIRST CALL
 		stk->data = (Elem_t*)((size_t)stk->data-sizeof(Canary_t));
 
+	while ((new_capacity * sizeof(Elem_t)) % 8 != 0)  // MB DOESNT WORK
+		new_capacity++;
+
 	Elem_t* new_data = (Elem_t*)realloc(stk->data, new_capacity * sizeof(Elem_t) + 2 * sizeof(Canary_t));
 	if (!new_data)
 	{
