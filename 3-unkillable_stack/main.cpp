@@ -1,6 +1,10 @@
 #include <stdio.h>
 
+#include "stack.h"
 #include "io.h"
+
+extern FILE* g_log_file;
+extern const char* g_log_file_path;
 
 void RunTests(Stack* stk)
 {
@@ -10,7 +14,7 @@ void RunTests(Stack* stk)
 	StackPop(stk, &elem);
 	StackPop(stk, &elem);
 
-	stk->data = NULL;
+	((Canary_t*)stk->data)[-1] = 'a';
 	StackPush(stk, 6);
 	StackPush(stk, 5);
 	StackPush(stk, 9);
@@ -20,11 +24,14 @@ void RunTests(Stack* stk)
 
 int main()
 {
+	LogFileCtor(&g_log_file, g_log_file_path);
 	Stack stk = {};
 	StackCtor(&stk);
 
 	RunTests(&stk);
 
 	StackDtor(&stk);
+
+	LogFileDtor(g_log_file);
 	return 0;
 }

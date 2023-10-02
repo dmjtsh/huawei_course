@@ -2,34 +2,41 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "stack.h"
 #include "io.h"
 
-// COMMON FUNCTIONS
+/*
+*
+* COMMON FUNCTIONS BLOCK
+*
+*/
+
 int StackDataRealloc(Stack* stk, size_t new_capacity);
 
-enum CallingFunc
+enum DataReallocAction
 {
-	PUSH_FUNC = 0,
-	POP_FUNC = 1
+	INCREASE_DATA = 0,
+	DECREASE_DATA = 1
 };
-int StackDataReallocIfNeeded(Stack* stk, int calling_func)
+int StackDataReallocIfNeeded(Stack* stk, DataReallocAction realloc_action)
 {
 	assert(stk != NULL);
 	assert(stk->data != NULL);
 
-	const int POP_COEFF = 4;
-	const int PUSH_COEFF = 2;
-	if (calling_func == PUSH_FUNC)
-	{
-		if (stk->capacity <= stk->size)
-			return StackDataRealloc(stk, stk->capacity * PUSH_COEFF);
-	}
-	else if (calling_func == POP_FUNC)
-	{
-		if (stk->capacity > (stk->size + 1) * POP_COEFF)
-			return StackDataRealloc(stk, stk->capacity / POP_COEFF);
-	}
+	const int INCREASE_COEFF = 4;
+	const int DECREASE_COEFF = 2;
 
+	switch (realloc_action)
+	{
+	case INCREASE_DATA:
+		if (stk->capacity <= stk->size)
+			return StackDataRealloc(stk, stk->capacity * INCREASE_COEFF);
+		break;
+	case DECREASE_DATA:
+		if (stk->capacity > (stk->size + 1) * DECREASE_COEFF)
+			return StackDataRealloc(stk, stk->capacity / DECREASE_COEFF);
+		break;
+	}
 	return 0;
 }
 
@@ -38,7 +45,7 @@ int StackPushKernal(Stack* stk, Elem_t elem)
 	assert(stk != NULL);
 	assert(stk->data != NULL);
 
-	int realloc_res = StackDataReallocIfNeeded(stk, PUSH_FUNC);
+	int realloc_res = StackDataReallocIfNeeded(stk, INCREASE_DATA);
 
 	stk->data[stk->size] = elem;
 	stk->size++;
@@ -50,13 +57,12 @@ int StackPopKernal(Stack* stk, Elem_t* deleted_elem)
 {
 	assert(stk != NULL);
 	assert(stk->data != NULL);
+	assert(deleted_elem != NULL);
 
+	*deleted_elem = stk->data[stk->size - 1];
 	stk->size--;
-	Elem_t ret_value = stk->data[stk->size];
 
-	int realloc_res = StackDataReallocIfNeeded(stk, POP_FUNC);
-
-	*deleted_elem = ret_value;
+	int realloc_res = StackDataReallocIfNeeded(stk, DECREASE_DATA);
 
 	return realloc_res;
 }
@@ -65,18 +71,18 @@ int StackCtorKernal(Stack* stk)
 {
 	assert(stk != NULL);
 
-	const size_t START_CAPACITY = 2;
+	const size_t INITIAL_CAPACITY = 2;
 
 	stk->data = NULL;
 	stk->size = 0;
 	stk->capacity = 0;
 
-	int realloc_res = StackDataRealloc(stk, START_CAPACITY);
+	int realloc_res = StackDataRealloc(stk, INITIAL_CAPACITY);
 
 	return realloc_res;
 }
 
-int StackDtorKernal(Stack* stk)
+void StackDtorKernal(Stack* stk)
 {
 	assert(stk != NULL);
 	assert(stk->data != NULL);
@@ -85,11 +91,20 @@ int StackDtorKernal(Stack* stk)
 
 	stk->capacity = 0;
 	stk->size = 0;
-
-	return 0;
 }
 
-// DEBUG FUNCTIONS
+/*
+*
+* END OF COMMON FUNCTIONS BLOCK
+*
+*/
+
+
+/*
+* 
+* DEBUG FUNCTIONS BLOCK
+* 
+*/
 #ifdef _DEBUG
 
 Hash_t StackHash(Stack* stk)
@@ -113,22 +128,35 @@ Hash_t StackHash(Stack* stk)
 	return new_hash;
 }
 
-int StackSetError(unsigned* error, int error_bit)
+Canary_t* GetDataLeftCanaryPtr(Stack* stk)
 {
+	assert(stk       != NULL);
+	assert(stk->data != NULL);
+	return (Canary_t*)((char*)stk->data - sizeof(Canary_t));
+}
+Canary_t* GetDataRightCanaryPtr(Stack* stk)
+{
+	assert(stk       != NULL);
+	assert(stk->data != NULL);
+	return (Canary_t*)(stk->data + stk->capacity);
+}
+
+void StackSetError(unsigned* error, int error_bit)
+{
+	assert(error != NULL);
 	*error |= error_bit;
-	return 0;
 }
 
-int StackUnsetError(unsigned* error, int error_bit)
+void StackUnsetError(unsigned* error, int error_bit)
 {
+	assert(error != NULL);
 	*error &= ~error_bit;
-	return 0;
 }
 
-#define STACK_CHECK_ERROR(stk, condition, error) \
-	if(condition)\
-		StackSetError(&stk->errors, error);\
-	else\
+#define STACK_CHECK_ERROR(stk, condition, error)	\
+	if(condition)									\
+		StackSetError(&stk->errors, error);			\
+	else											\
 		StackUnsetError(&stk->errors, error);
 
 int StackCheckState(Stack* stk)
@@ -142,6 +170,13 @@ int StackCheckState(Stack* stk)
 	STACK_CHECK_ERROR(stk, stk->left_canary  != STACK_CANARY_NUM, STACK_LCANARY_DMG)
 	STACK_CHECK_ERROR(stk, stk->right_canary != STACK_CANARY_NUM, STACK_RCANARY_DMG)
 
+	STACK_CHECK_ERROR(stk, stk->size >= STACK_MAX_SIZE, STACK_BAD_SIZE)
+	STACK_CHECK_ERROR(stk, stk->capacity >= STACK_MAX_SIZE, STACK_BAD_CAPACITY)
+
+	Hash_t old_hash = stk->hash;
+	Hash_t new_hash = StackHash(stk);
+	STACK_CHECK_ERROR(stk, old_hash != new_hash, STACK_HASH_MISMATCH)
+		
 	if (!stk->data) 
 	{
 		StackSetError(&stk->errors, STACK_DATA_POINTER_NULL);
@@ -150,17 +185,8 @@ int StackCheckState(Stack* stk)
 	else 
 		StackUnsetError(&stk->errors, STACK_DATA_POINTER_NULL);
 
-	Canary_t* data_lcanary_p = (Canary_t*)((size_t)stk->data - sizeof(Canary_t));
-	Canary_t* data_rcanary_p = (Canary_t*)((size_t)stk->data + stk->capacity * sizeof(Elem_t));
-	STACK_CHECK_ERROR(stk, *data_lcanary_p != STACK_DATA_CANARY_NUM, STACK_DATA_LCANARY_DMG)
-	STACK_CHECK_ERROR(stk, *data_rcanary_p != STACK_DATA_CANARY_NUM, STACK_DATA_RCANARY_DMG)
-
-	Hash_t old_hash = stk->hash;
-	Hash_t new_hash = StackHash(stk);
-	STACK_CHECK_ERROR(stk, old_hash != new_hash, STACK_HASH_MISMATCH)
-
-	STACK_CHECK_ERROR(stk, stk->size     >= STACK_MAX_SIZE, STACK_BAD_SIZE)
-	STACK_CHECK_ERROR(stk, stk->capacity >= STACK_MAX_SIZE, STACK_BAD_CAPACITY)
+	STACK_CHECK_ERROR(stk, *GetDataLeftCanaryPtr(stk) != STACK_DATA_CANARY_NUM, STACK_DATA_LCANARY_DMG)
+	STACK_CHECK_ERROR(stk, *GetDataRightCanaryPtr(stk) != STACK_DATA_CANARY_NUM, STACK_DATA_RCANARY_DMG)
 
 	return stk->errors;
 }	
@@ -185,9 +211,8 @@ int StackFillPoison(Stack* stk, size_t capacity)
 		return STACK_POINTER_NULL;
 	}
 
-	Elem_t* tmp = (Elem_t*)((size_t)stk->data + sizeof(Elem_t) * stk->size);
-	for (size_t i = 0; i < capacity - stk->size; i++)
-		tmp[i] = POISON_ELEM;
+	for (size_t i = stk->size; i < capacity; i++)
+		stk->data[i] = POISON_ELEM;
 
 	return 0;
 }
@@ -203,28 +228,26 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	if (stk->data != NULL) // IF NOT FIRST CALL
 		stk->data = (Elem_t*)((size_t)stk->data-sizeof(Canary_t));
 
-	while ((new_capacity * sizeof(Elem_t)) % sizeof(Canary_t) != 0) 
+	while ((new_capacity * sizeof(Elem_t)) % sizeof(Canary_t) != 0) // MEMORY ALIGNMENT
 		new_capacity++;
 
 	Elem_t* new_data = (Elem_t*)realloc(stk->data, new_capacity * sizeof(Elem_t) + 2 * sizeof(Canary_t));
 	
+	stk->capacity = new_capacity;
+
 	if (!new_data)
 	{
-		stk->errors |= STACK_REALLOC_ERROR;
+		StackUnsetError(&stk->errors, STACK_REALLOC_ERROR);
 		return stk->errors; 
 	}
 
 	stk->data = new_data;
-	stk->data = (Elem_t*)((size_t)stk->data + sizeof(Canary_t));
+	stk->data = (Elem_t*)((char *)stk->data + sizeof(Canary_t));
 	
 	StackFillPoison(stk, new_capacity);
 
-	Canary_t* data_lcanary_p = (Canary_t*)((size_t)stk->data - sizeof(Canary_t));
-	Canary_t* data_rcanary_p = (Canary_t*)((size_t)stk->data + new_capacity * sizeof(Elem_t));
-	*data_lcanary_p = STACK_DATA_CANARY_NUM;
-    *data_rcanary_p = STACK_DATA_CANARY_NUM;
-
-	stk->capacity = new_capacity;
+	*GetDataLeftCanaryPtr(stk)  = STACK_DATA_CANARY_NUM;
+    *GetDataRightCanaryPtr(stk) = STACK_DATA_CANARY_NUM;
 
 	return 0;
 }
@@ -233,7 +256,8 @@ int StackPush(Stack* stk, Elem_t elem)
 {
 	int stack_state = StackCheckState(stk);
 	STACK_DUMP_TO_FILE(stk);
-	if (stack_state && stk == NULL)
+
+	if (stk == NULL)
 		return STACK_POINTER_NULL;
 	else if (stack_state)
 		return stk->errors;
@@ -252,7 +276,8 @@ int StackPop(Stack* stk, Elem_t* deleted_elem)
 {
 	int stack_state = StackCheckStateBeforePop(stk);
 	STACK_DUMP_TO_FILE(stk);
-	if (stack_state && stk == NULL)
+
+	if (stk == NULL)
 		return STACK_POINTER_NULL;
 	else if (stack_state)
 		return stk->errors;
@@ -298,7 +323,8 @@ int StackDtor(Stack* stk)
 {
 	int stack_state = StackCheckState(stk);
 	STACK_DUMP_TO_FILE(stk);
-	if (stack_state && stk == NULL)
+
+	if (stk == NULL)
 		return STACK_POINTER_NULL;
 	else if (stack_state)
 		return stk->errors;
@@ -307,64 +333,62 @@ int StackDtor(Stack* stk)
 	stk->stack_creation_inf.func = NULL;
 	stk->stack_creation_inf.var_name = NULL;
 
-	stk->data = (Elem_t*)((size_t)stk->data - sizeof(Canary_t));
+	stk->data = (Elem_t*)((char*)stk->data - sizeof(Canary_t));
 	stk->errors = STACK_POINTER_NULL | STACK_DATA_POINTER_NULL;
 
-	return StackDtorKernal(stk);
-}
-
-// RELEASE FUNCTIONS
-#else
-int StackDataRealloc(Stack* stk, size_t new_capacity)
-{
-	assert(stk != NULL);
-
-	Elem_t* new_data = (Elem_t*)realloc(stk->data, new_capacity * sizeof(Elem_t));
-	if (!new_data)
-		return STK_ERROR;
-
-	stk->data = new_data;
-	stk->capacity = new_capacity;
-
+	StackDtorKernal(stk);
 	return 0;
 }
 
-int StackPush(Stack* stk, Elem_t elem)
-{
-	if (!stk || !stk->data)
-		return STK_ERROR;
+/*
+*
+* END OF DEBUG FUNCTIONS BLOCK
+*
+*/
 
-	return StackPushKernal(stk, elem);
+
+/*
+*
+* RELEASE FUNCTIONS BLOCK
+* 
+*/
+
+#else
+void StackDataRealloc(Stack* stk, size_t new_capacity)
+
+	Elem_t* new_data = (Elem_t*)realloc(stk->data, new_capacity * sizeof(Elem_t));
+
+	stk->data = new_data;
+	stk->capacity = new_capacity;
 }
 
-int StackPop(Stack* stk, Elem_t* deleted_elem)
+void StackPush(Stack* stk, Elem_t elem)
 {
-	if (!stk || !stk->size || stk->size == 0)
-		return STK_ERROR;
+	StackPushKernal(stk, elem);
+}
 
-	int stack_pop_kernal_res = StackPopKernal(stk, deleted_elem);
+void StackPop(Stack* stk, Elem_t* deleted_elem)
+{
+	StackPopKernal(stk, deleted_elem);
 
 	stk->data[stk->size] = 0;
-
-	return stack_pop_kernal_res;
 }
 
 
-int StackCtor(Stack* stk)
+void StackCtor(Stack* stk)
 {
-	if (!stk || !stk->data)
-		return STK_ERROR;
-
-	return StackCtorKernal(stk);
+	StackCtorKernal(stk);
 }
 
 
-int StackDtor(Stack* stk)
+void StackDtor(Stack* stk)
 {
-	if (!stk || !stk->data)
-		return STK_ERROR;
-
-	return StackDtorKernal(stk);
+	StackDtorKernal(stk);
 }
 
+/*
+*
+* END OF RELEASE FUNCTIONS BLOCK
+*
+*/
 #endif

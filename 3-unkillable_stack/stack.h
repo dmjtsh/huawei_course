@@ -19,13 +19,13 @@ enum StackErrorBits
 	STACK_SIZE_LESS_ONE          = 1 << 3,
 	STACK_LCANARY_DMG            = 1 << 4,
 	STACK_RCANARY_DMG            = 1 << 5,
-	STACK_DATA_LCANARY_DMG       = 1 << 5,
-	STACK_DATA_RCANARY_DMG       = 1 << 6,
-	STACK_HASH_MISMATCH          = 1 << 7,
-	STACK_REALLOC_ERROR          = 1 << 8,
-	STACK_BAD_CAPACITY           = 1 << 9,
-	STACK_BAD_SIZE               = 1 << 10,
-	STACK_DELETED				 = 1 << 11
+	STACK_DATA_LCANARY_DMG       = 1 << 6,
+	STACK_DATA_RCANARY_DMG       = 1 << 7,
+	STACK_HASH_MISMATCH          = 1 << 8,
+	STACK_REALLOC_ERROR          = 1 << 9,
+	STACK_BAD_CAPACITY           = 1 << 10,
+	STACK_BAD_SIZE               = 1 << 11,
+	STACK_DELETED				 = 1 << 12
 };
 
 typedef unsigned long long Canary_t;
