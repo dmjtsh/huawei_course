@@ -10,6 +10,7 @@ void RunTests(Stack* stk)
 	StackPop(stk, &elem);
 	StackPop(stk, &elem);
 
+	stk->data = NULL;
 	StackPush(stk, 6);
 	StackPush(stk, 5);
 	StackPush(stk, 9);

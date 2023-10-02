@@ -8,14 +8,13 @@ typedef int Elem_t;
 
 #include "hash.h"
 
-#define StackCtor(stack) STACK_CTOR ((stack), #stack, __FILE__, __LINE__, __func__)
-
-typedef unsigned long long Canary_t;
+#define StackCtor(stack) _StackCtor ((stack), #stack, __FILE__, __LINE__, __func__)
 const Elem_t POISON_ELEM = 666;
 
-enum StackErrorBits {
-	STACK_NULL                   = 1 << 0,
-	STACK_DATA_NULL              = 1 << 1,
+enum StackErrorBits
+{
+	STACK_POINTER_NULL           = 1 << 0,
+	STACK_DATA_POINTER_NULL      = 1 << 1,
 	STACK_SIZE_GREATER_CAPACITY  = 1 << 2,
 	STACK_SIZE_LESS_ONE          = 1 << 3,
 	STACK_LCANARY_DMG            = 1 << 4,
@@ -29,15 +28,17 @@ enum StackErrorBits {
 	STACK_DELETED				 = 1 << 11
 };
 
-enum CanaryConstants { STACK_CANARY_NUM = 0xAB0BA228, STACK_DATA_CANARY_NUM = 0xAB0BA322 };
+typedef unsigned long long Canary_t;
 
-const size_t STACK_MAX_SIZE = 10e30;
-const size_t STACK_MAX_CAPACITY = 10e30;
+const Canary_t STACK_CANARY_NUM       = 0xAB0BA228;
+const Canary_t STACK_DATA_CANARY_NUM  = 0xAB0BA322;
+
+const size_t STACK_MAX_SIZE     = 10e15;
+const size_t STACK_MAX_CAPACITY = 10e15;
 
 struct StackCreationInfo
 {
 	size_t      line;
-	const char* file;
 	const char* func;
 	const char* var_name;
 };
@@ -47,19 +48,22 @@ struct Stack
 	
 	size_t size;
 	size_t capacity;
+	Elem_t* data;
 
 	unsigned errors;
 	StackCreationInfo stack_creation_inf;
+	Hash_t hash;
 
-	Elem_t* data;
-
-	Hash_t  hash;
 	Canary_t right_canary;
 };
 
 Hash_t StackHash(const Stack* stk);
 
+int _StackCtor(Stack* stk, const char* var_name, const char* file_name, size_t line, const char* func_name);
+
 #else
+const int STK_ERROR = -1;
+
 struct Stack
 {
 	size_t size;
@@ -67,6 +71,9 @@ struct Stack
 
 	Elem_t* data;
 };
+
+int StackCtor(Stack* stk);
+
 #endif
 
 int StackPop(Stack* stk, Elem_t* deleted_elem);
@@ -75,10 +82,4 @@ int StackPush(Stack* stk, Elem_t elem);
 
 int StackDtor(Stack* stk);
 
-#ifdef _DEBUG
-int STACK_CTOR(Stack* stk, const char* var_name, const char* file_name, size_t line, const char* func_name);
-#else
-int StackCtor(Stack* stk);
-#endif
-
-#endif
+#endif // STACK_H
