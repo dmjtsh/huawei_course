@@ -72,14 +72,14 @@ struct Stack
 	Elem_t* data;
 };
 
-int StackCtor(Stack* stk);
+void StackCtor(Stack* stk);
 
 #endif
 
-int StackPop(Stack* stk, Elem_t* deleted_elem);
+void StackPop(Stack* stk, Elem_t* deleted_elem);
 
-int StackPush(Stack* stk, Elem_t elem);
+void StackPush(Stack* stk, Elem_t elem);
 
-int StackDtor(Stack* stk);
+void StackDtor(Stack* stk);
 
 #endif // STACK_H

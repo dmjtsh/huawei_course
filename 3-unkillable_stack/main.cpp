@@ -12,9 +12,7 @@ void RunTests(Stack* stk)
 
 	Elem_t elem = 0;
 	StackPop(stk, &elem);
-	StackPop(stk, &elem);
 
-	((Canary_t*)stk->data)[-1] = 'a';
 	StackPush(stk, 6);
 	StackPush(stk, 5);
 	StackPush(stk, 9);

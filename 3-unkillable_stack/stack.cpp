@@ -226,7 +226,7 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	}
 
 	if (stk->data != NULL) // IF NOT FIRST CALL
-		stk->data = (Elem_t*)((size_t)stk->data-sizeof(Canary_t));
+		stk->data = (Elem_t*)GetDataLeftCanaryPtr(stk);
 
 	while ((new_capacity * sizeof(Elem_t)) % sizeof(Canary_t) != 0) // MEMORY ALIGNMENT
 		new_capacity++;
@@ -242,7 +242,7 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	}
 
 	stk->data = new_data;
-	stk->data = (Elem_t*)((char *)stk->data + sizeof(Canary_t));
+	stk->data = (Elem_t*)((char *)stk->data + sizeof(Canary_t)); // MOVING DATA PTR
 	
 	StackFillPoison(stk, new_capacity);
 
@@ -333,7 +333,7 @@ int StackDtor(Stack* stk)
 	stk->stack_creation_inf.func = NULL;
 	stk->stack_creation_inf.var_name = NULL;
 
-	stk->data = (Elem_t*)((char*)stk->data - sizeof(Canary_t));
+	stk->data = (Elem_t*)GetDataLeftCanaryPtr(stk);
 	stk->errors = STACK_POINTER_NULL | STACK_DATA_POINTER_NULL;
 
 	StackDtorKernal(stk);
@@ -354,12 +354,14 @@ int StackDtor(Stack* stk)
 */
 
 #else
-void StackDataRealloc(Stack* stk, size_t new_capacity)
-
+int StackDataRealloc(Stack* stk, size_t new_capacity)
+{
 	Elem_t* new_data = (Elem_t*)realloc(stk->data, new_capacity * sizeof(Elem_t));
 
 	stk->data = new_data;
 	stk->capacity = new_capacity;
+
+	return 0;
 }
 
 void StackPush(Stack* stk, Elem_t elem)

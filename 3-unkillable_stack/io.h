@@ -8,12 +8,12 @@
 
 void PrintStackElems(Stack* stk);
 
-#ifdef _DEBUG
-
 int LogFileCtor(FILE** log_file, const char* file_path);
 int LogFileDtor(FILE* log_file);
 
 const int LOG_FILE_ERROR = 0xBADF11E;
+
+#ifdef _DEBUG
 
 #define STACK_DUMP_TO_FILE(stk) StackDumpToFile (stk, __FILE__, __LINE__, __func__)
 
