@@ -1,0 +1,208 @@
+=======================================
+STACK DUMP CALL #1
+Called from: _StackCtor(311)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 0
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 666.000000 ( POISON )
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #2
+Called from: StackPush(247)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 0
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 666.000000 ( POISON )
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #3
+Called from: StackPush(259)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 1
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 2.500000
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #4
+Called from: StackPush(247)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 1
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 2.500000
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #5
+Called from: StackPush(259)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 2
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 2.500000
+  [1] = 2.500000
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #6
+Called from: StackPop(267)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 2
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 2.500000
+  [1] = 2.500000
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #7
+Called from: StackPop(280)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 1
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 2.500000
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #8
+Called from: StackPop(267)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 1
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 2.500000
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #9
+Called from: StackPop(280)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 0
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 666.000000 ( POISON )
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #10
+Called from: StackPush(247)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 0
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 666.000000 ( POISON )
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #11
+Called from: StackPush(259)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 1
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 6.250000
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #12
+Called from: StackPop(267)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 1
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 6.250000
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #13
+Called from: StackPop(280)
+-----------NO_ERRORS-----------
+Stack [000000ED2C95F8D0], name: "&cpu->stack" from: CPUCtor(119)
+{
+size = 0
+capacity = 2
+data[000002699FB5D098]
+  {
+  [0] = 666.000000 ( POISON )
+  [1] = 666.000000 ( POISON )
+  }
+}
+=======================================
+
