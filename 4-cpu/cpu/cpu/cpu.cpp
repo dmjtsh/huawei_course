@@ -92,19 +92,45 @@ void CPUProcessFile(CPU* cpu)
 			size_t correct_inputs_num = 0;
 			switch (command.CPU_cmd_code)
 			{
-			#define CMD_DEF(name, cpu_code, num_of_args, handle) case name: handle; break;
-			
-			#include "../../cmds_defs.h"
-
-			#undef CMD_DEF
+				#define CMD_DEF(name, cpu_code, num_of_args, handle) case name: handle; break;
+				#include "../../cmds_defs.h"
+				#undef CMD_DEF
 			}
 		}
 		else
 			SetErrorBit(&cpu->errors, CPU_WRONG_INPUT);
-		
 		CPU_ERROR_PROCESSING(cpu, num_of_line);
 	}
 }
+
+#define REG_DEF(reg_name, reg_value)     \
+case reg_name:						     \
+	cpu->reg_name = value;				 \
+	break;							     \
+
+void SetReg(CPU* cpu, Elem_t reg, Elem_t value)
+{
+	switch ((int)reg)
+	{
+		#include "C:\Users\79370\source\repos\regs_defs.h"
+	}
+}
+
+#undef REG_DEF
+
+#define REG_DEF(reg_name, ...)       \
+case reg_name:						 \
+	return cpu->reg_name;		     \
+
+Elem_t GetReg(CPU* cpu, Elem_t reg)
+{
+	switch ((int)reg)
+	{
+		#include "C:\Users\79370\source\repos\regs_defs.h"
+	}
+}
+
+#undef REG_DEF
 
 int CPUCtor(CPU* cpu, const char* file_path)
 {
