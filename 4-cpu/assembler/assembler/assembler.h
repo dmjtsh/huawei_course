@@ -6,17 +6,22 @@
 #include "../../commands.h"
 #include "../../elems_type.h"
 
-enum ASMErrors
+const size_t LABELS_ARR_SIZE = 50;
+struct Label 
 {
-	ASM_PTR_NULL                    = 1 << 0,
-	ASM_BAD_TEXT_INFO               = 1 << 2,
-	ASM_WRONG_INPUT                 = 1 << 3,
-	ASM_WRONG_COMMAND_USAGE         = 1 << 4,
-	ASM_LOGER_ERROR                 = 1 << 5,
-	ASM_COMPILED_FILE_ERROR         = 1 << 6
+	char  label_name[MAX_ARG_LENGTH];
+	int   label_address;
 };
 
-const size_t BEFORE_PROCRESSING_FILE = 0; // Num of Line 
+enum ASMErrors
+{
+	ASM_PTR_NULL              = 1 << 0,
+	ASM_BAD_TEXT_INFO         = 1 << 2,
+	INVALID_ASM_COMMAND       = 1 << 3,
+	ASM_LOGER_ERROR           = 1 << 4,
+	ASM_COMPILED_FILE_ERROR   = 1 << 5,
+	ASM_CURRENT_COMMAND_ERROR = 1 << 6
+};
 
 struct ASM
 {
@@ -25,13 +30,23 @@ struct ASM
 	FILE* logger;
 	unsigned errors;
 
+	Command current_command;
+	CpuCommandWithArg* CS; 
+
+	Label labels[LABELS_ARR_SIZE];
+	size_t labels_num;
+
 	FILE* compiled_file;
+	#ifdef _DEBUG
+	FILE* debug_compiled_file;
+	#endif
 };
 
 void ASMProcessFile(ASM* assembler);
 
 void ASMDump(ASM* assembler, size_t num_of_line, FILE* logger);
 
+const size_t BEFORE_PROCRESSING_FILE = 0; // Num of Line for Verifier
 int ASMVerifier(ASM* assembler);
 
 int ASMCtor(ASM* assembler, const char* file_path, const char* compiled_file_path);

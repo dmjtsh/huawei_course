@@ -1,8 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <assert.h>
 #include <cstdlib>
 #include <cstring>
 #include <time.h>
+#include <ctype.h>
 
 #include "utilities.h"
 
@@ -24,7 +26,7 @@ int GetFileSize(const char* file_name)
         return -1;
 
     FILE* file = NULL;
-    fopen_s(&file, file_name, "rb");
+    file = fopen(file_name, "r");
     if (!file)
         return -1;
 
@@ -44,7 +46,7 @@ char* GetFileText(const char* file_name)
     assert(file_size != -1);
 
     FILE* file = NULL;
-    fopen_s(&file, file_name, "rb");
+    file = fopen(file_name, "r");
     if (!file)
         return NULL;
 
@@ -88,4 +90,20 @@ size_t BordersRand(size_t left, size_t right)
 bool IsDoubleNumsEqual(double num1, double num2)
 {
     return fabs(num1 - num2) < EPSILON;
+}
+
+size_t StrToNum(const char* str, size_t str_len, bool* is_str_num)
+{
+	*is_str_num = true;
+	size_t final_num = 0;
+	for (size_t i = 0; i < str_len; i++)
+	{
+		if(!isdigit(str[i]))
+		{
+			*is_str_num = false;
+			break;
+		}
+		final_num += (str[i] - '0') * pow(10, str_len-i-1);  
+	}
+	return final_num;
 }

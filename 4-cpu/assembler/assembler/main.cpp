@@ -8,7 +8,7 @@ int main(int argv, char* argc[])
 {
 	ASM assembler = {};
 	if (argv <= 2)
-		ASMCtor(&assembler, "test.txt", "test_compiled.txt");
+		ASMCtor(&assembler, "test.txt", "test_compiled.bin");
 	else
 		ASMCtor(&assembler, argc[1], argc[2]);
 

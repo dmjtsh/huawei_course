@@ -31,6 +31,7 @@ void InitializeTextStrings(TextInfo* text_info)
 			text_info->text_strings[++strings_counter].str = current_p + 1;
 			assert(text_info->text_strings[strings_counter].str != NULL);
 		}
+
 	}
 }
 
@@ -42,7 +43,6 @@ int TextInfoCtor(TextInfo* text_info, const char* file_name)
 	text_info->is_okay = 1;
 	text_info->text_size = GetFileSize(file_name);
 	
-
 	text_info->text = GetFileText(file_name);
 	if (!text_info->text)
 	{

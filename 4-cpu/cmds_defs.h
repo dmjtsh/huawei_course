@@ -19,7 +19,15 @@ CMD_DEF(OUT, 1, 0,
 )
 
 CMD_DEF(PUSH, 2, 1,
-	StackPush(&cpu->stack, command.cmd_arg);
+	if (command.cmd_arg_type == NUMBER_TYPE)
+		StackPush(&cpu->stack, command.cmd_arg);
+	else if(command.cmd_arg_type == REGISTER_TYPE)
+	{
+		if (IsDoubleNumsEqual(command.cmd_arg, (double)(int)command.cmd_arg))
+			StackPush(&cpu->stack, GetReg(cpu, command.cmd_arg));
+		else 
+			SetErrorBit(&cpu->errors, CPU_WRONG_COMMAND_USAGE);
+	}
 )
 
 #define DoMathOperWithTwoStkNums(cpu, oper)            \
@@ -81,13 +89,6 @@ CMD_DEF(POP, 9, 1,
 		SetReg(cpu, command.cmd_arg, num);
 	}
 	else
-		SetErrorBit(&cpu->errors, CPU_WRONG_COMMAND_USAGE);
-)
-
-CMD_DEF(RPUSH, 33, 1,
-	if (IsDoubleNumsEqual(command.cmd_arg, (double)(int)command.cmd_arg))
-		StackPush(&cpu->stack, GetReg(cpu, command.cmd_arg));
-	else 
 		SetErrorBit(&cpu->errors, CPU_WRONG_COMMAND_USAGE);
 )
 

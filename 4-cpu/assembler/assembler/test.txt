@@ -1,4 +1,8 @@
 PUSH 1
-PUSH 2
-MUL
+case: 
+PUSH RDX ; lol
+PUSH [RDX] 
+PUSH [case]
+PUSH [cal]
+cal:
 HLT

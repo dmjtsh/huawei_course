@@ -12,7 +12,7 @@ enum CPUErrors
 	CPU_BAD_TEXT_INFO               = 1 << 2,
 	CPU_WRONG_INPUT                 = 1 << 3,
 	CPU_WRONG_COMMAND_USAGE         = 1 << 4,
-	CPU_LOGGER_ERROR                = 1 << 5
+	CPU_LOGER_ERROR                 = 1 << 5
 };
 
 const size_t BEFORE_PROCRESSING_FILE = 0; // Num of Line 
@@ -23,15 +23,17 @@ struct CPU
 	TextInfo text_info;
 
 	FILE* logger;
+	unsigned errors;
+
+	char* commands_arr;
+
 
 	#define REG_DEF(name, ...) Elem_t name;
 	#include "C:\Users\79370\source\repos\regs_defs.h"
 	#undef REG_DEF
-
-	unsigned errors;
 };
 
-enum RegisterNum
+enum RegisterCode
 {
 	#define REG_DEF(name, cpu_code) name = cpu_code,
 	#include "C:\Users\79370\source\repos\regs_defs.h"

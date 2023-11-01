@@ -8,6 +8,7 @@
 #include "cpu.h"
 #include "../../commands.h"
 #include "../../DimasLIB/DimasUtilities/utilities.h"
+#include "../../error_processing.h"
 
 void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 {
@@ -30,10 +31,11 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 			fprintf(logger, "CPU POINTER IS NULL\n");
 			return;
 		}
-		if (cpu->errors & CPU_BAD_STACK)				   fprintf(logger, "SOME TROUBLES WITH STACK STRUCT\n");
-		if (cpu->errors & CPU_BAD_TEXT_INFO)			   fprintf(logger, "SOME TROUBLES WITH TEXT INFO STRUCT\n");
-		if (cpu->errors & CPU_WRONG_INPUT)                 fprintf(logger, "WRONG INPUT\n");
-		if (cpu->errors & CPU_WRONG_COMMAND_USAGE)         fprintf(logger, "WRONG COMMAND USAGE\n");
+		if (cpu->errors & CPU_BAD_STACK)			fprintf(logger, "SOME TROUBLES WITH STACK STRUCT\n");
+		if (cpu->errors & CPU_BAD_TEXT_INFO)		fprintf(logger, "SOME TROUBLES WITH TEXT INFO STRUCT\n");
+		if (cpu->errors & CPU_WRONG_INPUT)          fprintf(logger, "WRONG INPUT\n");
+		if (cpu->errors & CPU_WRONG_COMMAND_USAGE)  fprintf(logger, "WRONG COMMAND USAGE\n");
+		if (cpu->errors & CPU_LOGER_ERROR)          fprintf(logger, "CPU LOGER ERROR\n"); 
 
 		fprintf(logger,
 		"----------END_OF_ERRORS--------\n");
@@ -45,19 +47,14 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 
 }
 
-#define CPU_CHECK_ERROR(cpu, condition, error)	    \
-	if(condition)									\
-		SetErrorBit(&cpu->errors, error);			\
-	else											\
-		UnsetErrorBit(&cpu->errors, error);
-
 int CPUVerifier(CPU* cpu)
 {
 	if (!cpu)
 		return CPU_PTR_NULL;
 
-	CPU_CHECK_ERROR(cpu, cpu->stack.errors,       CPU_BAD_STACK)
-	CPU_CHECK_ERROR(cpu, !cpu->text_info.is_okay, CPU_BAD_TEXT_INFO)
+	CHECK_ERROR(cpu, cpu->stack.errors,       CPU_BAD_STACK)
+	CHECK_ERROR(cpu, !cpu->text_info.is_okay, CPU_BAD_TEXT_INFO)
+	CHECK_ERROR(cpu, cpu->logger == NULL,     CPU_LOGER_ERROR)
 
 	return cpu->errors;
 }
@@ -71,6 +68,42 @@ int CPUVerifier(CPU* cpu)
 		CPUDtor(cpu);                           \
 		abort();                                \
 	}                                           \
+
+bool IsValidCommand(Command* command)
+{
+	if (!command)
+		return false;
+
+	if(command->arguments_num >= 1)
+	{
+		if((char)command->CPU_cmd_code & REGISTER_TYPE)
+		{
+			command->cmd_arg_type = REGISTER_TYPE;
+			UnsetCmdBitCode(&command->CPU_cmd_code, REGISTER_TYPE);
+		}
+		else if((char)command->CPU_cmd_code & NUMBER_TYPE)
+		{
+			command->cmd_arg_type = NUMBER_TYPE;
+			UnsetCmdBitCode(&command->CPU_cmd_code, NUMBER_TYPE);
+		}	
+	}
+
+	switch (command->CPU_cmd_code)
+	{
+		#define CMD_DEF(name, cpu_code, num_of_args, ...)                \
+		case name:                                                       \
+			if(num_of_args != command->arguments_num)                    \
+				return false;                                            \
+			else                                                         \
+				return true;                                             \
+	
+		#include "../../cmds_defs.h"
+		default:
+			return false;
+	}
+	#undef CMD_DEF
+	return true;
+}
 
 void CPUProcessFile(CPU* cpu)
 {
@@ -156,10 +189,11 @@ int CPUDtor(CPU* cpu)
 	if (!cpu)
 		return CPU_PTR_NULL;
 
+	unsigned destructor_errors = 0;
 	if (TextInfoDtor(&cpu->text_info))
-		SetErrorBit(&cpu->errors, CPU_BAD_TEXT_INFO);
+		SetErrorBit(&destructor_errors, CPU_BAD_TEXT_INFO);
 	if (StackDtor(&cpu->stack))
-		SetErrorBit(&cpu->errors, CPU_BAD_STACK);
+		SetErrorBit(&destructor_errors, CPU_BAD_STACK);
 
 	return cpu->errors;
 }
