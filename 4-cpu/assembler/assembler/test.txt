@@ -1,8 +1,1 @@
-PUSH 1
-case: 
-PUSH RDX ; lol
-PUSH [RDX] 
-PUSH [case]
-PUSH [cal]
-cal:
-HLT
+PUSH    [ RAX]
