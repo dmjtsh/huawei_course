@@ -6,30 +6,6 @@
 #include "../../commands.h"
 #include "../../elems_type.h"
 
-#define ASM_CMD_SSCANF(string, command)                                                                                                         \
-size_t length_of_cmd = 0;																												        \
-size_t length_of_cmd_w_arg = 0;																												    \
-	command.arguments_num = sscanf(string, "%s%n %s%n",  command.ASM_cmd_code, &length_of_cmd, command.ASM_cmd_arg, &length_of_cmd_w_arg) - 1;  \
-	command.ASM_cmd_len = length_of_cmd;																									    \
-	if (command.arguments_num == 0)																											    \
-		length_of_cmd_w_arg = length_of_cmd;																								    \
-	else if(command.arguments_num > 0)																										    \
-		command.ASM_cmd_arg_len = length_of_cmd_w_arg - length_of_cmd - 1;																	    \
-																																			    \
-	for (size_t i = length_of_cmd_w_arg; source_command_str[i] != '\0'; i++)                                                                    \
-	{																																		    \
-		if(source_command_str[i] == ';')																									    \
-		{																																	    \
-			source_command_str[i] = '\0';																									    \
-			break;																															    \
-		}																																	    \
-		if(source_command_str[i] != 32 && source_command_str[i] != '\0')																	    \
-		{																																	    \
-			SetErrorBit((unsigned*)&command.error, TOO_MANY_ARGS);																			    \
-			break;																															    \
-		}																																	    \
-	}																																            \
-
 const size_t LABELS_ARR_SIZE = 50;
 struct Label 
 {

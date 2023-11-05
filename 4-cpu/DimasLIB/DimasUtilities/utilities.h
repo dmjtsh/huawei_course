@@ -18,6 +18,6 @@ void SetErrorBit(unsigned* error, int error_bit);
 
 void UnsetErrorBit(unsigned* error, int error_bit);
 
-size_t StrToNum(const char* str, size_t str_len, bool* is_str_num);
+double StrToNum(const char* str, size_t str_len, bool* is_str_num);
 
 #endif // UTILITIES_H

@@ -6,21 +6,18 @@
 #include "elems_type.h"
 
 const size_t MAX_COMMAND_LENGTH     = 10;
-const size_t MAX_ARG_LENGTH         = 20;
+const size_t MAX_ARG_LENGTH         = 30;
 const size_t COMMANDS_NUM           = 10;
 const size_t COUNT_OF_CMD_ARG_TYPES = 4;
 
-enum CommandArgType { NUMBER_TYPE     = 1 << 5, 
-				      REGISTER_TYPE   = 1 << 6,
-				      MEMORY_NUM_TYPE = 1 << 7,
-				      MEMORY_REG_TYPE = 1 << 8,
-				      LABEL_TYPE      = 1 << 9,
-				      WRONG_TYPE      = 1 << 10};
+enum CommandArgType { NUMBER_TYPE   = 1 << 5, 
+				      REGISTER_TYPE = 1 << 6,
+				      MEMORY_TYPE   = 1 << 7,
+				      WRONG_TYPE    = 1 << 8};
 
 /*
 * COMMANDS DEFINITIONS BLOCK
 */
-
 
 enum CPUCommand 
 {
@@ -32,8 +29,6 @@ enum CPUCommand
 	#undef CMD_DEF
 };
 
-
-
 const char* const ASM_COMMANDS[] =
 {
 	#define CMD_DEF(name, ...) #name,
@@ -42,7 +37,6 @@ const char* const ASM_COMMANDS[] =
 
 	#undef CMD_DEF
 };
-
 
 /*
 * END OF COMMANDS DEFINITIONS BLOCK
@@ -57,8 +51,6 @@ struct Command
 {
 	char ASM_cmd_code[MAX_COMMAND_LENGTH];
 	char ASM_cmd_arg[MAX_ARG_LENGTH];
-	size_t ASM_cmd_len;
-	size_t ASM_cmd_arg_len;
 	
 	CPUCommand CPU_cmd_code;
 	Elem_t CPU_cmd_arg;
@@ -83,8 +75,10 @@ struct CPUCommandWithArg
 */
 
 void SetCommandBitCode(CPUCommand* command_cpu_code, CommandArgType arg_type);
-
 void UnsetCommandBitCode(CPUCommand* command_cpu_code, CommandArgType arg_type);
+
+void SetCommandTypeBitCode(CommandArgType* old_arg_type, CommandArgType new_arg_type);
+void UnsetCommandTypeBitCode(CommandArgType* old_arg_type, CommandArgType new_arg_type);
 
 enum CommandError
 {

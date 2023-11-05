@@ -4,7 +4,6 @@
 #include "..\DimasUtilities\utilities.h"
 
 FILE* g_log_file = {};
-const char* g_log_file_path = "log.txt";
 
 #ifdef _DEBUG
 

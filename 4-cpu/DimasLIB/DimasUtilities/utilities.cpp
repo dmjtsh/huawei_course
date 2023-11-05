@@ -92,18 +92,28 @@ bool IsDoubleNumsEqual(double num1, double num2)
     return fabs(num1 - num2) < EPSILON;
 }
 
-size_t StrToNum(const char* str, size_t str_len, bool* is_str_num)
+double StrToNum(const char* str, size_t str_len, bool* is_str_num)
 {
 	*is_str_num = true;
-	size_t final_num = 0;
-	for (size_t i = 0; i < str_len; i++)
+	bool is_negative = false;
+	size_t char_num = 0;
+	double final_num = 0;
+	if (str[0] == '-')
 	{
-		if(!isdigit(str[i]))
+		is_negative = true;
+		char_num = 1;
+	}
+
+	for (;char_num < str_len; char_num++)
+	{
+		if(!isdigit(str[char_num]))
 		{
 			*is_str_num = false;
 			break;
 		}
-		final_num += (str[i] - '0') * pow(10, str_len-i-1);  
+		final_num += (str[char_num] - '0') * pow(10, str_len-char_num-1);  
 	}
+	if(is_negative)
+		return -final_num;
 	return final_num;
 }

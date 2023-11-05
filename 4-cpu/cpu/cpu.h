@@ -16,15 +16,13 @@ enum CPUErrors
 	CPU_WRONG_INPUT           = 1 << 2,
 	CPU_WRONG_COMMAND_USAGE   = 1 << 3,
 	CPU_LOGER_ERROR           = 1 << 4,
-	CPU_BAD_FUNC_STACK        = 1 << 5,
-	CPU_CURRENT_COMMAND_ERROR = 1 << 6
+	CPU_CURRENT_COMMAND_ERROR = 1 << 5
 };
 
 const size_t RAM_SIZE = 100;
 struct CPU
 {
 	Stack stack;
-	Stack func_stack;
 
 	CPUCommandWithArg* CS; 
 	size_t current_line_num;

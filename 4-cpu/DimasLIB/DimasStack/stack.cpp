@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "stack.h"
 #include "stack_io.h"
@@ -283,7 +284,6 @@ int StackPop(Stack* stk, Elem_t* deleted_elem)
 }
 
 extern FILE* g_log_file;
-extern const char* g_log_file_path;
 
 int _StackCtor(Stack* stk, const char* var_name, const char* file_name, size_t line, const char* func_name)
 {
@@ -292,8 +292,11 @@ int _StackCtor(Stack* stk, const char* var_name, const char* file_name, size_t l
 		STACK_DUMP_TO_FILE(stk);
 		return STACK_POINTER_NULL;
 	}
+	static char num_of_stk = '0';
+	num_of_stk++;
+	char logger_name[9] = {'s', 't', 'k', num_of_stk, '.', 't', 'x', 't', '\0'};
 
-	LogFileCtor(&g_log_file, g_log_file_path);
+	LogFileCtor(&g_log_file, logger_name);
 
 	stk->stack_creation_inf.var_name = var_name;
 	stk->stack_creation_inf.line = line;
