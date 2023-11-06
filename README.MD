@@ -6,4 +6,4 @@
 <p> Then you need to run it with CPU program, simple as hell! </p>
 <p> There are some examples of programs in folder "examples" in assemler folder </p>
 <h2> Usage: </h2>
-<p> You can write down any program you want, because this language is Turing filled, **happy sufferings!** </h2>
+<p> You can write down any program you want, because this language is Turing filled, ~~happy sufferings!~~ </h2>
