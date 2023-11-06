@@ -294,7 +294,7 @@ int _StackCtor(Stack* stk, const char* var_name, const char* file_name, size_t l
 	}
 	static char num_of_stk = '0';
 	num_of_stk++;
-	char logger_name[9] = {'s', 't', 'k', num_of_stk, '.', 't', 'x', 't', '\0'};
+	char logger_name[13] = {'s', 't', 'k', num_of_stk, '_', 'l', 'o', 'g', '.', 't', 'x', 't', '\0'};
 
 	LogFileCtor(&g_log_file, logger_name);
 
