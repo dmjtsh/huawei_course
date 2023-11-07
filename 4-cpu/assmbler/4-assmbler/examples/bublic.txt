@@ -40,7 +40,7 @@ SUB
 MUL ; (y-5)^2
 ADD ; (x-5)^2 + (y-5)^2
 PUSH 16
-JAE fill_cell
+JAE fill_cell (x-5)^2 + (y-5)^2 <= 16
 fill_cell_cycle_end:
 PUSH 1
 PUSH RAX

@@ -9,14 +9,19 @@
 #include "assembler.h"
 #include "../../cpu_source/error_processing.h"
 
+const char  LABEL_SYMB   = ':';
+const char* LABEL_STRING = ":";
+const char  COMMENT_SYMB = ';';
+
 void ASMDump(ASM* assembler, size_t line_num, FILE* logger)
 {
 	assert(assembler != NULL);
 	assert(logger != NULL);
 
 	static size_t num_of_call = 1;
+
 	fprintf(logger, 
-	"=======================================\n"
+		"=======================================\n"
 		"ASM DUMP CALL #%zu\n"
 		"Line: ", num_of_call);
 	if (line_num == BEFORE_PROCRESSING_FILE)
@@ -73,14 +78,16 @@ bool TrySetNumArg(Command* command)
 
 	size_t arg_len = strlen(command->ASM_cmd_arg);
 	Elem_t num_arg = StrToNum(command->ASM_cmd_arg, arg_len, &is_str_num);
+
 	if(is_str_num)
 	{
-		if(command->CPU_cmd_code == POP)
+		if(command->CPU_cmd_with_arg.cmd == POP)
 			command->error = POP_WITH_NUM;
-		command->CPU_cmd_arg = num_arg;
-		return true;
+
+		command->CPU_cmd_with_arg.arg = num_arg;
 	}
-	return false;
+
+	return is_str_num;
 }
 
 bool TrySetLabelArg(ASM* assembler, Command* command)
@@ -88,15 +95,15 @@ bool TrySetLabelArg(ASM* assembler, Command* command)
 	assert(assembler != NULL);
 	assert(command != NULL);	
 	
-	char label_cmd_arg[MAX_ARG_LENGTH];
+	char label_cmd_arg[MAX_ARG_LENGTH] = "";
 	strcpy(label_cmd_arg, command->ASM_cmd_arg);
-	strcat(label_cmd_arg, ":");
+	strcat(label_cmd_arg, LABEL_STRING);
 
 	for (size_t i = 0; i < assembler->labels_num; i++)
 	{
 		if(strcmp(label_cmd_arg, assembler->labels[i].label_name) == 0)
 		{
-			command->CPU_cmd_arg = assembler->labels[i].label_address;
+			command->CPU_cmd_with_arg.arg = assembler->labels[i].label_address;
 			return true;
 		}
 	}
@@ -123,10 +130,15 @@ bool TrySetRegArg(Command* command)
 	#undef REG_DEF
 
 	if(was_reg_found)
-		command->CPU_cmd_arg = cpu_arg_code;
+		command->CPU_cmd_with_arg.arg = cpu_arg_code;
 
 	return was_reg_found;
 }             
+
+bool IsStrMemoryArg(char* str, size_t begin, size_t end)
+{
+	return str[begin] == '[' && str[end] == ']';
+}
 
 bool TrySetMemoryArg(ASM* assembler, Command* command)
 {
@@ -134,11 +146,12 @@ bool TrySetMemoryArg(ASM* assembler, Command* command)
 	assert(command != NULL);
 
 	size_t arg_len = strlen(command->ASM_cmd_arg);
-	if (command->ASM_cmd_arg[0] == '[' && command->ASM_cmd_arg[arg_len-1] == ']')
+	if (IsStrMemoryArg(command->ASM_cmd_arg, 0, arg_len-1))
 	{
 		char exp_in_brackets[MAX_ARG_LENGTH] = {};
 		sscanf(command->ASM_cmd_arg, "[%[^]]", exp_in_brackets);
 		strcpy(command->ASM_cmd_arg, exp_in_brackets);
+
 		return true;
 	}
 
@@ -151,23 +164,23 @@ void ResolveTypeOfCommandArg(ASM* assembler, Command* command)
 	assert(command != NULL);
 
 	if(TrySetMemoryArg(assembler, command))
-		SetCommandBitCode(&command->CPU_cmd_code, MEMORY_TYPE);
+		SetCommandBitCode(&command->CPU_cmd_with_arg.cmd, MEMORY_TYPE);
 
 	if (TrySetNumArg(command))
 	{
-		SetCommandBitCode(&command->CPU_cmd_code, NUMBER_TYPE);
+		SetCommandBitCode(&command->CPU_cmd_with_arg.cmd, NUMBER_TYPE);
 		return;
 	}
 
 	if (TrySetLabelArg(assembler, command))
 	{
-		SetCommandBitCode(&command->CPU_cmd_code, NUMBER_TYPE);
+		SetCommandBitCode(&command->CPU_cmd_with_arg.cmd, NUMBER_TYPE);
 		return;
 	}
 
 	if (TrySetRegArg(command))
 	{
-		SetCommandBitCode(&command->CPU_cmd_code, REGISTER_TYPE);
+		SetCommandBitCode(&command->CPU_cmd_with_arg.cmd, REGISTER_TYPE);
 		return;
 	}
 
@@ -204,7 +217,7 @@ bool IsCommandLabel(Command* command)
 	assert(command != NULL);
 
 	size_t command_len = strlen(command->ASM_cmd_code);
-	return command->ASM_cmd_code[command_len - 1] == ':';
+	return command->ASM_cmd_code[command_len - 1] == LABEL_SYMB;
 }
 
 bool TrySetCommandCPUCode(ASM* assembler, Command* command) 
@@ -222,7 +235,7 @@ bool TrySetCommandCPUCode(ASM* assembler, Command* command)
 	if (!was_command_found && strcmp(command->ASM_cmd_code, #name) == 0) \
 	{                                                                    \
 		was_command_found = true;                                        \
-		command->CPU_cmd_code = (CPUCommand)cpu_code;                    \
+		command->CPU_cmd_with_arg.cmd = (CPUCommand)cpu_code;            \
 		if(TrySetArgCPUCode(assembler, command, args_num))               \
 			is_command_args_valid = true;                                \
 	}
@@ -236,7 +249,7 @@ bool TrySetCommandCPUCode(ASM* assembler, Command* command)
 		command->error = INVALID_SYNTAX;
 	else if(!is_command_args_valid && !is_cmd_label)
 		command->error = INVALID_REG_OR_LABEL_NAME;
-
+	
 	return was_command_found;
 }
 
@@ -247,32 +260,42 @@ void WriteCommandToFile(ASM* assembler, Command* command)
 
 	static size_t write_cmd_index = 0;
 
-	assembler->CS[write_cmd_index].cpu_comand = command->CPU_cmd_code;
-	if (command->arguments_num > 0)
-		assembler->CS[write_cmd_index].arg    = command->CPU_cmd_arg;
+	assembler->CS[write_cmd_index].cmd = command->CPU_cmd_with_arg.cmd;
+	assembler->CS[write_cmd_index].arg = command->CPU_cmd_with_arg.arg;
 
 	write_cmd_index++;
 }
 
-const int SPACE = 32;
-int SkipNonSpaces(char* source_command_str, size_t str_begin)
+size_t SkipNonSpaces(char* source_command_str, size_t str_begin)
 {
 	assert(source_command_str != NULL);
 
-	size_t char_num = str_begin;
-	for(;source_command_str[char_num] != SPACE && source_command_str[char_num] != '\0' && source_command_str[char_num] != ';'; char_num++) { ; }
+	size_t str_cur = str_begin;
+	char ch = source_command_str[str_cur];
 
-	return char_num;
+	while ( ch != ' ' && ch != '\0' && ch != COMMENT_SYMB )
+	{
+		str_cur++;
+		ch = source_command_str[str_cur];
+	}
+
+	return str_cur;
 }
 
-int SkipSpaces(char* source_command_str, size_t str_begin)
+size_t SkipSpaces(char* source_command_str, size_t str_begin)
 {
 	assert(source_command_str != NULL);
+
+	size_t str_cur = str_begin;
+	char ch = source_command_str[str_cur];
+
+	while (ch == ' ' && ch != '\0') 
+	{ 
+		str_cur++;
+		ch = source_command_str[str_cur];
+	}
 	
-	size_t char_num = str_begin; 
-	for (;source_command_str[char_num] == SPACE && source_command_str[char_num] != '\0'; char_num++) { ; }
-	
-	return char_num;
+	return str_cur;
 }
 
 void ReadLine(char* source_command_str, Command* command)
@@ -280,25 +303,40 @@ void ReadLine(char* source_command_str, Command* command)
 	assert(source_command_str != NULL);
 	assert(command != NULL);
 
-	size_t num_args = 0;
-	int begin = SkipSpaces(source_command_str, 0);
-	int end   = SkipNonSpaces(source_command_str, begin);
-	strncpy(command->ASM_cmd_code, source_command_str + begin, end - begin);
-	if(source_command_str[end] == ';')
+	size_t begin = SkipSpaces(source_command_str, 0);
+	size_t end   = SkipNonSpaces(source_command_str, begin);
+	if(end - begin > MAX_COMMAND_LENGTH)
+	{
+		command->error = TOO_BIG_COMMAND; 
 		return;
+	}
 
+	strncpy(command->ASM_cmd_code, source_command_str + begin, end - begin);
+
+	if(source_command_str[end] == COMMENT_SYMB)
+		return;
+	
+	size_t read_ch_num = 0;
 	size_t arguments_num = 0;
 	while (source_command_str[end] != '\0')
 	{
 		begin = SkipSpaces(source_command_str, end);
 		end   = SkipNonSpaces(source_command_str, begin);
+		read_ch_num += end - begin;
+		if(read_ch_num > MAX_ARG_LENGTH)
+		{
+			command->error = TOO_BIG_ARG;
+			return;
+		}
+
 		strncat(command->ASM_cmd_arg, source_command_str + begin, end - begin);
-		if(source_command_str[end] == ';')
+
+		if(source_command_str[end] == COMMENT_SYMB)
 			return;
 
-		if (source_command_str[begin] == '[' && source_command_str[end-1] == ']')
+		if (IsStrMemoryArg(source_command_str, begin, end-1))
 			command->arguments_num++;
-		else if ((end - begin > 1) || (source_command_str[begin] != '[' && source_command_str[end-1] != ']'))
+		else if ((end - begin > 1) || !IsStrMemoryArg(source_command_str, begin, end-1))
 			command->arguments_num++;
 	}
 }
@@ -311,6 +349,7 @@ void ASMProcessFile(ASM* assembler)
 
 	Command* command = &assembler->current_command;
 	size_t blank_lines_counter = 0;
+
 	// FIRST PASSAGE
 	for (size_t line_num = 1; line_num < assembler->text_info.strings_num + 1; line_num++)
 	{
@@ -355,7 +394,6 @@ void ASMProcessFile(ASM* assembler)
 
 		*command = {};
 	}
-	#undef COMMAND
 
 	fwrite(assembler->CS, sizeof(CPUCommandWithArg), assembler->text_info.strings_num, assembler->compiled_file);
 }
@@ -373,6 +411,7 @@ int ASMCtor(ASM* assembler, const char* original_file_path, const char* compiled
 		SetErrorBit(&assembler->errors, ASM_COMPILED_FILE_ERROR);
 	if (!assembler->logger)
 		SetErrorBit(&assembler->errors, ASM_LOGER_ERROR);
+
 	if (TextInfoCtor(&assembler->text_info, original_file_path))
 		SetErrorBit(&assembler->errors, ASM_BAD_TEXT_INFO);
 
@@ -393,14 +432,13 @@ int ASMDtor(ASM* assembler)
 		return ASM_PTR_NULL;
 
 	fclose(assembler->compiled_file);
+	fclose(assembler->logger);
 
 	free(assembler->CS);
 
 	unsigned destructor_errors = 0;
 	if (TextInfoDtor(&assembler->text_info))
 		SetErrorBit(&destructor_errors, ASM_BAD_TEXT_INFO);
-
-	fclose(assembler->logger);
 
 	return destructor_errors;
 }

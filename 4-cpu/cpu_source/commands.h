@@ -5,15 +5,14 @@
 
 #include "elems_type.h"
 
-const size_t MAX_COMMAND_LENGTH     = 10;
+const size_t MAX_COMMAND_LENGTH     = 20;
 const size_t MAX_ARG_LENGTH         = 30;
 const size_t COMMANDS_NUM           = 10;
 const size_t COUNT_OF_CMD_ARG_TYPES = 4;
 
 enum CommandArgType { NUMBER_TYPE   = 1 << 5, 
 				      REGISTER_TYPE = 1 << 6,
-				      MEMORY_TYPE   = 1 << 7,
-				      WRONG_TYPE    = 1 << 8};
+				      MEMORY_TYPE   = 1 << 7};
 
 /*
 * COMMANDS DEFINITIONS BLOCK
@@ -46,25 +45,26 @@ const char* const ASM_COMMANDS[] =
 * COMMANDS STRUCTS BLOCK
 */
 
+struct CPUCommandWithArg // for CS
+{
+	CPUCommand cmd;
+	Elem_t arg;
+};
+
 enum CommandError;
 struct Command
 {
 	char ASM_cmd_code[MAX_COMMAND_LENGTH];
 	char ASM_cmd_arg[MAX_ARG_LENGTH];
 	
-	CPUCommand CPU_cmd_code;
-	Elem_t CPU_cmd_arg;
+	CPUCommandWithArg CPU_cmd_with_arg;
 
 	int arguments_num;
 	CommandArgType cmd_arg_type;
 	CommandError error;
 };
 
-struct CPUCommandWithArg
-{
-	CPUCommand cpu_comand;
-	Elem_t arg;
-};
+
 
 /*
 * END OF COMMANDS STRUCTS BLOCK
@@ -87,7 +87,9 @@ enum CommandError
 	TOO_MANY_ARGS             = 1 << 2,
 	TOO_FEW_ARGS              = 1 << 3,
 	INVALID_REG_OR_LABEL_NAME = 1 << 4,
-	POP_WITH_NUM              = 1 << 5
+	POP_WITH_NUM              = 1 << 5,
+	TOO_BIG_COMMAND           = 1 << 6,
+	TOO_BIG_ARG               = 1 << 7
 };
 
 void CommandDump(Command* command, FILE* file_to_dump);

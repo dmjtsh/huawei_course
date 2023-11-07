@@ -16,7 +16,9 @@ enum CPUErrors
 	CPU_WRONG_INPUT           = 1 << 2,
 	CPU_WRONG_COMMAND_USAGE   = 1 << 3,
 	CPU_LOGER_ERROR           = 1 << 4,
-	CPU_CURRENT_COMMAND_ERROR = 1 << 5
+	CPU_CURRENT_COMMAND_ERROR = 1 << 5,
+	CPU_CS_PTR_NULL           = 1 << 6,
+	CPU_COMPILED_FILE_ERROR   = 1 << 7
 };
 
 const size_t RAM_SIZE = 100;

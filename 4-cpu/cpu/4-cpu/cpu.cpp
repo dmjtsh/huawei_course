@@ -36,7 +36,8 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 		if (cpu->errors & CPU_WRONG_INPUT)          fprintf(logger, "WRONG INPUT\n");
 		if (cpu->errors & CPU_WRONG_COMMAND_USAGE)  fprintf(logger, "WRONG COMMAND USAGE\n");
 		if (cpu->errors & CPU_LOGER_ERROR)          fprintf(logger, "CPU LOGER ERROR\n");
-		
+		if (cpu->errors & CPU_CS_PTR_NULL)          fprintf(logger, "CPU CS PTR NULL\n");
+		if (cpu->errors & CPU_COMPILED_FILE_ERROR)  fprintf(logger, "CPU COMPILED FILE ERROR\n");		
 		CommandDump(&cpu->current_command, logger);
 
 		fprintf(logger,
@@ -77,9 +78,11 @@ int CPUVerifier(CPU* cpu)
 	if (!cpu)
 		return CPU_PTR_NULL;
 
-	CHECK_ERROR(cpu, cpu->stack.errors,   CPU_BAD_STACK)
-	CHECK_ERROR(cpu, cpu->logger == NULL, CPU_LOGER_ERROR)
-	CHECK_ERROR(cpu, cpu->errors,         CPU_CURRENT_COMMAND_ERROR)
+	CHECK_ERROR(cpu, cpu->stack.errors,         CPU_BAD_STACK)
+	CHECK_ERROR(cpu, !cpu->logger,              CPU_LOGER_ERROR)
+	CHECK_ERROR(cpu, !cpu->compiled_file,       CPU_COMPILED_FILE_ERROR)
+	CHECK_ERROR(cpu, cpu->current_command.error,CPU_CURRENT_COMMAND_ERROR)
+	CHECK_ERROR(cpu, !cpu->CS,                  CPU_CS_PTR_NULL)
 
 	return cpu->errors;
 }
@@ -92,13 +95,13 @@ int CPUVerifier(CPU* cpu)
 		CPUDump(cpu, line_of_file, stderr);     \
 		CPUDtor(cpu);                           \
 		abort();                                \
-	}                                           \
+	}                                           
 
 bool IsValidNumArg(Command* command)
 {
 	assert(command != NULL);
 
-	if(command->CPU_cmd_code == POP && !(command->cmd_arg_type & MEMORY_TYPE))
+	if(command->CPU_cmd_with_arg.cmd == POP && !(command->cmd_arg_type & MEMORY_TYPE))
 	{
 		command->error = POP_WITH_NUM;
 		return false;
@@ -110,15 +113,21 @@ bool IsValidRegArg(Command* command)
 {
 	assert(command != NULL);
 
-	bool was_reg_found = false;
-	#define REG_DEF(name, cpu_code, ...)          \
-	if (cpu_code == (size_t)command->CPU_cmd_arg) \
-		was_reg_found = true;                     \
-	
-	#include "../../cpu_source/regs_defs.h"
+	bool is_reg_found = false;
+
+	switch((size_t)command->CPU_cmd_with_arg.arg)
+	{
+		#define REG_DEF(name, cpu_code, ...) \
+		case cpu_code:                       \
+			is_reg_found = true;             \
+			break;
+
+		#include "../../cpu_source/regs_defs.h"
+	}
+
 	#undef REG_DEF
 	
-	if(!was_reg_found)
+	if(!is_reg_found)
 	{
 		command->error = INVALID_REG_OR_LABEL_NAME;
 		return false;
@@ -134,18 +143,19 @@ bool IsValidCommand(Command* command)
 	if (!command)
 		return false;
 
-	if ((short)command->CPU_cmd_code & (MEMORY_TYPE | NUMBER_TYPE | REGISTER_TYPE) && command->CPU_cmd_code != HLT)
+	if ((char)command->CPU_cmd_with_arg.cmd & (MEMORY_TYPE | NUMBER_TYPE | REGISTER_TYPE) 
+		&& command->CPU_cmd_with_arg.cmd != HLT)
 	{
 		command->arguments_num = 1;
-		if((short)command->CPU_cmd_code & MEMORY_TYPE)
+		if((short)command->CPU_cmd_with_arg.cmd & MEMORY_TYPE)
 		{
-			UnsetCommandBitCode(&command->CPU_cmd_code, MEMORY_TYPE);
+			UnsetCommandBitCode(&command->CPU_cmd_with_arg.cmd, MEMORY_TYPE);
 			SetCommandTypeBitCode(&command->cmd_arg_type, MEMORY_TYPE);
 		}
 
-		if((short)command->CPU_cmd_code & REGISTER_TYPE)
+		if((char)command->CPU_cmd_with_arg.cmd & REGISTER_TYPE)
 		{
-			UnsetCommandBitCode(&command->CPU_cmd_code, REGISTER_TYPE);
+			UnsetCommandBitCode(&command->CPU_cmd_with_arg.cmd, REGISTER_TYPE);
 			SetCommandTypeBitCode(&command->cmd_arg_type, REGISTER_TYPE);
 
 			if(!IsValidRegArg(command))
@@ -153,9 +163,9 @@ bool IsValidCommand(Command* command)
 
 			command->arguments_num = 1;
 		}
-		else if((short)command->CPU_cmd_code & NUMBER_TYPE)
+		else if((char)command->CPU_cmd_with_arg.cmd & NUMBER_TYPE)
 		{
-			UnsetCommandBitCode(&command->CPU_cmd_code, NUMBER_TYPE);
+			UnsetCommandBitCode(&command->CPU_cmd_with_arg.cmd, NUMBER_TYPE);
 			SetCommandTypeBitCode(&command->cmd_arg_type, NUMBER_TYPE);
 		
 			if(!IsValidNumArg(command))
@@ -165,20 +175,17 @@ bool IsValidCommand(Command* command)
 		}
 
 	}
-	else if(command->CPU_cmd_arg != 0)
+	else if(command->CPU_cmd_with_arg.arg != 0)
 		command->error == INVALID_SYNTAX;
 	else
 		command->arguments_num = 0;
 
 
-	switch (command->CPU_cmd_code)
+	switch (command->CPU_cmd_with_arg.cmd)
 	{
-		#define CMD_DEF(name, code, needed_args_num)       \
-		case name:				                           \
-			if (command->arguments_num == needed_args_num) \
-				return true;		                       \
-			else                                           \
-				return false;                              \
+		#define CMD_DEF(name, code, needed_args_num)			\
+		case name:												\
+			return (command->arguments_num == needed_args_num);
 		
 		#include "../../cpu_source/cmds_defs.h"
 
@@ -202,15 +209,16 @@ void CPUProcessFile(CPU* cpu)
 	for (*line_num = 1; *line_num < cpu->commands_num + 1; (*line_num)++)
 	{
 
-		command->CPU_cmd_code = *(CPUCommand*)((char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg));
-		command->CPU_cmd_arg  = *(Elem_t*)(    (char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg) + 8);
+		command->CPU_cmd_with_arg.cmd = *(CPUCommand*)((char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg));
+		command->CPU_cmd_with_arg.arg  = *(Elem_t*)(    (char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg) + 8);
 
 		if (IsValidCommand(command))
 		{ 
 			Elem_t num_to_output = {};
 			Elem_t input_num = {};
 			size_t correct_inputs_num = 0;
-			switch (command->CPU_cmd_code)
+
+			switch (command->CPU_cmd_with_arg.cmd)
 			{
 				#define CMD_DEF(name, cpu_code, num_of_args, handle) case name: handle; break;
 				
@@ -227,9 +235,6 @@ void CPUProcessFile(CPU* cpu)
 
 		*command = {};
 	}
-
-	#undef CURRENT_LINE_NUM
-	#undef CURRENT_COMMAND
 }
 
 void SetReg(CPU* cpu, Elem_t reg, Elem_t value)
@@ -274,18 +279,19 @@ int CPUCtor(CPU* cpu, const char* file_path)
 	cpu->commands_num = compiled_file_size/sizeof(CPUCommandWithArg);
 	
 	fopen_s(&cpu->compiled_file, file_path, "r");
-	assert(cpu->compiled_file != NULL);
+	if(!cpu->compiled_file)
+		SetErrorBit(&cpu->errors, CPU_COMPILED_FILE_ERROR);
+	fopen_s(&cpu->logger, "cpu_log.txt", "w");
+	if (!cpu->logger)
+		SetErrorBit(&cpu->errors, CPU_LOGER_ERROR);
 
 	cpu->CS = (CPUCommandWithArg*)calloc(sizeof(char), compiled_file_size);
-	assert(cpu->CS != NULL);
+	if (!cpu->CS)
+		SetErrorBit(&cpu->errors, CPU_CS_PTR_NULL);
 	fread(cpu->CS, sizeof(char), compiled_file_size,cpu->compiled_file);
 
 	if (StackCtor(&cpu->stack))
 		SetErrorBit(&cpu->errors, CPU_BAD_STACK);
-
-	fopen_s(&cpu->logger, "cpu_log.txt", "w");
-	if (!cpu->logger)
-		SetErrorBit(&cpu->errors, CPU_LOGER_ERROR);
 
 	size_t cpu_errors = 0;
 	CPU_ERROR_PROCESSING(cpu, BEFORE_PROCRESSING_FILE);
@@ -299,9 +305,9 @@ int CPUDtor(CPU* cpu)
 		return CPU_PTR_NULL;
 
 	fclose(cpu->compiled_file);
-	free(cpu->CS);
-
 	fclose(cpu->logger);
+
+	free(cpu->CS);
 
 	unsigned destructor_errors = 0;
 	if (StackDtor(&cpu->stack))
