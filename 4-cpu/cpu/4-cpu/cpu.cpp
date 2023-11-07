@@ -87,16 +87,6 @@ int CPUVerifier(CPU* cpu)
 	return cpu->errors;
 }
 
-#define CPU_ERROR_PROCESSING(cpu, line_of_file) \
-	cpu_errors = CPUVerifier(cpu);              \
-	CPUDump(cpu, line_of_file, cpu->logger);    \
-	if (cpu_errors)                             \
-	{                                           \
-		CPUDump(cpu, line_of_file, stderr);     \
-		CPUDtor(cpu);                           \
-		abort();                                \
-	}                                           
-
 bool IsValidNumArg(Command* command)
 {
 	assert(command != NULL);
@@ -200,8 +190,7 @@ void CPUProcessFile(CPU* cpu)
 {
 	assert(cpu != NULL);
 
-	size_t cpu_errors = 0;
-	CPU_ERROR_PROCESSING(cpu, BEFORE_PROCRESSING_FILE);
+	ERROR_PROCESSING(cpu, CPUVerifier, CPUDump, CPUDtor, BEFORE_PROCRESSING_FILE);
 
 	size_t* line_num = &cpu->current_line_num;
 	Command* command = &cpu->current_command;
@@ -231,7 +220,7 @@ void CPUProcessFile(CPU* cpu)
 		else
 			SetErrorBit(&cpu->errors, CPU_WRONG_INPUT);
 
-		CPU_ERROR_PROCESSING(cpu, *line_num);
+		ERROR_PROCESSING(cpu, CPUVerifier, CPUDump, CPUDtor, *line_num);
 
 		*command = {};
 	}
@@ -294,7 +283,8 @@ int CPUCtor(CPU* cpu, const char* file_path)
 		SetErrorBit(&cpu->errors, CPU_BAD_STACK);
 
 	size_t cpu_errors = 0;
-	CPU_ERROR_PROCESSING(cpu, BEFORE_PROCRESSING_FILE);
+	
+	ERROR_PROCESSING(cpu, CPUVerifier, CPUDump, CPUDtor, BEFORE_PROCRESSING_FILE);
 
 	return 0;
 }
