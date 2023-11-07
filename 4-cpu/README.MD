@@ -8,4 +8,5 @@
 <h2> Some words about DimasLIB </h2>
 <p> This lib contains Unkillable Stack from previos projects, and TextInfo structure that help me process file in assembler, also there are some utilities that you can see by yourself </p>
 <h2> Usage: </h2>
-<p> You can write down any program you want, because this language is Turing filled, ~~happy sufferings!~~ </h2>
+<p> You can write down any program you want, because this language is Turing filled, ~~happy sufferings!~~ </p>
+<h3> MIPT 2023 </h3>
