@@ -1,4 +1,4 @@
-<h1>DIMASS PROJECT(DIMas ASSembler)</h1>
+<h1>DIMASS (DIMas ASSembler)</h1>
 <h2> What is This?</h2>
 <p> This is project that compile programs on my own assembler language and then run it!</p>
 <h2> How to write programs? </h2>
