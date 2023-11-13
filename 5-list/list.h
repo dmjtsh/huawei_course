@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 
-#include "DimasLIB/DimasStack/stack.h"
-
 typedef double Value_t; 
 
 enum ListErrorBits
@@ -16,23 +14,26 @@ enum ListErrorBits
 	LIST_REALLOC_ERROR         = 1 << 4,
 	LIST_BAD_CAPACITY          = 1 << 5,
 	LIST_BAD_SIZE              = 1 << 6,
-	LIST_BAD_FREE_STACK        = 1 << 7,
-	LIST_LOGER_ERROR           = 1 << 8,
+	LIST_LOGER_ERROR           = 1 << 7,
 };
+
+const int    REALLOC_UP_COEFF    = 2;
 
 const size_t LIST_MAX_SIZE       = 10e15;
 const size_t LIST_START_CAPACITY = 4;
 
 const Value_t ELEM_VALUE_POISON = 0x666; 
-const int     ELEM_INDEX_POISON    = -1;
+const int     ELEM_INDEX_POISON = -1;
 
 #define LIST_ELEM_SET_POISON(elem)  \
 	elem.next  = ELEM_INDEX_POISON; \
 	elem.prev  = ELEM_INDEX_POISON; \
 	elem.value = ELEM_VALUE_POISON;
 
-const int     FICT_ELEM_INDEX = 0;
-const Value_t FICT_ELEM_VALUE = 0xF1C;
+const int     FICT_ELEM_INDEX       = 0;
+const Value_t FICT_ELEM_VALUE       = 0xF1C;
+
+const int     LIST_FREE_START_INDEX = FICT_ELEM_INDEX + 1;
 
 struct Node
 {
@@ -53,11 +54,11 @@ struct List
 	unsigned errors;
 	FILE*    logger;
 
-	Stack free;
+	size_t free;
 };
 
-unsigned ListInsertAfter (List* list, size_t elem_index, double new_elem_value);
-unsigned ListInsertBefore(List* list, size_t elem_index, double new_elem_value);
+size_t ListInsertAfter (List* list, size_t elem_index, double new_elem_value);
+size_t ListInsertBefore(List* list, size_t elem_index, double new_elem_value);
 
 unsigned ListRemove(List* list, size_t elem_index);
 

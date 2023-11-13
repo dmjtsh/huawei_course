@@ -4,14 +4,16 @@
 
 #include "list.h"
 #include "error_processing.h"
-#include "DimasLIB/DimasStack/stack.h"
 
 void ListPrint(List* list, FILE* logger)
 {
+	fprintf(logger, "nodes:\n");
+
 	Node current_node = list->data[FICT_ELEM_INDEX];
+	size_t current_node_index = 0;
 	for(size_t i = 0; i < list->size + 1; i++)
 	{
-		size_t current_node_index = list->data[current_node.next].prev;
+		current_node_index = list->data[current_node.next].prev;
 		fprintf(logger,   " | \n");
 
 		fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
@@ -24,6 +26,16 @@ void ListPrint(List* list, FILE* logger)
 		fprintf(logger, "\n");
 
 		current_node = list->data[current_node.next];
+	}
+
+	fprintf(logger, "\nfree nodes:\n");
+
+	current_node_index = list->free;
+	for (int i = 0; i < list->capacity - list->size - 1; i++)
+	{
+		fprintf(logger, " | \n");
+		fprintf(logger, "[%zu] prev: %zu\n", current_node_index, list->data[current_node_index].prev);
+		current_node_index = list->data[current_node_index].prev;
 	}
 }
 
@@ -45,7 +57,6 @@ void ListDump(List* list, FILE* logger)
 			fprintf(logger, "List POINTER IS NULL\n");
 			return;
 		}
-		if (list->errors & LIST_BAD_FREE_STACK)        fprintf(logger, "SOME TROUBLES WITH FREE STACK\n");
 		if (list->errors & LIST_LOGER_ERROR)           fprintf(logger, "List LOGER ERROR\n");
 		if (list->errors & LIST_DATA_PTR_NULL)         fprintf(logger, "List Data Ptr Null\n");
         if (list->errors & LIST_SIZE_GREATER_CAPACITY) fprintf(logger, "List Size GREATER Capacity\n");
@@ -77,7 +88,6 @@ unsigned ListVerifier(List* list)
 		return LIST_PTR_NULL;
 
 	CHECK_ERROR(list, list->data == NULL,              LIST_DATA_PTR_NULL)
-	CHECK_ERROR(list, list->free.errors,               LIST_BAD_FREE_STACK)
 	CHECK_ERROR(list, list->logger == NULL,            LIST_LOGER_ERROR)
 	CHECK_ERROR(list, list->size     >= LIST_MAX_SIZE, LIST_BAD_SIZE)
 	CHECK_ERROR(list, list->capacity >= LIST_MAX_SIZE, LIST_BAD_CAPACITY)
@@ -86,141 +96,93 @@ unsigned ListVerifier(List* list)
 	return list->errors;
 }
 
-int ListDataRealloc(List* list, size_t new_capacity)
+unsigned ListDataReallocUp(List* list, size_t new_capacity)
 {
 	assert(list !=  NULL);
 
-	Node* new_data = (Node*)calloc(new_capacity, sizeof(Node));
+	Node* new_data = (Node*)realloc(list->data, new_capacity * sizeof(Node));
 	if (!new_data)
 	{
 		list->errors |= LIST_REALLOC_ERROR;
 		return list->errors; 
 	}
-	
-	int elems_counter = 0;
-
-
-	// REALLOC DATA FROM DIFFERENT PARTS OF ARRAY
-	if(list->size > 0)
-	{
-		list->head = 1;
-		list->tail = list->size;
-
-		Node current_node      = list->data[FICT_ELEM_INDEX];
-		size_t next_elem_index = list->head;
-		size_t prev_elem_index = list->tail;                // LOOPING LIST
-
-		for(;elems_counter < list->size + 1; elems_counter++)
-		{
-			new_data[elems_counter]      = current_node;
-			new_data[elems_counter].prev = prev_elem_index;
-			new_data[elems_counter].next = next_elem_index;
-
-			current_node     = list->data[current_node.next];
-			prev_elem_index  = elems_counter;
-			next_elem_index += 1;
-		}
-
-		new_data[elems_counter - 1].next = FICT_ELEM_INDEX; // LOOPING LIST
-	}
-
-	// FILL DATA WITH POISON AND FILL FREE STACK
-	for(int i = new_capacity - 1; i > elems_counter - 1; i--)
-	{
-		LIST_ELEM_SET_POISON(new_data[i])
-		StackPush(&list->free, i);
-	}
 
 	list->data     = new_data;
 	list->capacity = new_capacity;
 
-	return 0;
-}
-
-enum DataReallocAction
-{
-	INCREASE_DATA = 0,
-	DECREASE_DATA = 1
-};
-int ListDataReallocIfNeeded(List* list, DataReallocAction realloc_action)
-{
-	assert(list != NULL);
-	assert(list->data != NULL);
-
-	const int INCREASE_COEFF = 4;
-	const int DECREASE_COEFF = 2;
-
-	switch (realloc_action)
+	// FILL DATA WITH POISON AND CONNECT FREE
+	for(int i = list->size + 1; i < list->capacity; i++)
 	{
-	case INCREASE_DATA:
-		if (list->capacity <= list->size + 1)
-			return ListDataRealloc(list, list->capacity * INCREASE_COEFF);
-		break;
-	case DECREASE_DATA:
-		if (list->capacity > (list->size + 1) * DECREASE_COEFF)
-			return ListDataRealloc(list, list->capacity / DECREASE_COEFF);
-		break;
+		list->data[i].prev = list->free;
+		list->free = i;
+
+		list->data[list->free].next  = ELEM_INDEX_POISON; // POISON
+		list->data[list->free].value = ELEM_VALUE_POISON; // POISON
 	}
+
 	return 0;
 }
 
-unsigned ListInsertAfter(List* list, size_t elem_index, double new_elem_value)
+size_t ListInsertAfter(List* list, size_t elem_index, double new_elem_value)
 {
 	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
 
 	if(elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
 
-	size_t free_elem_index = 0;
-	StackPop(&list->free, (Elem_t*)&free_elem_index);
-
-	size_t next_elem_index = list->data[elem_index].next;
+	size_t next_elem_index      = list->data[elem_index].next;
+	size_t free_prev_elem_index = list->data[list->free].prev;
+	size_t free_elem_index      = list->free;
 
 	list->data[next_elem_index].prev  = free_elem_index;
 	list->data[elem_index].next       = free_elem_index;
 
 	list->data[free_elem_index].next  = next_elem_index;
 	list->data[free_elem_index].prev  = elem_index;
-
 	list->data[free_elem_index].value = new_elem_value;
 
-	ListDataReallocIfNeeded(list, INCREASE_DATA);
+	list->free = free_prev_elem_index;
+
 	list->size++;
+	
+	if(list->size + 1 >= list->capacity)
+		ListDataReallocUp(list, list->capacity * REALLOC_UP_COEFF);
 
 	list->head = list->data[FICT_ELEM_INDEX].next;
 	list->tail = list->data[FICT_ELEM_INDEX].prev;
 
-	return 0;
+	return free_elem_index;
 }
 
-unsigned ListInsertBefore(List* list, size_t elem_index, double new_elem_value)
+size_t ListInsertBefore(List* list, size_t elem_index, double new_elem_value)
 {
 	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
 
 	if(elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
 
-	ListDataReallocIfNeeded(list, INCREASE_DATA);
+	size_t prev_elem_index      = list->data[elem_index].prev;
+	size_t free_prev_elem_index = list->data[list->free].prev;
+	size_t free_elem_index      = list->free;
 
-	size_t free_elem_index = 0;
-	StackPop(&list->free, (Elem_t*)&free_elem_index);
-
-	size_t prev_elem_index = list->data[elem_index].prev;
-	
-	list->data[prev_elem_index].next  = free_elem_index;
-	list->data[elem_index].prev       = free_elem_index;
+	list->data[prev_elem_index].next = free_elem_index;
+	list->data[elem_index].prev      = free_elem_index;
 
 	list->data[free_elem_index].next  = elem_index;
 	list->data[free_elem_index].prev  = prev_elem_index;
-
 	list->data[free_elem_index].value = new_elem_value;
 	
+	list->free = free_prev_elem_index;
+
 	list->size++;
+
+	if(list->size + 1 >= list->capacity)
+		ListDataReallocUp(list, list->capacity * REALLOC_UP_COEFF);
 	
 	list->head = list->data[FICT_ELEM_INDEX].next;
 	list->tail = list->data[FICT_ELEM_INDEX].prev;
 
-	return 0;
+	return free_elem_index;
 }
 
 unsigned ListRemove(List* list, size_t elem_index)
@@ -236,11 +198,13 @@ unsigned ListRemove(List* list, size_t elem_index)
 	list->data[prev_elem_index].next = list->data[elem_index].next;
 	list->data[next_elem_index].prev = list->data[elem_index].prev;
 
-	StackPush(&list->free, (Elem_t)elem_index);
+	list->data[elem_index].prev = list->free;
+	list->free = elem_index;
+
+	list->data[list->free].next  = ELEM_INDEX_POISON; // POISON
+	list->data[list->free].value = ELEM_VALUE_POISON; // POISON
 
 	list->size--;
-	
-	ListDataReallocIfNeeded(list, DECREASE_DATA);
 	
 	list->head = list->data[FICT_ELEM_INDEX].next;
 	list->tail = list->data[FICT_ELEM_INDEX].prev;
@@ -252,11 +216,10 @@ unsigned ListCtor(List* list)
 {
 	if(!list)
 		return LIST_PTR_NULL;
-	
-	if(StackCtor(&list->free))
-		list->errors |= LIST_BAD_FREE_STACK;
 
-	ListDataRealloc(list, LIST_START_CAPACITY);
+	list->free = LIST_FREE_START_INDEX;
+
+	ListDataReallocUp(list, LIST_START_CAPACITY);
 	
 	fopen_s(&list->logger, "list_logger.txt", "w");
 
@@ -281,9 +244,5 @@ unsigned ListDtor(List* list)
 
 	fclose(list->logger);
 
-	unsigned destructor_errors = 0;
-	if (StackDtor(&list->free))
-		destructor_errors |= LIST_BAD_FREE_STACK;
-
-	return destructor_errors;
+	return 0;
 }

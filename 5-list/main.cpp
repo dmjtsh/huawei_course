@@ -3,13 +3,22 @@
 void TestList(List* list)
 {
 	ListInsertAfter(list, list->tail, 1);
-	ListInsertAfter(list, list->tail, 2);
-	ListInsertAfter(list, list->head, 4);
-	ListRemove(list, 1);
-	ListInsertBefore(list, list->tail, 5);
-	ListInsertAfter(list, list->tail, 228);
+	//ListDump(list, stderr);
 
-	ListDump(list, list->logger);
+	ListInsertAfter(list, list->tail, 2);
+	//ListDump(list, stderr);
+
+	ListInsertAfter(list, list->head, 4);
+	//ListDump(list, stderr);
+
+	ListRemove(list, 1);
+	//ListDump(list, stderr);
+
+	ListInsertBefore(list, list->tail, 5);
+	//ListDump(list, stderr);
+
+	ListInsertAfter(list, list->tail, 228);
+	//ListDump(list, list->logger);
 }
 
 int main()
@@ -17,6 +26,7 @@ int main()
 	List list = {};
 	
 	ListCtor(&list);
+	//ListDump(&list, stderr);
 
 	TestList(&list);
 
