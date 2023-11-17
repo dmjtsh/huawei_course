@@ -5,7 +5,7 @@
 <h2> What about graphic visualisation? </h2>
 list has func ListGraphDump, that creates list_graph.gv file that you can compile in your bash with command:
 
-<i>"dot -T png list_graph.gv -o image_name.png".</i>
+<p><b><i>"dot -T png list_graph.gv -o image_name.png".</i></b></p>
 
 <p>And then you can open image_name.png and see your list visualisation!</p>
 <p>Have fun!</p>
