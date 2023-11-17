@@ -4,6 +4,9 @@
 
 void ListPrint(List* list, FILE* logger)
 {
+	assert(list != NULL);
+	assert(logger != NULL);
+
 	fprintf(logger, "nodes:\n");
 
 	Node current_node = list->data[FICT_ELEM_INDEX];
@@ -38,9 +41,10 @@ void ListPrint(List* list, FILE* logger)
 
 void ListGraphDump(List* list)
 {
+	assert(list != NULL);
+
 	fprintf(list->graph, "digraph ListGraph {\n"
 						 "rankdir=\"LR\";\n");
-
 	// CREATING ELEMS
 	for(int i = 0; i < list->capacity + 1; i++)
 	{
