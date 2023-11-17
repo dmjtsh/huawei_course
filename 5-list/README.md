@@ -35,7 +35,7 @@ int main()
 }
 ```
 <h2> Example of Graph Dump </h2>
-<img <src="list_graph.png" alt="A Graph Dump"/>
+![ERROR](list_graph.png)
 
 <p>Have fun!</p>
 <h3> MIPT 2023 </h3>
