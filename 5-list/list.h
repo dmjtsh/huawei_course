@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+#define VALUE_T_SPECIFIER "%12.3lf"
 typedef double Value_t; 
 
 enum ListErrorBits
@@ -15,6 +16,7 @@ enum ListErrorBits
 	LIST_BAD_CAPACITY          = 1 << 5,
 	LIST_BAD_SIZE              = 1 << 6,
 	LIST_LOGER_ERROR           = 1 << 7,
+	LIST_GRAPH_ERROR           = 1 << 8
 };
 
 const int    REALLOC_UP_COEFF    = 2;
@@ -50,11 +52,12 @@ struct List
 	Node*  data;
 	size_t head;
 	size_t tail;
+	size_t free;
 
 	unsigned errors;
 	FILE*    logger;
 
-	size_t free;
+	FILE* graph;
 };
 
 size_t ListInsertAfter (List* list, size_t elem_index, double new_elem_value);
@@ -69,5 +72,6 @@ unsigned ListDtor(List* list);
 unsigned ListVerifier(List* list);
 
 void ListDump(List* list, FILE* logger);
+void ListGraphDump(List* list);
 
 #endif // LIST_H

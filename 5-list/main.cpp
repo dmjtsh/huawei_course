@@ -30,6 +30,8 @@ int main()
 
 	TestList(&list);
 
+	ListGraphDump(&list);
+
 	ListDtor(&list);
 
 	return 0;
