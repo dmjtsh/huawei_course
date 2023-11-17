@@ -3,7 +3,7 @@
 <h2> Why it is so fast? </h2>
 <p>Because all operations in this structure does not depend on the list length. All operation like insert, erase have O(1) asymptotics.</p>
 <h2> What about graphic visualisation? </h2>
-list has func ListGraphDump, that creates list_graph.gv file that you can compile in your bash with command:
+<p>list has func ListGraphDump, that creates list_graph.gv file that you can compile in your bash with command:</p>
 
 <p><b><i>"dot -T png list_graph.gv -o image_name.png".</i></b></p>
 
