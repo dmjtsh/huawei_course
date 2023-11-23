@@ -3,4 +3,4 @@
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters
-/x64/
+x64/
