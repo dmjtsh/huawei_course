@@ -1,0 +1,15 @@
+﻿  akinator.cpp
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.h(34,34): warning C4244: инициализация: преобразование "double" в "size_t", возможна потеря данных
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(148,2): warning C4477: "sscanf": в строке форматирования "%n" требуется аргумент типа "int *", но вариативный аргумент "2" имеет тип "size_t *"
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(148,2): message : рекомендуется использовать "%zn" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(152,3): warning C4477: "sscanf": в строке форматирования "%n" требуется аргумент типа "int *", но вариативный аргумент "2" имеет тип "size_t *"
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(152,3): message : рекомендуется использовать "%zn" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(160,3): warning C4477: "sscanf": в строке форматирования "%n" требуется аргумент типа "int *", но вариативный аргумент "2" имеет тип "size_t *"
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(160,3): message : рекомендуется использовать "%zn" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(252,28): warning C4477: "scanf": в строке форматирования "%n" требуется аргумент типа "int *", но вариативный аргумент "2" имеет тип "size_t *"
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(252,28): message : рекомендуется использовать "%zn" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(260,28): warning C4477: "scanf": в строке форматирования "%n" требуется аргумент типа "int *", но вариативный аргумент "2" имеет тип "size_t *"
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(260,28): message : рекомендуется использовать "%zn" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(218): warning C4715: AkinatorDoIntro: значение возвращается не при всех путях выполнения
+C:\Users\79370\Desktop\huawei_course\6-akinator\akinator\akinator.cpp(338): warning C4715: AkinatorPerformGame: значение возвращается не при всех путях выполнения
+  akinator.vcxproj -> C:\Users\79370\Desktop\huawei_course\6-akinator\x64\Debug\akinator.exe

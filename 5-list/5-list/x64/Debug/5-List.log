@@ -1,0 +1,23 @@
+﻿  list.cpp
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list.h(24,36): warning C4244: инициализация: преобразование "double" в "size_t", возможна потеря данных
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list.cpp(39,2): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  list_io.cpp
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list.h(24,36): warning C4244: инициализация: преобразование "double" в "size_t", возможна потеря данных
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(62,3): warning C4477: "fprintf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "4" имеет тип "size_t"
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(62,3): message : рекомендуется использовать "%zd" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(62,3): warning C4477: "fprintf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "5" имеет тип "size_t"
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(62,3): message : рекомендуется использовать "%zd" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(80,25): warning C4477: "fprintf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "2" имеет тип "size_t"
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(80,25): message : рекомендуется использовать "%zd" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(86,25): warning C4477: "fprintf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "2" имеет тип "size_t"
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(86,25): message : рекомендуется использовать "%zd" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(109,2): warning C4477: "fprintf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "1" имеет тип "size_t"
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(109,2): message : рекомендуется использовать "%zd" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(109,2): warning C4477: "fprintf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "2" имеет тип "size_t"
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(109,2): message : рекомендуется использовать "%zd" в строке форматирования
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(109,2): warning C4477: "fprintf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "3" имеет тип "size_t"
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list_io.cpp(109,2): message : рекомендуется использовать "%zd" в строке форматирования
+  main.cpp
+C:\Users\79370\Desktop\huawei_course\5-list\5-List\list.h(24,36): warning C4244: инициализация: преобразование "double" в "size_t", возможна потеря данных
+  Создание кода...
+  5-List.vcxproj -> C:\Users\79370\Desktop\huawei_course\5-list\x64\Debug\5-List.exe

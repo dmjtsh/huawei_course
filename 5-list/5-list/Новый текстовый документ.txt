@@ -1,0 +1,1 @@
+dot -T png list_graph.gv -o list_graph.png
