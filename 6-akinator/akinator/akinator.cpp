@@ -17,7 +17,9 @@ Node* OpNew(char* data)
 	node = (Node*)calloc(1, sizeof(Node));
 	if(!node) return 0;
 
-	strcpy(node->elem, data);
+	strcpy(node->elem + 1, data);
+	node->elem[0] = '"';
+	node->elem[strlen(node->elem)] = '"';
 
 	return node;
 }
@@ -282,27 +284,6 @@ bool AkinatorDoIntro(Akinator* akinator)
 	return false;
 }
 
-void FormatStringWithUnderscores(char* str, size_t str_len)
-{
-	for(int i = 0; i < str_len ; i++)
-	{
-		if (str[i] == ' ' || str[i] == '\t')
-			str[i] = '_';
-	}
-}
-
-void PrintFormatedString(char* str)
-{
-	while (*str != '\0') 
-	{
-		if (*str != '_') 
-			putchar(*str);
-		else
-			putchar(' ');
-		str++;
-	}
-}
-
 void AkinatorAddUserNode(Node* node)
 {
 	char new_node_elem[MAX_NODE_STR_LEN]      = "";
@@ -326,9 +307,6 @@ void AkinatorAddUserNode(Node* node)
 	while(valid_inputs_num != 1);
 
 	txSpeak("\vOkay I'll remember it!!!\n");
-
-	FormatStringWithUnderscores(new_node_elem, user_input_len);
-	FormatStringWithUnderscores(new_node_elem_diff, user_input_len);
 
 	node->right  = OpNew(node->elem);
 	strcpy(node->elem, new_node_elem_diff);
