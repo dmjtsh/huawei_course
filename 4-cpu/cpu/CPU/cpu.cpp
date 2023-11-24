@@ -200,14 +200,15 @@ void CPUProcessFile(CPU* cpu)
 	{
 
 		command->CPU_cmd_with_arg.cmd = *(CPUCommand*)((char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg));
-		command->CPU_cmd_with_arg.arg  = *(Elem_t*)(    (char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg) + 8);
+		command->CPU_cmd_with_arg.arg  = *(Elem_t*)(   (char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg) + 8);
 
 		if (IsValidCommand(command))
 		{ 
 			Elem_t num_to_output = {};
 			Elem_t input_num = {};
 			size_t correct_inputs_num = 0;
-
+			if (command->CPU_cmd_with_arg.cmd == PUSH)
+				printf("");
 			switch (command->CPU_cmd_with_arg.cmd)
 			{
 				#define CMD_DEF(name, cpu_code, num_of_args, handle) case name: handle; break;
@@ -282,7 +283,10 @@ int CPUCtor(CPU* cpu, const char* file_path)
 
 	cpu->CS = (CPUCommandWithArg*)calloc(sizeof(char), compiled_file_size);
 	if (!cpu->CS)
+	{
 		SetErrorBit(&cpu->errors, CPU_CS_PTR_NULL);
+		return cpu->errors;
+	}
 
 	fread(cpu->CS, sizeof(char), compiled_file_size,cpu->compiled_file);
 

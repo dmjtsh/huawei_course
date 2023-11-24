@@ -56,7 +56,7 @@ char* GetFileText(const char* file_name)
     
     size_t n_chars = fread(text, sizeof(char), file_size, file);
 
-	text[n_chars] = '\0';
+	text[n_chars - 1] = '\0';
 
     fclose(file);
     return text;

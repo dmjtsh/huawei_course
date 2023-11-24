@@ -8,7 +8,7 @@ int main(int argv, char* argc[])
 {
 	CPU cpu = {};
 	if (argv <= 1)
-		CPUCtor(&cpu, "C:\\Users\\79370\\Desktop\\huawei_course\\4-cpu\\cpu\\CPU\\text_compiled.bin");
+		CPUCtor(&cpu, "test_compiled.bin");
 	else
 		CPUCtor(&cpu, argc[1]);
 

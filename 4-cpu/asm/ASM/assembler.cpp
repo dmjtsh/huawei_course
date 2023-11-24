@@ -258,12 +258,10 @@ void WriteCommandToFile(ASM* assembler, Command* command)
 	assert(assembler != NULL);
 	assert(command != NULL);
 
-	static size_t write_cmd_index = 0;
+	assembler->CS[assembler->commands_quatity].cmd = command->CPU_cmd_with_arg.cmd;
+	assembler->CS[assembler->commands_quatity].arg = command->CPU_cmd_with_arg.arg;
 
-	assembler->CS[write_cmd_index].cmd = command->CPU_cmd_with_arg.cmd;
-	assembler->CS[write_cmd_index].arg = command->CPU_cmd_with_arg.arg;
-
-	write_cmd_index++;
+	assembler->commands_quatity++;
 }
 
 size_t SkipNonSpaces(char* source_command_str, size_t str_begin)
@@ -273,7 +271,7 @@ size_t SkipNonSpaces(char* source_command_str, size_t str_begin)
 	size_t str_cur = str_begin;
 	char ch = source_command_str[str_cur];
 
-	while ( ch != ' ' && ch != '\0' && ch != COMMENT_SYMB )
+	while ( ch != ' ' && ch != '\t' && ch != '\0' && ch != COMMENT_SYMB )
 	{
 		str_cur++;
 		ch = source_command_str[str_cur];
@@ -289,7 +287,7 @@ size_t SkipSpaces(char* source_command_str, size_t str_begin)
 	size_t str_cur = str_begin;
 	char ch = source_command_str[str_cur];
 
-	while (ch == ' ' && ch != '\0') 
+	while ((ch == ' ' || ch == '\t') && ch != '\0') 
 	{ 
 		str_cur++;
 		ch = source_command_str[str_cur];
@@ -350,7 +348,7 @@ void ASMProcessFile(ASM* assembler)
 	Command* command = &assembler->current_command;
 	size_t blank_lines_counter = 0;
 
-	// FIRST PASSAGE
+	// FIRST PASS
 	for (size_t line_num = 1; line_num < assembler->text_info.strings_num + 1; line_num++)
 	{
 		char* source_command_str = assembler->text_info.text_strings[line_num - 1].str;
@@ -377,7 +375,8 @@ void ASMProcessFile(ASM* assembler)
 		*command = {};
 	}
 
-	// SECOND PASSAGE
+	// SECOND PASS
+
 	for (size_t line_num = 1; line_num < assembler->text_info.strings_num + 1; line_num++)
 	{
 		char* source_command_str = assembler->text_info.text_strings[line_num - 1].str;	
@@ -395,7 +394,7 @@ void ASMProcessFile(ASM* assembler)
 		*command = {};
 	}
 
-	fwrite(assembler->CS, sizeof(CPUCommandWithArg), assembler->text_info.strings_num, assembler->compiled_file);
+	fwrite(assembler->CS, sizeof(CPUCommandWithArg), assembler->commands_quatity, assembler->compiled_file);
 }
 
 
@@ -414,6 +413,8 @@ int ASMCtor(ASM* assembler, const char* original_file_path, const char* compiled
 
 	if (TextInfoCtor(&assembler->text_info, original_file_path))
 		SetErrorBit(&assembler->errors, ASM_BAD_TEXT_INFO);
+
+	assembler->commands_quatity = 0;
 
 	assembler->labels_num = 0;
 	for (size_t i = 0; i < LABELS_ARR_SIZE; i++)

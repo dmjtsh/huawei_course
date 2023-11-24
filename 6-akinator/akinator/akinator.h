@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#include "TX/TXLib.h"
+#include "DimasLIB/DimasStack/stack.h"
 #include "DimasLIB/DimasTextInfo/text_info.h"
 
 const size_t MAX_NODE_STR_LEN = 60;
@@ -28,13 +30,16 @@ enum AkinatorErrorBits
 	AKINATOR_LOGER_ERROR     = 1 << 4,
 	AKINATOR_GRAPH_ERROR     = 1 << 5,
 	TREE_STR_INVALID         = 1 << 6,
-	AKINATOR_TEXT_INFO_ERROR = 1 << 7
+	AKINATOR_TEXT_INFO_ERROR = 1 << 7,
+	PROPERTY_STACK_ERROR     = 1 << 8
 };
 
 const size_t AKINATOR_MAX_SIZE = 10e15;
 
 struct Akinator
 {
+	Stack node_properties;
+
 	Node* root;
 	size_t size;
 

@@ -1,0 +1,783 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>TX Library: Технические детали</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript">
+$(document).ready(initResizable);
+</script>
+<link href="Doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Создано системой Doxygen 1.7.3 -->
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="TXLib.png"></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TX Library&#160;<span id="projectnumber">Help &ndash; Version: 00173a, Revision: 172</span></div>
+   <div id="projectbrief"><s>&nbsp;ALL&nbsp;</s> Windows graphics in a sandbox</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+</div>
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+  initNavTree('a00085.htm','');
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Макросы</a>  </div>
+  <div class="headertitle">
+<h1>Технические детали</h1>  </div>
+</div>
+<div class="contents">
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Макросы</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga6b76c63cd895c2be63ac8e690028623b">_TX_VER</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущая версия библиотеки.  <a href="#ga6b76c63cd895c2be63ac8e690028623b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga43d277b4418068ebef1fd2bdbaf550f6">_TX_MODULE</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя модуля TXLib. Входит в диагностические сообщения.  <a href="#ga43d277b4418068ebef1fd2bdbaf550f6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gadd1c9ccd036228402b807abaea14f7ee"></a><!-- doxytag: member="Technical::__TX_COMPILER__" ref="gadd1c9ccd036228402b807abaea14f7ee" args="" -->
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gadd1c9ccd036228402b807abaea14f7ee">__TX_COMPILER__</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя и версия текущего компилятора <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga3e287c38947fea870d01588fbd2a5fc9"></a><!-- doxytag: member="Technical::_TX_BUILDMODE" ref="ga3e287c38947fea870d01588fbd2a5fc9" args="" -->
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga3e287c38947fea870d01588fbd2a5fc9">_TX_BUILDMODE</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя режима сборки <br/></td></tr>
+<tr><td colspan="2"><h2><a name="member-group"></a>
+Инициализация библиотеки</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.htm#gaf382eed71ecf8229882fe544035d66dc">txVersion</a> () tx_nodiscard</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает строку с информацией о текущей версии библиотеки.  <a href="#gaf382eed71ecf8229882fe544035d66dc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.htm#gab2c5f0eff263a7297997281c3d451b91">txVersionNumber</a> () tx_nodiscard</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает номер версии библиотеки.  <a href="#gab2c5f0eff263a7297997281c3d451b91"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.htm#ga12ffceef73c1a081c073f4d7c2914618">txGetModuleFileName</a> (bool fileNameOnly=true) tx_nodiscard</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает имя исполняемого файла или изначальный заголовок окна TXLib.  <a href="#ga12ffceef73c1a081c073f4d7c2914618"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="member-group"></a>
+Настроечные константы и переменные</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga69d3e86db3b7c7458bbcb7c505a3b884">_txLogName</a> [MAX_PATH] = &quot;&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя лог-файла TXLib.  <a href="#ga69d3e86db3b7c7458bbcb7c505a3b884"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga4ddb32d7a8a676537014da7aea7bf273">_txWindowStyle</a> = WS_POPUP | WS_BORDER | WS_CAPTION | WS_SYSMENU</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Стиль графического окна библиотеки.  <a href="#ga4ddb32d7a8a676537014da7aea7bf273"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacc95bfbcf7a0f9124e8cd5e80d0b3cd3"></a><!-- doxytag: member="Technical::_txCursorBlinkInterval" ref="gacc95bfbcf7a0f9124e8cd5e80d0b3cd3" args="" -->
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gacc95bfbcf7a0f9124e8cd5e80d0b3cd3">_txCursorBlinkInterval</a> = 500</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Интервал мигания курсора консоли (мс) <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gaf2070fcdbd473d328f17f130623db80a">_txWindowUpdateInterval</a> = 25</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Интервал обновления холста (мс)  <a href="#gaf2070fcdbd473d328f17f130623db80a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7859e95fc4faec435abe372989f4f8ac"></a><!-- doxytag: member="Technical::_TX_TIMEOUT" ref="ga7859e95fc4faec435abe372989f4f8ac" args="" -->
+const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga7859e95fc4faec435abe372989f4f8ac">_TX_TIMEOUT</a> = 1000</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Таймаут операций ожидания событий (мс) <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gad85278fd5caaf0ce42e307d6ce8d79c5">_txSwapBuffers</a> )(HDC dest, int xDest, int yDest, int wDest, int hDest, HDC src, int xSrc, int ySrc, int wSrc, int hSrc, DWORD rOp) = NULL</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Указатель на функцию, выводящую изображение непосредственно в окно TXLib во время обработки WM_PAINT.  <a href="#gad85278fd5caaf0ce42e307d6ce8d79c5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga352331b32407c4e95bc4f7a5e39fad25"></a><!-- doxytag: member="Technical::_TX_BUFSIZE" ref="ga352331b32407c4e95bc4f7a5e39fad25" args="" -->
+const unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga352331b32407c4e95bc4f7a5e39fad25">_TX_BUFSIZE</a> = 1024</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Размеры внутренних статических строковых буферов TXLib. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa7273b2f613970c283053c5d9136addd"></a><!-- doxytag: member="Technical::_TX_BIGBUFSIZE" ref="gaa7273b2f613970c283053c5d9136addd" args="" -->
+const unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gaa7273b2f613970c283053c5d9136addd">_TX_BIGBUFSIZE</a> = <a class="el" href="a00085.htm#ga352331b32407c4e95bc4f7a5e39fad25">_TX_BUFSIZE</a> * 2</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Размеры больших статических буферов. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9982623aefbe28deab03b1252777ec2a"></a><!-- doxytag: member="Technical::_TX_HUGEBUFSIZE" ref="ga9982623aefbe28deab03b1252777ec2a" args="" -->
+const unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga9982623aefbe28deab03b1252777ec2a">_TX_HUGEBUFSIZE</a> = <a class="el" href="a00085.htm#ga352331b32407c4e95bc4f7a5e39fad25">_TX_BUFSIZE</a> * 20</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Размеры очень больших статических буферов. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7b8b43782557dd87528da77b083364ec"></a><!-- doxytag: member="Technical::_TX_STACKSIZE" ref="ga7b8b43782557dd87528da77b083364ec" args="" -->
+const unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga7b8b43782557dd87528da77b083364ec">_TX_STACKSIZE</a> = 64 * 1024</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Минимальный размер стека для потоков программы. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga90ceca3b49e5f889f5f07a996b28b0b3"></a><!-- doxytag: member="Technical::_txProcessSystemWarnings" ref="ga90ceca3b49e5f889f5f07a996b28b0b3" args="" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga90ceca3b49e5f889f5f07a996b28b0b3">_txProcessSystemWarnings</a> = true</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Если определено, обрабатывать ошибки в программе перед всеми другими обработчиками ошибок. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga181143543b3883cf8570f80da3ad7fcc">_txWatchdogTimeout</a> = 10*<a class="el" href="a00085.htm#ga7859e95fc4faec435abe372989f4f8ac">_TX_TIMEOUT</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Лимит времени на завершение программы, начиная от завершения функции main() или от вызова exit(), в мс.  <a href="#ga181143543b3883cf8570f80da3ad7fcc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gaab281ee20ea6be5eae34d0e15bf03dcf">_TX_NOINIT</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрет ранней инициализации TXLib.  <a href="#gaab281ee20ea6be5eae34d0e15bf03dcf"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga82c63be7c47e2b13e5b6f7661cc3fbe4">TX_CONSOLE_MODE</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Режим отображения консольного окна. Допустимы любые флаги функции ShowWindow.  <a href="#ga82c63be7c47e2b13e5b6f7661cc3fbe4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gada3539ec53f9e712cf1e0aceafaecf97">TX_CONSOLE_FONT</a>&#160;&#160;&#160;&quot;Lucida Console&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Шрифт консоли  <a href="#gada3539ec53f9e712cf1e0aceafaecf97"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga1d957b3bb047b26b94045966803bc505">TX_USE_SFML</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Макрос, разрешающий использовать TXLib вместе с графической библиотекой <a href="http://sfml-dev.org">SFML</a>  <a href="#ga1d957b3bb047b26b94045966803bc505"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga15dc1a04b8701e2db400b005b7a17ced"></a><!-- doxytag: member="Technical::_TX_EXCEPTIONS_LIMIT" ref="ga15dc1a04b8701e2db400b005b7a17ced" args="" -->
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga15dc1a04b8701e2db400b005b7a17ced">_TX_EXCEPTIONS_LIMIT</a>&#160;&#160;&#160;16</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Максимальное количество исключений в программе. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac924d92a0229125521f51c14000aa36d"></a><!-- doxytag: member="Technical::_TX_FULL_STACKTRACE" ref="gac924d92a0229125521f51c14000aa36d" args="" -->
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gac924d92a0229125521f51c14000aa36d">_TX_FULL_STACKTRACE</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Если определено, не исключать адреса без отладочной информации из трассировок стека. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga2c0a4fe0612f109c5c88d6d55a061db5">_TX_WAITABLE_PARENTS</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Список запускающих программ, которые ждут нажатия клавиши после завершения процесса TXLib.  <a href="#ga2c0a4fe0612f109c5c88d6d55a061db5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga9a495d013c6f08cd50220aca99ca56c2">_TX_ALLOW_KILL_PARENT</a>&#160;&#160;&#160;true</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Разрешать принудительное завершение вызывающих программ, ждущих нажатия клавиш после завершения TXLib.  <a href="#ga9a495d013c6f08cd50220aca99ca56c2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga664ae50e3ec3c7cf59cdd4b7eeef6a7f">TX_COMPILED</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Макросы для поддержки прекомпиляции TX Library.  <a href="#ga664ae50e3ec3c7cf59cdd4b7eeef6a7f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf274c058737ec7e680437d2a1cdcd7b6"></a><!-- doxytag: member="Technical::_TX_FATAL_EXCEPTIONS_LIMIT" ref="gaf274c058737ec7e680437d2a1cdcd7b6" args="" -->
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#gaf274c058737ec7e680437d2a1cdcd7b6">_TX_FATAL_EXCEPTIONS_LIMIT</a>&#160;&#160;&#160;16</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Максимальное количество фатальных исключений. <br/></td></tr>
+<tr><td colspan="2"><h2><a name="member-group"></a>
+Внутренняя диагностика</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga1c7c387b21adad57d0dda2f8bd84ad1c">_TX_ALLOW_TRACE</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Включает/отключает внутреннюю трассировку исполнения кода библиотеки.  <a href="#ga1c7c387b21adad57d0dda2f8bd84ad1c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00085.htm#ga2aa2550a5302deb4d46b3759b26f4b41">TX_TRACE</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Трассирует исполнение кода через OutputDebugString().  <a href="#ga2aa2550a5302deb4d46b3759b26f4b41"></a><br/></td></tr>
+</table>
+<hr/><h2>Макросы</h2>
+<a class="anchor" id="ga6b76c63cd895c2be63ac8e690028623b"></a><!-- doxytag: member="TXLib.h::_TX_VER" ref="ga6b76c63cd895c2be63ac8e690028623b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _TX_VER</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Текущая версия библиотеки. </p>
+<p>Версия библиотеки в целочисленном формате: старшее слово -- номер версии, младшее -- номер ревизии, в двоично-десятичном формате. Например, <code>0x172a0050</code> -- версия <code>0.172a</code>, ревизия <code>50</code>. </p>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">            #define _TX_VERSION &quot;TXLib [Ver: 1.73a, Rev: 164, Date: 2020-01-30 05:00:00 +0300]&quot;  //</span>
+<span class="preprocessor"></span><span class="preprocessor">            #define _TX_AUTHOR  &quot;Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru)&quot;             //  ПРИМЕР</span>
+<span class="preprocessor">            #define _TX_VER      0x173a0000                                                      //</span>
+</pre></div><p> Эти константы автоматически обновляются при изменении версии.</p>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00082.htm#gaf382eed71ecf8229882fe544035d66dc" title="Возвращает строку с информацией о текущей версии библиотеки.">txVersion()</a></dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment"><span class="preprocessor">            #if !(defined (_TX_VER) &amp;&amp; (_TX_VER &gt;= 0x172a0000))</span>
+<span class="preprocessor"></span><span class="preprocessor">            #error Must use TXLib.h version &gt;= 1.72 to compile this.</span>
+<span class="preprocessor">            #endif</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l00145">145</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga43d277b4418068ebef1fd2bdbaf550f6"></a><!-- doxytag: member="TXLib.h::_TX_MODULE" ref="ga43d277b4418068ebef1fd2bdbaf550f6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _TX_MODULE</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Имя модуля TXLib. Входит в диагностические сообщения. </p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Можно переопределять до включения файла <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l00166">166</a></p>
+
+</div>
+</div>
+<a class="anchor" id="gaab281ee20ea6be5eae34d0e15bf03dcf"></a><!-- doxytag: member="TXLib.h::_TX_NOINIT" ref="gaab281ee20ea6be5eae34d0e15bf03dcf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _TX_NOINIT</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Запрет ранней инициализации TXLib. </p>
+<p>Если константа определена с помощью #define <em>до</em> включения <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> в программу, ранняя инициализация (до запуска функции <code>main</code>) <b>не</b> проводится.</p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Ранняя инициализация включает:<ul>
+<li>Открытие окна консоли,</li>
+<li>Установку кодовой страницы _TX_CODEPAGE (1251) консоли для поддержки русского языка,</li>
+<li>Установку русской локали стандартной библиотеки C++ ("Russian" / "ru_RU.CP1251" и L"Russian_Russia.ACP"),</li>
+<li>Переинициализация библиотек stdio и iostream на случай, если приложение не скомпоновано как консольное и библиотеки остались неинициализированы,</li>
+<li>Перехват системных сигналов (деление на 0, арифметические ошибки, обращение по неверному адресу и т.д.),</li>
+<li>Перехват необработанных исключений,</li>
+<li>Смена заголовка консольного окна,</li>
+<li>Установка режима паузы по завершении программы, чтобы окно закрывалось не сразу,</li>
+<li>Подавление паузы при запуске из сред программирования, заставляющей нажимать на клавишу два раза. <br/>
+</li>
+</ul>
+</dd>
+<dd>
+Если ранняя инициализация запрещена, но в EXE-файле создается окно TXLib с помощью <a class="el" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow()</a>, то библиотека все равно будет инициализирована. В <b>DLL</b> ранняя инициализация никогда <b>не</b> проводится. <br/>
+<br/>
+</dd>
+<dd>
+Ранняя инициализация не потокобезопасна (not thread-safe).</dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow()</a>, <a class="el" href="a00085.htm#ga9a495d013c6f08cd50220aca99ca56c2" title="Разрешать принудительное завершение вызывающих программ, ждущих нажатия клавиш после завершения TXLib...">_TX_ALLOW_KILL_PARENT</a>, <a class="el" href="a00085.htm#ga2c0a4fe0612f109c5c88d6d55a061db5" title="Список запускающих программ, которые ждут нажатия клавиши после завершения процесса TXLib...">_TX_WAITABLE_PARENTS</a>, <a class="el" href="a00085.htm#ga181143543b3883cf8570f80da3ad7fcc" title="Лимит времени на завершение программы, начиная от завершения функции main() или от вызова exit()...">_txWatchdogTimeout</a>, <a class="el" href="a00085.htm#ga82c63be7c47e2b13e5b6f7661cc3fbe4" title="Режим отображения консольного окна. Допустимы любые флаги функции ShowWindow.">TX_CONSOLE_MODE</a></dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment"><span class="preprocessor">          #define _TX_NOINIT</span>
+<span class="preprocessor">          #include &quot;TXLib.h&quot;</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05675">5675</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga82c63be7c47e2b13e5b6f7661cc3fbe4"></a><!-- doxytag: member="TXLib.h::TX_CONSOLE_MODE" ref="ga82c63be7c47e2b13e5b6f7661cc3fbe4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TX_CONSOLE_MODE</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Режим отображения консольного окна. Допустимы любые флаги функции ShowWindow. </p>
+<p>По умолчанию: <code>SW_HIDE</code> -- Скрывать консольное окно после показа графического окна.</p>
+<p>Если ваше приложение консольное, то оно будет запускаться с открытым <small>&#160;</small><span class="s"> черным печальным </span><small>&#160;</small> консольным окном, которое скроется при открытии графического окна. Это может выглядеть как мигание консольного окна. Чтобы этого не было, можно создать неконсольное приложение, которое изначально запускается без видимого консольного окна и при его запуске нет эффекта такого мигания.</p>
+<dl>
+<dt>Создать неконсольное приложение можно: </dt>
+<dd><table  border="0">
+<tr valign="top">
+<td>Для компиляторов <code>g++</code> (MinGW, Cygwin) и <code>clang</code>, используемых в CodeBlocks, CLion и т.п. &#160;&#160;</td><td>-- Указав компилятору ключ <code>-mwindows</code> и убрав ключ <code>-mconsole</code>. </td></tr>
+<tr valign="top">
+<td>Для компиляторов семейства Microsoft Visual Studio &#160;&#160;</td><td>-- Создав <b>не</b> проект консольного приложения, а "Desktop Application" или аналогичный. </td></tr>
+</table>
+</dd>
+</dl>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Константа задается <b>до</b> включения файла <a class="el" href="a00058.htm">TXLib.h</a> в программу. <br/>
+<br/>
+</dd></dl>
+<dl class="warning"><dt><b>Предупреждения:</b></dt><dd>Если вы создали неконсольное приложение (см. выше), но запускаете его из среды пограммирования (например, CodeBlocks), то вы можете увидеть другое консольное окно служебной программы, с помощью которой среда программирования запускает ваше приложение. Если вы запустите ваше неконсольное приложение не из среды пограммирования, а непосредственно из Проводника, то вы не увидите никаких лишних консольных окон.</dd></dl>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Btw, if you do not like that console window text is painted over graphic canvas window, set the undocumented variable <code>_txConsole</code> to negative value.</dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00085.htm#gaab281ee20ea6be5eae34d0e15bf03dcf" title="Запрет ранней инициализации TXLib.">_TX_NOINIT</a></dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment"><span class="preprocessor">          #define TX_CONSOLE_MODE  SW_HIDE          // Скрыть консольное окно при открытии графического окна</span>
+<span class="preprocessor"></span><span class="preprocessor">          #include &quot;<a class="code" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>&quot;</span>                        <span class="comment">// (Поведение по умолчанию)</span>
+          ...
+          <a class="code" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow</a> (800, 600);
+
+<span class="preprocessor">          #define TX_CONSOLE_MODE  SW_SHOW          // Всегда показывать консольное окно, например, для отладки</span>
+<span class="preprocessor"></span><span class="preprocessor">          #include &quot;<a class="code" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>&quot;</span>
+          ...
+          <a class="code" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow</a> (800, 600);
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05727">5727</a></p>
+
+</div>
+</div>
+<a class="anchor" id="gada3539ec53f9e712cf1e0aceafaecf97"></a><!-- doxytag: member="TXLib.h::TX_CONSOLE_FONT" ref="gada3539ec53f9e712cf1e0aceafaecf97" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TX_CONSOLE_FONT&#160;&#160;&#160;&quot;Lucida Console&quot;</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Шрифт консоли </p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Константа задается <b>до</b> включения файла <a class="el" href="a00058.htm">TXLib.h</a> в программу. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05739">5739</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga1d957b3bb047b26b94045966803bc505"></a><!-- doxytag: member="TXLib.h::TX_USE_SFML" ref="ga1d957b3bb047b26b94045966803bc505" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TX_USE_SFML</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Макрос, разрешающий использовать TXLib вместе с графической библиотекой <a href="http://sfml-dev.org">SFML</a> </p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Этот макрос задается <b>перед</b> включением <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> в программу. </dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment"><span class="preprocessor">          #define  TX_USE_SFML</span>
+<span class="preprocessor"></span><span class="preprocessor">          #include &quot;<a class="code" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>&quot;</span>
+<span class="preprocessor">          #include &lt;SFML/Graphics.hpp&gt;</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05803">5803</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga2c0a4fe0612f109c5c88d6d55a061db5"></a><!-- doxytag: member="TXLib.h::_TX_WAITABLE_PARENTS" ref="ga2c0a4fe0612f109c5c88d6d55a061db5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _TX_WAITABLE_PARENTS</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Макроопределение:</b><div class="fragment"><pre class="fragment"><span class="stringliteral">&quot;Winpty-agent.exe:Clion.exe, &quot;</span>            <span class="comment">/* 0: CLion32       */</span> \
+                                          <span class="stringliteral">&quot;Winpty-agent.exe:Clion64.exe, &quot;</span>          <span class="comment">/* 1: CLion64       */</span> \
+                                          <span class="stringliteral">&quot;starter.exe:eclipse.exe, &quot;</span>               <span class="comment">/* 2: Eclipse 4     */</span> \
+                                          <span class="stringliteral">&quot;starter.exe:javaw.exe, &quot;</span>                 <span class="comment">/* 3: Eclipse 3     */</span> \
+                                          <span class="stringliteral">&quot;cmd.exe:devenv.exe, &quot;</span>                    <span class="comment">/* 4: MSVS 2003+    */</span> \
+                                          <span class="stringliteral">&quot;VSDebugConsole.exe:devenv.exe, &quot;</span>         <span class="comment">/* 5: MSVS 2019+    */</span> \
+                                          <span class="stringliteral">&quot;VSDebugConsole.exe:msvsmon.exe, &quot;</span>        <span class="comment">/* 6: MSVS 2022 x86 */</span> \
+                                          <span class="stringliteral">&quot;consolepauser.exe:devcpp.exe, &quot;</span>          <span class="comment">/* 7: Dev-Cpp       */</span> \
+                                          <span class="stringliteral">&quot;cb_console_runner.exe:codeblocks.exe&quot;</span>
+</pre></div>
+<p>Список запускающих программ, которые ждут нажатия клавиши после завершения процесса TXLib. </p>
+<p>Если программа перечислена в списке и TXLib запущена из нее, то при завершении TXLib указанная программа будет закрыта. (Это произойдет, если не открыто графическое окно TXLib, а есть только окно консоли.)</p>
+<p>Программы разделяются пробелом или запятой. Допускается указание родителя запускающей программы, после двоеточия. Имя программы, начинающееся с большой буквы - спец. случай для консоли CLion, см. функции _txCleanup() и _txIsParentWaitable() в исходном тексте <a class="el" href="a00058.htm">TXLib.h</a>.</p>
+<p>Может задаваться перед включением <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> в программу.</p>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00085.htm#ga9a495d013c6f08cd50220aca99ca56c2" title="Разрешать принудительное завершение вызывающих программ, ждущих нажатия клавиш после завершения TXLib...">_TX_ALLOW_KILL_PARENT</a>, <a class="el" href="a00085.htm#gaab281ee20ea6be5eae34d0e15bf03dcf" title="Запрет ранней инициализации TXLib.">_TX_NOINIT</a>, _txCleanup(), _txIsParentWaitable(), <a class="el" href="a00085.htm#ga181143543b3883cf8570f80da3ad7fcc" title="Лимит времени на завершение программы, начиная от завершения функции main() или от вызова exit()...">_txWatchdogTimeout</a> </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05942">5942</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga9a495d013c6f08cd50220aca99ca56c2"></a><!-- doxytag: member="TXLib.h::_TX_ALLOW_KILL_PARENT" ref="ga9a495d013c6f08cd50220aca99ca56c2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _TX_ALLOW_KILL_PARENT&#160;&#160;&#160;true</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Разрешать принудительное завершение вызывающих программ, ждущих нажатия клавиш после завершения TXLib. </p>
+<p>Иначе отменяется собственная пауза до нажатия клавиши, встроенная в TXLib, и пусть тогда паузу делает вызывающий процесс.</p>
+<p>Список вызывающих программ, которые могут делать такую паузу, задается в _TX_WAITABLE_PARENTS.</p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Макрос должен задаваться <b>перед</b> включением <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> в программу.</dd></dl>
+<p>См. также определение этой константы в файле <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>.</p>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00085.htm#ga2c0a4fe0612f109c5c88d6d55a061db5" title="Список запускающих программ, которые ждут нажатия клавиши после завершения процесса TXLib...">_TX_WAITABLE_PARENTS</a>, <a class="el" href="a00085.htm#gaab281ee20ea6be5eae34d0e15bf03dcf" title="Запрет ранней инициализации TXLib.">_TX_NOINIT</a>, <a class="el" href="a00085.htm#ga181143543b3883cf8570f80da3ad7fcc" title="Лимит времени на завершение программы, начиная от завершения функции main() или от вызова exit()...">_txWatchdogTimeout</a></dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment"><span class="preprocessor">          #define _TX_ALLOW_KILL_PARENT false</span>
+<span class="preprocessor">          #include &quot;TXLib.h&quot;</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05975">5975</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga664ae50e3ec3c7cf59cdd4b7eeef6a7f"></a><!-- doxytag: member="TXLib.h::TX_COMPILED" ref="ga664ae50e3ec3c7cf59cdd4b7eeef6a7f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TX_COMPILED</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Макросы для поддержки прекомпиляции TX Library. </p>
+<p>Не секрет, что файл <code><a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a></code> очень большой и, как следствие, долго компилируется. Для ускорения сборки проектов обычно используется техника раздельной компиляции, когда в проект входят не один, а несколько <code>.cpp</code>-файлов. В этом случае, если изменен только один такой файл, перекомпилироваться будет только он, а результаты компиляции остальных файлов присоединяются на этапе линковки, что гораздо быстрее.</p>
+<p>Однако библиотека TX Library представляет собой единственный заголовочный <code>.h-</code>файл, а заголовочные файлы перекомпилирются каждый раз, при каждой сборке. Это существенно замедляло работу с библиотекой.</p>
+<p>Теперь файл <code><a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a></code> внутри разделен на части, которые могут по-разному вести себя при компиляции.</p>
+<p>Если при компиляции <b>перед</b> включением файла <code><a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a></code> определен макрос <code>TX_COMPILED</code>, то компилироваться будет меньшая часть файла, порядка одной трети. Эта часть содержит то, что обязательно надо включать в каждую компиляцию: определения констант, структур и классов, прототипы функций, шаблоны, макросы и др. При этом около двух третей файла, которые содержат определения нешаблонных функций, не будут компилироваться. (Строго говоря, код этих двух третей обычно не помещают в заголовочные файлы, но, так как библиотека построена по принципу единственного файла для упрощения работы с ней, такой код она вынуждена содержать.)</p>
+<p>Чтобы в проекте были доступны откомпилированные определения всех необходимых функций библиотеки, в него нужно добавить еще один файл, включив в него @с <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> и определив в нем макрос <code>TX_COMPILING</code>. Это приведет к компиляции всего содержимого библиотеки, и ее машинный код станет доступен всей программе. В примере ниже этот файл назван <code>TXLib.cpp</code>, но имя может быть любое. Для компиляции этого файла потребуется время, но затем он перестанет участвовать в компиляции, так как его содержимое не будет изменяться, и общее время сборки проекта сократится, от 1.5 до 3 раз.</p>
+<dl class="warning"><dt><b>Предупреждения:</b></dt><dd>Не следует помещать в этот файл ничего, кроме директив <code>#define</code> <code>TX_COMPILING</code> и <code>#include</code> "TXLib.h", так как при изменении содержимого этого файла среда программирования снова перекомпилирует его, на что вновь потребуется большое время.</dd></dl>
+<p>Также для ускорения компиляции можно определить макрос <code>WIN32_LEAN_AND_MEAN</code> <b>до</b> включения <code><a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a></code> в программу.</p>
+<dl class="warning"><dt><b>Предупреждения:</b></dt><dd>Макрос <code>WIN32_LEAN_AND_MEAN</code> задается автоматически при задании макроса <code>TX_COMPILED</code>. Если при этом не видны определения каких-либо сущностей, определенных в <code>Windows.h</code> (функций, структур, классов, констант и т.п.), включите в программу файлы, определяющие эти сущности, вручную.</dd></dl>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Если определены макросы <code>TX_COMPILED</code> или <code>TX_COMPILING</code>, анонимное пространство имен, окружающее пространство имен <code>TX</code>, не используется.</dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          <span class="comment">// Оба файла ниже должны входить в один и тот же проект Visual Studio или другой среды</span>
+          <span class="comment">// программирования (IDE). Для добавления файла в проект используйте возможности вашей среды</span>
+          <span class="comment">// программирования.</span>
+
+          <span class="comment">//-----------------------------------------------</span>
+          <span class="comment">// Main.cpp: Файл с текстом программы</span>
+          <span class="comment">//-----------------------------------------------</span>
+
+<span class="preprocessor">          #define   TX_COMPILED   // Обязательно ПЕРЕД командой #include</span>
+<span class="preprocessor"></span><span class="preprocessor">          #include &quot;<a class="code" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>&quot;</span>
+
+          <span class="keywordtype">int</span> main()
+              {
+              <a class="code" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow</a> (800, 600);
+              ...
+              }
+
+          <span class="comment">//-----------------------------------------------</span>
+          <span class="comment">// TXLib.cpp: Файл для прекомпиляции TXLib</span>
+          <span class="comment">//-----------------------------------------------</span>
+
+<span class="preprocessor">          #define   TX_COMPILING  // Обязательно ПЕРЕД командой #include</span>
+<span class="preprocessor"></span><span class="preprocessor">          #include &quot;<a class="code" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>&quot;</span>
+
+          <span class="comment">// [Больше в этом файле ничего нет]</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l06072">6072</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga1c7c387b21adad57d0dda2f8bd84ad1c"></a><!-- doxytag: member="TXLib.h::_TX_ALLOW_TRACE" ref="ga1c7c387b21adad57d0dda2f8bd84ad1c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _TX_ALLOW_TRACE</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Включает/отключает внутреннюю трассировку исполнения кода библиотеки. </p>
+<p>Трассировка идет через макрос TX_TRACE, который подставляется перед каждым оператором (statement). По умолчанию трассировка выключена.</p>
+<p>По умолчанию трассировка ведется через функцию OutputDebugString(), ее вывод можно перехватить утилитами-логгерами, например, <a href="http://technet.microsoft.com/ru-ru/sysinternals/bb896647%28en-us%29.aspx">DbgView</a>. Это можно изменить, переопределив макрос TX_TRACE до включения <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> в программу.</p>
+<dl class="warning"><dt><b>Предупреждения:</b></dt><dd>Трассировка <b>очень</b> тормозит выполнение программы, особенно при отладке в Microsoft Visual Studio. В этом случае лучше пользоваться DbgView (см. выше) и запускать отлаживаемую программу отдельно, а не из-под отладчика Visual Studio.</dd></dl>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>_TX_ALLOW_TRACE и TX_TRACE задаются <b>перед</b> включением <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> в программу.</dd></dl>
+<dl>
+<dt>Уровни трассировки: </dt>
+<dd><table  border="0">
+<tr valign="top">
+<td>1 &#160;&#160;</td><td>Regular functions </td></tr>
+<tr valign="top">
+<td>2 &#160;&#160;</td><td>Reserved </td></tr>
+<tr valign="top">
+<td>3 &#160;&#160;</td><td>Init/Cleanup </td></tr>
+<tr valign="top">
+<td>4 &#160;&#160;</td><td>Init/Cleanup, misc functions </td></tr>
+<tr valign="top">
+<td>5 &#160;&#160;</td><td>Error handling, entry points </td></tr>
+<tr valign="top">
+<td>6 &#160;&#160;</td><td>Error handling, main part </td></tr>
+<tr valign="top">
+<td>7 &#160;&#160;</td><td>Error handling, misc functions </td></tr>
+<tr valign="top">
+<td>8 &#160;&#160;</td><td>Canvas worker thread </td></tr>
+<tr valign="top">
+<td>9 &#160;&#160;</td><td>Reserved </td></tr>
+</table>
+</dd>
+</dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          <span class="comment">// Для просмотра трассы запустите DbgView ДО запуска программы!</span>
+
+<span class="preprocessor">          #define  _TX_ALLOW_TRACE 1  // Трассировать только обычные функции TXLib (уровень 1).</span>
+<span class="preprocessor"></span><span class="preprocessor">          #include &quot;<a class="code" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>&quot;</span>
+
+<span class="preprocessor">          #define  _DEBUG             // Не трассировать, но собирать информацию о вызовах</span>
+<span class="preprocessor">          #include &quot;TXLib.h&quot;          // функций TXLib для возможной трассировки стека.</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l06130">6130</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga2aa2550a5302deb4d46b3759b26f4b41"></a><!-- doxytag: member="TXLib.h::TX_TRACE" ref="ga2aa2550a5302deb4d46b3759b26f4b41" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TX_TRACE</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Трассирует исполнение кода через OutputDebugString(). </p>
+<p>По умолчанию трассировка ведется через функцию OutputDebugString(), ее вывод можно перехватить утилитами-логгерами, например, <a href="http://technet.microsoft.com/ru-ru/sysinternals/bb896647%28en-us%29.aspx">DbgView</a>. Для "раскраски" лога есть файл <code>TX\Dev\DbgView.ini,</code> его надо загрузить в DbgView через меню Edit/Filter/Load (Ctrl+L).</p>
+<p>С помощью TX_TRACE можно трассировать код самой библиотеки TXLib. Для этого надо разрешить трассировку TXLib, определив макрос _TX_ALLOW_TRACE перед включением файла <a class="el" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a> в программу. По умолчанию трассировка TXLib выключена.</p>
+<p>TX_TRACE можно переопределить в свой код. Тогда, если трассировка библиотеки разрешена, он будет вызываться почти перед каждой исполняемой строкой TXLib. Может быть, это кому-нибудь будет интересно.</p>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          <span class="keywordtype">int</span> main()
+              {
+              ...
+              <a class="code" href="a00085.htm#ga2aa2550a5302deb4d46b3759b26f4b41" title="Трассирует исполнение кода через OutputDebugString().">TX_TRACE</a>;  <span class="comment">// Через DbgView увидим имя файла и номер выполняемой строки</span>
+              ...
+              }
+</pre></div> <div class="fragment"><pre class="fragment"><span class="preprocessor">          #define  TX_TRACE  printf (__TX_FILELINE__ &quot;\t&quot; __TX_FUNCTION__ &quot;\n&quot;);</span>
+<span class="preprocessor">          #include &quot;TXLib.h&quot;</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l06166">6166</a></p>
+
+</div>
+</div>
+<hr/><h2>Функции</h2>
+<a class="anchor" id="gaf382eed71ecf8229882fe544035d66dc"></a><!-- doxytag: member="TXLib.h::txVersion" ref="gaf382eed71ecf8229882fe544035d66dc" args="() tx_nodiscard" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* txVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Возвращает строку с информацией о текущей версии библиотеки. </p>
+<dl class="return"><dt><b>Возвращает:</b></dt><dd>Строка с информацией о текущей версии библиотеки.</dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          printf (<span class="stringliteral">&quot;I personally love %s\n&quot;</span>, <a class="code" href="a00082.htm#gaf382eed71ecf8229882fe544035d66dc" title="Возвращает строку с информацией о текущей версии библиотеки.">txVersion</a>());
+</pre></div> </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gab2c5f0eff263a7297997281c3d451b91"></a><!-- doxytag: member="TXLib.h::txVersionNumber" ref="gab2c5f0eff263a7297997281c3d451b91" args="() tx_nodiscard" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned txVersionNumber </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Возвращает номер версии библиотеки. </p>
+<dl class="return"><dt><b>Возвращает:</b></dt><dd>Номер версии библиотеки.</dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          printf (<span class="stringliteral">&quot;My magic number is %x\n&quot;</span>, <a class="code" href="a00082.htm#gab2c5f0eff263a7297997281c3d451b91" title="Возвращает номер версии библиотеки.">txVersionNumber</a>());
+</pre></div> </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga12ffceef73c1a081c073f4d7c2914618"></a><!-- doxytag: member="TXLib.h::txGetModuleFileName" ref="ga12ffceef73c1a081c073f4d7c2914618" args="(bool fileNameOnly=true) tx_nodiscard" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* txGetModuleFileName </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fileNameOnly</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Возвращает имя исполняемого файла или изначальный заголовок окна TXLib. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileNameOnly</td><td><em>Возвратить только полное имя исполняемого файла, полученного через Win32 функцию GetFileModuleName (NULL, ...). Необязательно. Если не указано, то возвращается полное имя исполняемого файла.</em></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Возвращает:</b></dt><dd>fileNameOnly = true: Имя исполняемого файла. <br/>
+ fileNameOnly = false: Изначальный заголовок окна TXLib.</dd></dl>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Возвращается <b>статическая</b> строка.</dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00082.htm#gafa31ebd8ed957c41713900a407497cf8" title="Возвращает дескриптор окна рисования">txWindow()</a>, <a class="el" href="a00082.htm#gaf382eed71ecf8229882fe544035d66dc" title="Возвращает строку с информацией о текущей версии библиотеки.">txVersion()</a>, <a class="el" href="a00082.htm#gab2c5f0eff263a7297997281c3d451b91" title="Возвращает номер версии библиотеки.">txVersionNumber()</a></dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          printf (<span class="stringliteral">&quot;Смотрите на заголовок окна!&quot;</span>);
+
+          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> done = 0; done &lt;= 100; done++)
+              {
+              <span class="keywordtype">char</span> title [1024] = <span class="stringliteral">&quot;&quot;</span>;
+              sprintf (title, <span class="stringliteral">&quot;%s - [%-10.*s] %d%%&quot;</span>, <a class="code" href="a00082.htm#ga12ffceef73c1a081c073f4d7c2914618" title="Возвращает имя исполняемого файла или изначальный заголовок окна TXLib.">txGetModuleFileName</a> (<span class="keyword">false</span>), done/10, <span class="stringliteral">&quot;||||||||||&quot;</span>, done);
+
+              SetWindowText (<a class="code" href="a00082.htm#gafa31ebd8ed957c41713900a407497cf8" title="Возвращает дескриптор окна рисования">txWindow</a>(), title);
+              SetWindowText (Win32::GetConsoleWindow(), title);
+              <a class="code" href="a00082.htm#ga6c293f0b0f71efebdeeb0b56a97ba50c" title="Задерживает выполнение программы на определенное время.">txSleep</a> (50);
+              }
+
+          <a class="code" href="a00081.htm#gaf9be7d98f32c0737a2d7f30039a60c0a" title="Выводит различные сообщения в окне с помощью функции MessageBox.">txMessageBox</a> (<span class="stringliteral">&quot;Вот такой вот progress bar&quot;</span>, <span class="stringliteral">&quot;TXLib forever)&quot;</span>);
+</pre></div> </dd>
+</dl>
+
+</div>
+</div>
+<hr/><h2>Переменные</h2>
+<a class="anchor" id="ga69d3e86db3b7c7458bbcb7c505a3b884"></a><!-- doxytag: member="TXLib.h::_txLogName" ref="ga69d3e86db3b7c7458bbcb7c505a3b884" args="[MAX_PATH]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char <a class="el" href="a00085.htm#ga69d3e86db3b7c7458bbcb7c505a3b884">_txLogName</a> = &quot;&quot;</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Имя лог-файла TXLib. </p>
+<p>В эту строку надо <b>скопировать</b> нужное вам имя лог-файла.</p>
+<p>По умолчанию файл создается во время ошибки в одной папке с запущенной программой, имеет то же имя, что и файл программы, с добавлением расширения <code>".log"</code>.</p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Устанавливать имя лог-файла надо в начале работы программы, до появления первой ошибки. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05628">5628</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga4ddb32d7a8a676537014da7aea7bf273"></a><!-- doxytag: member="TXLib.h::_txWindowStyle" ref="ga4ddb32d7a8a676537014da7aea7bf273" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="a00085.htm#ga4ddb32d7a8a676537014da7aea7bf273">_txWindowStyle</a> = WS_POPUP | WS_BORDER | WS_CAPTION | WS_SYSMENU</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Стиль графического окна библиотеки. </p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Переменная устанавливается <b>до</b> открытия окна библиотеки.</dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          <a class="code" href="a00085.htm#ga4ddb32d7a8a676537014da7aea7bf273" title="Стиль графического окна библиотеки.">_txWindowStyle</a> &amp;= ~WS_CAPTION; <span class="comment">// FullScreen: окно без заголовка, размером с экран</span>
+          <a class="code" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow</a> (GetSystemMetrics (SM_CXSCREEN), GetSystemMetrics (SM_CYSCREEN));
+
+          printf (<span class="stringliteral">&quot;Закройте меня через Alt+F4\n&quot;</span>);
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05758">5758</a></p>
+
+</div>
+</div>
+<a class="anchor" id="gaf2070fcdbd473d328f17f130623db80a"></a><!-- doxytag: member="TXLib.h::_txWindowUpdateInterval" ref="gaf2070fcdbd473d328f17f130623db80a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned <a class="el" href="a00085.htm#gaf2070fcdbd473d328f17f130623db80a">_txWindowUpdateInterval</a> = 25</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Интервал обновления холста (мс) </p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Переменная устанавливается <b>до</b> открытия окна библиотеки. </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05785">5785</a></p>
+
+</div>
+</div>
+<a class="anchor" id="gad85278fd5caaf0ce42e307d6ce8d79c5"></a><!-- doxytag: member="TXLib.h::_txSwapBuffers" ref="gad85278fd5caaf0ce42e307d6ce8d79c5" args=")(HDC dest, int xDest, int yDest, int wDest, int hDest, HDC src, int xSrc, int ySrc, int wSrc, int hSrc, DWORD rOp)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool(* <a class="el" href="a00085.htm#gad85278fd5caaf0ce42e307d6ce8d79c5">_txSwapBuffers</a>)(HDC dest, int xDest, int yDest, int wDest, int hDest, HDC src, int xSrc, int ySrc, int wSrc, int hSrc, DWORD rOp) = NULL</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Указатель на функцию, выводящую изображение непосредственно в окно TXLib во время обработки WM_PAINT. </p>
+<p>Если равен NULL, то используется Win32::BitBlt.</p>
+<p>Вы можете переопределить значение этого указателя, чтобы он указывал на вашу функцию, и тогда TXLib будет выводить изображение в окно через нее. Имейте в виду, что эта функция будет вызываться в отдельном потоке.</p>
+<p>Параметры этой функции гуглите: "StretchBlt function".</p>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00081.htm#ga30fb1a6913174dfcea5079391f655be2" title="Устанавливает альтернативную функцию обработки оконных сообщений Windows (оконную функцию) для окна T...">txSetWindowsHook()</a>, <a class="el" href="a00082.htm#ga6dfb121b4a1116f987baeb515713cbbf" title="Копирует изображение с одного холста (контекста рисования, DC) на другой.">txBitBlt()</a>, <a class="el" href="a00082.htm#ga4d6f780cdef622df0fda71d0b3cfee52" title="Копирует изображение с одного холста (контекста рисования, DC) на другой с учетом полупрозрачности...">txAlphaBlend()</a></dd></dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment"><span class="preprocessor">          #include &quot;<a class="code" href="a00058.htm" title="Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).">TXLib.h</a>&quot;</span>
+
+          <span class="keywordtype">bool</span> MySwapBuffers (HDC dest, <span class="keywordtype">int</span> xDest, <span class="keywordtype">int</span> yDest, <span class="keywordtype">int</span> wDest, <span class="keywordtype">int</span> hDest,
+                              HDC src,  <span class="keywordtype">int</span> xSrc,  <span class="keywordtype">int</span> ySrc,  <span class="keywordtype">int</span> wSrc,  <span class="keywordtype">int</span> hSrc, DWORD rOp)
+              {
+              <span class="keywordflow">return</span> <a class="code" href="a00082.htm#ga4d6f780cdef622df0fda71d0b3cfee52" title="Копирует изображение с одного холста (контекста рисования, DC) на другой с учетом полупрозрачности...">txAlphaBlend</a> (dest, xDest, yDest, wSrc-xSrc, hSrc-ySrc, src, xSrc, ySrc, 0.01);
+              }
+
+          <span class="keywordtype">int</span> main()
+              {
+              <a class="code" href="a00085.htm#gad85278fd5caaf0ce42e307d6ce8d79c5" title="Указатель на функцию, выводящую изображение непосредственно в окно TXLib во время обработки WM_PAINT...">_txSwapBuffers</a> = MySwapBuffers;  <span class="comment">// That&#39;s it</span>
+
+              <a class="code" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow</a> (800, 600);
+
+              <a class="code" href="a00082.htm#gad21ad5660a5423f31c2c8e77329758b2" title="Устанавливает текущий цвет заполнения фигур.">txSetFillColor</a> (<a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5a081ac86689e98e0c036e960e9cb159ac" title="Прозрачный цвет. Отключает рисование.">TX_NULL</a>);
+              <a class="code" href="a00082.htm#ga18a0418f3c06463e958077cddf2a4864" title="Рисует прямоугольник.">txRectangle</a> (10, 10, <a class="code" href="a00082.htm#gab79782d80f6c61587d02f0633aa2f198" title="Возвращает ширину окна или холста.">txGetExtentX</a>() - 10, <a class="code" href="a00082.htm#gaa9bb7fd84e0b9f59c96be89d70c74321" title="Возвращает высоту окна или холста.">txGetExtentY</a>() - 10);
+
+              <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 50; x &lt;= <a class="code" href="a00082.htm#gab79782d80f6c61587d02f0633aa2f198" title="Возвращает ширину окна или холста.">txGetExtentX</a>() - 50; x += 20)
+                  {
+                  <a class="code" href="a00082.htm#gaa14e9c2a46cf713efaa1f850074d8adc" title="Рисует окружность или круг.">txCircle</a> (x, <a class="code" href="a00082.htm#gaa9bb7fd84e0b9f59c96be89d70c74321" title="Возвращает высоту окна или холста.">txGetExtentY</a>()/2, 10);
+                  <a class="code" href="a00082.htm#ga6c293f0b0f71efebdeeb0b56a97ba50c" title="Задерживает выполнение программы на определенное время.">txSleep</a> (100);
+                  }
+
+              <a class="code" href="a00082.htm#ga6c293f0b0f71efebdeeb0b56a97ba50c" title="Задерживает выполнение программы на определенное время.">txSleep</a> (3000);
+              }
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05871">5871</a></p>
+
+</div>
+</div>
+<a class="anchor" id="ga181143543b3883cf8570f80da3ad7fcc"></a><!-- doxytag: member="TXLib.h::_txWatchdogTimeout" ref="ga181143543b3883cf8570f80da3ad7fcc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="a00085.htm#ga181143543b3883cf8570f80da3ad7fcc">_txWatchdogTimeout</a> = 10*<a class="el" href="a00085.htm#ga7859e95fc4faec435abe372989f4f8ac">_TX_TIMEOUT</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Лимит времени на завершение программы, начиная от завершения функции main() или от вызова exit(), в мс. </p>
+<p>Если значение меньше 0, то время не лимитируется.</p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Для предотвращения зависания программы при выходе TXLib запускает отдельный сторожевой поток (watchdog thread), который ожидает _txWatchdogTimeout миллисекунд, а затем принудительно завершает программу.</dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00085.htm#ga2c0a4fe0612f109c5c88d6d55a061db5" title="Список запускающих программ, которые ждут нажатия клавиши после завершения процесса TXLib...">_TX_WAITABLE_PARENTS</a>, <a class="el" href="a00085.htm#gaab281ee20ea6be5eae34d0e15bf03dcf" title="Запрет ранней инициализации TXLib.">_TX_NOINIT</a> </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l05992">5992</a></p>
+
+</div>
+</div>
+</div>
+</div>
+  <div id="nav-path" class="navpath">
+    <ul>
+<!-- --------------------------------------------------------------------------
+  Doxygen_HTM.htm
+  $Version: 00173a, Revision: 172 $
+  $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru> $
+  $Date: 2023-08-07 12:07:33 +0400 $
+ -------------------------------------------------------------------------- -->
+
+<table class="" width="100%"><tr valign="top">
+
+  <td align="left">
+    <small><a href="http://orphus.ru">Нашли ошибку? Выделите ее мышкой и нажмите Ctrl+ENTER. &copy;&#160;Orphus.ru.</a></small><br>
+    <a href="http://orphus.ru" id="orphus" target="_blank"><img class = "footer" alt="Orphus" src="http://storage.ded32.net.ru/orphus.gif" border="0"></a>
+    </td>
+
+  <td align="right">
+    Документация по TX Library. Дата: Mon Nov 13 2023 02:15:53. Создано&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3
+    <img src="http://storage.ded32.net.ru/stat/TXLib-Help.chm" width=1px height=1px border="0">
+    </td>
+  </tr></table>
+
+</ul>
+</div>
+
+<script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol)? "https://ssl." : "http://www."); document.write (unescape ("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); try { var pageTracker = _gat._getTracker ("UA-7927138-1"); pageTracker._trackPageview(); } catch (err) {}</script>
+<script type="text/javascript" src="http://storage.ded32.net.ru/orphus.js"></script>
+
+</body>
+</html>

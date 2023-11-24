@@ -76,6 +76,8 @@ void StackCtor(Stack* stk);
 
 #endif
 
+int StackPop(Stack* stk);
+
 int StackPop(Stack* stk, Elem_t* deleted_elem);
 
 int StackPush(Stack* stk, Elem_t elem);

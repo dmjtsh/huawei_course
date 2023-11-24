@@ -31,6 +31,8 @@ struct ASM
 	Label labels[LABELS_ARR_SIZE];
 	size_t labels_num;
 
+	size_t commands_quatity;
+
 	FILE* logger;
 	unsigned errors;
 

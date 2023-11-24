@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>TX Library: Файл TXGL.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript">
+$(document).ready(initResizable);
+</script>
+<link href="Doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Создано системой Doxygen 1.7.3 -->
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="TXLib.png"></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TX Library&#160;<span id="projectnumber">Help &ndash; Version: 00173a, Revision: 172</span></div>
+   <div id="projectbrief"><s>&nbsp;ALL&nbsp;</s> Windows graphics in a sandbox</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+</div>
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+  initNavTree('a00057.htm','');
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle">
+<h1>Файл TXGL.cpp</h1>  </div>
+</div>
+<div class="contents">
+
+<p>TXLib OpenGL Demo.  
+<a href="#_details">Подробнее...</a></p>
+
+<p><a href="a00057_source.htm">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="member-group"></a>
+Поддержка OpenGL</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e38d6d5d082cacb7daee86a7fb8fd14"></a><!-- doxytag: member="TXGL.cpp::vec4f" ref="a7e38d6d5d082cacb7daee86a7fb8fd14" args="[4]" -->
+typedef float&#160;</td><td class="memItemRight" valign="bottom"><b>vec4f</b> [4]</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99dd274ae678d1260a3a0bfc095d6496"></a><!-- doxytag: member="TXGL.cpp::TX_GL_BLACK" ref="a99dd274ae678d1260a3a0bfc095d6496" args="" -->
+const vec4f&#160;</td><td class="memItemRight" valign="bottom"><b>TX_GL_BLACK</b> = {0, 0, 0, 1}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6ed979a9c434241688270238ca1ca59"></a><!-- doxytag: member="TXGL.cpp::TX_GL_RED" ref="aa6ed979a9c434241688270238ca1ca59" args="" -->
+const vec4f&#160;</td><td class="memItemRight" valign="bottom"><b>TX_GL_RED</b> = {1, 0, 0, 1}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a764f470880361fd4680cac34b2f594bf"></a><!-- doxytag: member="TXGL.cpp::TX_GL_GREEN" ref="a764f470880361fd4680cac34b2f594bf" args="" -->
+const vec4f&#160;</td><td class="memItemRight" valign="bottom"><b>TX_GL_GREEN</b> = {0, 1, 0, 1}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acefb0af03093042b051c6a06612770a0"></a><!-- doxytag: member="TXGL.cpp::TX_GL_BLUE" ref="acefb0af03093042b051c6a06612770a0" args="" -->
+const vec4f&#160;</td><td class="memItemRight" valign="bottom"><b>TX_GL_BLUE</b> = {0, 0.25, 1, 1}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a554809880101b1d8983a957a1c22d72e"></a><!-- doxytag: member="TXGL.cpp::TX_GL_WHITE" ref="a554809880101b1d8983a957a1c22d72e" args="" -->
+const vec4f&#160;</td><td class="memItemRight" valign="bottom"><b>TX_GL_WHITE</b> = {1, 1, 1, 1}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe5ef7a6e8e8cf7f3e293cd679d039d5"></a><!-- doxytag: member="TXGL.cpp::txglCreateContext" ref="abe5ef7a6e8e8cf7f3e293cd679d039d5" args="(HDC dc)" -->
+HGLRC&#160;</td><td class="memItemRight" valign="bottom"><b>txglCreateContext</b> (HDC dc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abecd96c7e8c7deadbd95b68417015c83"></a><!-- doxytag: member="TXGL.cpp::txglDeleteContext" ref="abecd96c7e8c7deadbd95b68417015c83" args="(HGLRC rc)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>txglDeleteContext</b> (HGLRC rc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aadbf35d8ac1479d837a70bd332661c52"></a><!-- doxytag: member="TXGL.cpp::txglSetDefaults" ref="aadbf35d8ac1479d837a70bd332661c52" args="()" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>txglSetDefaults</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b57b7173bda461d278d8501a640a39a"></a><!-- doxytag: member="TXGL.cpp::txglSwapBuffers" ref="a3b57b7173bda461d278d8501a640a39a" args="()" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>txglSwapBuffers</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44583e391789b205f74bc77747687992"></a><!-- doxytag: member="TXGL.cpp::txglClear" ref="a44583e391789b205f74bc77747687992" args="(double red, double green, double blue, double alpha=0)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>txglClear</b> (double red, double green, double blue, double alpha=0)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf5de5f86a7187184cad84b637d1b282"></a><!-- doxytag: member="TXGL.cpp::txgluSphere" ref="aaf5de5f86a7187184cad84b637d1b282" args="(double radius, int slices=100, int stacks=100)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>txgluSphere</b> (double radius, int slices=100, int stacks=100)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ee0fa481934a4641c662972bb6b7c8b"></a><!-- doxytag: member="TXGL.cpp::txgluDisk" ref="a2ee0fa481934a4641c662972bb6b7c8b" args="(double innerRadius, double outerRadius, int slices=100, int loops=100)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>txgluDisk</b> (double innerRadius, double outerRadius, int slices=100, int loops=100)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11ccee1e282091a27daf9487b3bfd22a"></a><!-- doxytag: member="TXGL.cpp::txgluCylinder" ref="a11ccee1e282091a27daf9487b3bfd22a" args="(double baseRadius, double topRadius, double height, int slices=100, int stacks=100)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>txgluCylinder</b> (double baseRadius, double topRadius, double height, int slices=100, int stacks=100)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f2b2b5e65c323c9b6fc469cd0a5b835"></a><!-- doxytag: member="TXGL.cpp::txglTextOut" ref="a1f2b2b5e65c323c9b6fc469cd0a5b835" args="(double x, double y, const char *text)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>txglTextOut</b> (double x, double y, const char *text)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb8ca91f116e1a7008c55acfd02d20b5"></a><!-- doxytag: member="TXGL.cpp::txglLight" ref="aeb8ca91f116e1a7008c55acfd02d20b5" args="(int light, double x, double y, double z, double ambient, double diffuse, double specular)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>txglLight</b> (int light, double x, double y, double z, double ambient, double diffuse, double specular)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a798b72b79551b6f1116e6dd03ecccc"></a><!-- doxytag: member="TXGL.cpp::txglMaterial" ref="a5a798b72b79551b6f1116e6dd03ecccc" args="(double specular, double emittance, double shining)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>txglMaterial</b> (double specular, double emittance, double shining)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d2e31d3f4500a4cee42b1915b7a0ddb"></a><!-- doxytag: member="TXGL.cpp::txglSetCamera" ref="a8d2e31d3f4500a4cee42b1915b7a0ddb" args="(POINT size, bool perspective=true)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>txglSetCamera</b> (POINT size, bool perspective=true)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2665ca9452cd5a345fb6817820ce651a"></a><!-- doxytag: member="TXGL.cpp::DrawBackgr" ref="a2665ca9452cd5a345fb6817820ce651a" args="(int mode)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawBackgr</b> (int mode)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab41a436d68d6af49f374476a6cc706db"></a><!-- doxytag: member="TXGL.cpp::DrawModel" ref="ab41a436d68d6af49f374476a6cc706db" args="(double rotation)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawModel</b> (double rotation)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae66f6b31b5ad750f1fe042a706a4e3d4"></a><!-- doxytag: member="TXGL.cpp::main" ref="ae66f6b31b5ad750f1fe042a706a4e3d4" args="()" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Подробное описание</h2>
+<div class="textblock"><p>TXLib OpenGL Demo. </p>
+<p>А вы как думали?</p>
+<p>Библиотека Тупого Художника (The Dumb Artist Library, TX Library, TXLib).</p>
+<dl class="rcs"><dt><b>Version:</b></dt><dd>00173a, Revision: 172 </dd></dl>
+<dl class="rcs"><dt><b>Date:</b></dt><dd>2023-09-05 19:24:32 +0400 </dd></dl>
+<dl class="rcs"><dt><b>Copyright:</b></dt><dd>(C) Ded (Ilya Dedinsky, <a href="http://txlib.ru">http://txlib.ru</a>) &lt;<a href="mailto:mail@txlib.ru">mail@txlib.ru</a>&gt; </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00057_source.htm">TXGL.cpp</a></p>
+</div></div>
+</div>
+  <div id="nav-path" class="navpath">
+    <ul>
+      <li class="navelem"><a class="el" href="a00057.htm">TXGL.cpp</a>      </li>
+<!-- --------------------------------------------------------------------------
+  Doxygen_HTM.htm
+  $Version: 00173a, Revision: 172 $
+  $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru> $
+  $Date: 2023-08-07 12:07:33 +0400 $
+ -------------------------------------------------------------------------- -->
+
+<table class="" width="100%"><tr valign="top">
+
+  <td align="left">
+    <small><a href="http://orphus.ru">Нашли ошибку? Выделите ее мышкой и нажмите Ctrl+ENTER. &copy;&#160;Orphus.ru.</a></small><br>
+    <a href="http://orphus.ru" id="orphus" target="_blank"><img class = "footer" alt="Orphus" src="http://storage.ded32.net.ru/orphus.gif" border="0"></a>
+    </td>
+
+  <td align="right">
+    Документация по TX Library. Дата: Mon Nov 13 2023 02:15:53. Создано&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3
+    <img src="http://storage.ded32.net.ru/stat/TXLib-Help.chm" width=1px height=1px border="0">
+    </td>
+  </tr></table>
+
+</ul>
+</div>
+
+<script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol)? "https://ssl." : "http://www."); document.write (unescape ("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); try { var pageTracker = _gat._getTracker ("UA-7927138-1"); pageTracker._trackPageview(); } catch (err) {}</script>
+<script type="text/javascript" src="http://storage.ded32.net.ru/orphus.js"></script>
+
+</body>
+</html>

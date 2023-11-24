@@ -1,35 +1,36 @@
 ; HEY THIS IS DIMAS ASSEMBLER!!!
 ; AND DIMAS FACTORIAL PROGRAMM
 
-CALL user_input
-CALL factorial_count
-CALL output
-HLT
+start:
+	CALL user_input
+	CALL factorial_count
+	CALL output
+	HLT
 
 user_input:
-IN
-POP RAX
-RET
+	IN
+	POP RAX
+	RET
 
 output:
-PUSH RAX
-OUT
-RET
+	PUSH RAX
+	OUT
+	RET
 
 factorial_count:
-PUSH RAX
-PUSH 1
-JE factorial_count_end ; induction base when 1!
+	PUSH RAX
+	PUSH 1
+	JE factorial_count_end ; induction base when 1!
 
-PUSH RAX
-PUSH 1
-PUSH RAX
-SUB
-POP RAX
-CALL factorial_count
-PUSH RAX
-MUL
-POP RAX
+	PUSH RAX
+	PUSH 1
+	PUSH RAX
+	SUB
+	POP RAX
+	CALL factorial_count
+	PUSH RAX
+	MUL
+	POP RAX
 
 factorial_count_end:
-RET
+	RET

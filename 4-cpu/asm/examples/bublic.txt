@@ -2,62 +2,62 @@
 ; AND DIMAS BUBLIC PROGRAMM
 
 CALL fill_bublic
-DRAW
-HLT
+	DRAW
+	HLT
 
 increase_height:
-PUSH 1
-PUSH RBX
-ADD
-POP RBX
-PUSH 0
-POP RAX
-JMP fill_cell_cycle
+	PUSH 1
+	PUSH RBX
+	ADD
+	POP RBX
+	PUSH 0
+	POP RAX
+	JMP fill_cell_cycle
 
 fill_bublic:
 
 fill_cell_cycle:
-PUSH RBX
-PUSH 10
-JE fill_bublic_end
-PUSH RAX
-PUSH 10
-JE increase_height
+	PUSH RBX
+	PUSH 10
+	JE fill_bublic_end
+	PUSH RAX
+	PUSH 10
+	JE increase_height
 
-PUSH 5
-PUSH RAX
-SUB
-PUSH 5
-PUSH RAX
-SUB
-MUL ; (x-5)^2
-PUSH 5
-PUSH RBX
-SUB
-PUSH 5
-PUSH RBX
-SUB
-MUL ; (y-5)^2
-ADD ; (x-5)^2 + (y-5)^2
-PUSH 16
-JAE fill_cell (x-5)^2 + (y-5)^2 <= 16
-fill_cell_cycle_end:
-PUSH 1
-PUSH RAX
-ADD
-POP RAX
-JMP fill_cell_cycle
+	PUSH 5
+	PUSH RAX
+	SUB
+	PUSH 5
+	PUSH RAX
+	SUB
+	MUL ; (x-5)^2
+	PUSH 5
+	PUSH RBX
+	SUB
+	PUSH 5
+	PUSH RBX
+	SUB
+	MUL ; (y-5)^2
+	ADD ; (x-5)^2 + (y-5)^2
+	PUSH 16
+	JAE fill_cell ; (x-5)^2 + (y-5)^2 <= 16
+	fill_cell_cycle_end:
+	PUSH 1
+	PUSH RAX
+	ADD
+	POP RAX
+	JMP fill_cell_cycle
 
 fill_bublic_end:
-RET
+	RET
 
 fill_cell:
-PUSH RAX
-PUSH RBX
-PUSH 10
-MUL
-ADD
-POP RCX
-PUSH 1
-POP [RCX]
-JMP fill_cell_cycle_end
+	PUSH RAX
+	PUSH RBX
+	PUSH 10
+	MUL
+	ADD
+	POP RCX
+	PUSH 1
+	POP [RCX]
+	JMP fill_cell_cycle_end

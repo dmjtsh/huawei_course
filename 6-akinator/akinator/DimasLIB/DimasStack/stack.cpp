@@ -262,6 +262,27 @@ int StackPush(Stack* stk, Elem_t elem)
 	return stack_state;
 }
 
+int StackPop(Stack* stk)
+{
+	int stack_state = StackCheckStateBeforePop(stk);
+	STACK_DUMP_TO_FILE(stk);
+
+	if (stk == NULL)
+		return STACK_POINTER_NULL;
+	else if (stack_state)
+		return stk->errors;
+
+	stk->data[stk->size] = POISON_ELEM;
+	stk->size--;
+	
+	stk->hash = StackHash(stk);
+
+	stack_state = StackCheckState(stk);
+	STACK_DUMP_TO_FILE(stk);
+
+	return stack_state;
+}
+
 int StackPop(Stack* stk, Elem_t* deleted_elem)
 {
 	int stack_state = StackCheckStateBeforePop(stk);
@@ -366,6 +387,15 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 int StackPush(Stack* stk, Elem_t elem)
 {
 	StackPushKernal(stk, elem);
+
+	return 0;
+}
+
+int StackPop(Stack* stk)
+{
+	stk->data[stk->size] = 0;
+
+	stk->size--;
 
 	return 0;
 }

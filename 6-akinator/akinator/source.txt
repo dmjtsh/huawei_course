@@ -1,1 +1,1 @@
-( This_person_live_in_434 ( This_person_is_daun ( This_person_is_huesos ( Rusal nil nil ) ( Dimas nil nil ) ) ( Elisei nil nil ) ) ( Vedet_matan ( Petrovich nil nil ) ( Zeleniy ( Krokodil nil nil ) ( Ovchinkin nil nil ) ) ) ) 
+( This_person_live_in_434 ( This_person_is_daun ( This_person_is_huesos ( Rusal nil nil ) ( Dimas nil nil ) ) ( Elisei nil nil ) ) ( Vedet_matan ( Petrovich nil nil ) ( Zeleniy ( Krokodil nil nil ) ( KSHCHTVR ( DED nil nil ) ( Ovchinkin nil nil ) ) ) ) ) 

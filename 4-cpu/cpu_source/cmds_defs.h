@@ -21,7 +21,7 @@ CMD_DEF(IN, 1, 0,
 CMD_DEF(OUT, 2, 0,
 	if (SIZE >= 1)
 	{
-		SPUSH(num_to_output);
+		SPOP(num_to_output);
 		ELEM_T_PRINTF(num_to_output);
 		printf("\n");
 	}
@@ -32,6 +32,7 @@ CMD_DEF(OUT, 2, 0,
 CMD_DEF(PUSH, 3, 1,
 	{
 	Elem_t num_to_push = {};
+
 	if (CMD_TYPE & NUMBER_TYPE)
 		num_to_push = CMD_ARG;
 	else if (CMD_TYPE & REGISTER_TYPE)
