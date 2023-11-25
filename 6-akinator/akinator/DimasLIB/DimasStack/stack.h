@@ -1,7 +1,9 @@
 #ifndef STACK_H
 #define STACK_H
 
-typedef int Elem_t;
+enum PropertyPresense { GOT_PROP, DOESNT_GOT_PROP };
+
+typedef PropertyPresense Elem_t;
 #define ELEM_T_SPECIFIER "%d"
 
 #ifdef _DEBUG
@@ -26,7 +28,7 @@ enum StackErrorBits
 };
 
 #define StackCtor(stack) _StackCtor ((stack), #stack, __FILE__, __LINE__, __func__)
-const Elem_t POISON_ELEM = 666;
+const Elem_t POISON_ELEM = (Elem_t)666;
 
 typedef unsigned long long Canary_t;
 

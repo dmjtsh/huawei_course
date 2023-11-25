@@ -18,7 +18,6 @@ struct Node
 };
 
 Node* OpNew (char* data);
-
 void OpDelete (Node* node);
 
 enum AkinatorErrorBits
@@ -55,14 +54,12 @@ const char  NO_INPUT = 'n';
 
 unsigned AkinatorPerformGame(Akinator* akinator);
 
-unsigned AkinatorCtor (Akinator* akinator);
-
-unsigned AkinatorDtor (Akinator* akinator);
+unsigned AkinatorCtor(Akinator* akinator);
+unsigned AkinatorDtor(Akinator* akinator);
 
 const int SYNTAX_ERROR = -1;
 
 void PrintNode(const Node* node, FILE* logger);
-
 size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_ptr);
 
 #endif // AKINATOR_H

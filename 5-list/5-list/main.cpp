@@ -5,6 +5,8 @@ void TestList(List* list)
 	ListInsertAfter(list, list->tail, 1);
 	//ListDump(list, stderr);
 
+	ListGraphDump(list);
+
 	ListInsertAfter(list, list->tail, 2);
 	//ListDump(list, stderr);
 
@@ -28,8 +30,6 @@ int main()
 	//ListDump(&list, stderr);
 
 	TestList(&list);
-
-	ListGraphDump(&list);
 
 	ListDtor(&list);
 

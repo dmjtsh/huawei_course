@@ -30,19 +30,7 @@ CMD_DEF(OUT, 2, 0,
 )
 
 CMD_DEF(PUSH, 3, 1,
-	{
-	Elem_t num_to_push = {};
-
-	if (CMD_TYPE & NUMBER_TYPE)
-		num_to_push = CMD_ARG;
-	else if (CMD_TYPE & REGISTER_TYPE)
-		num_to_push = GetReg(cpu, CMD_ARG);
-
-	if (CMD_TYPE & MEMORY_TYPE)
-		SPUSH(RAM[(size_t)num_to_push]);
-	else
-		SPUSH(num_to_push);
-	}
+	SPUSH(GetProperArgument(cpu));
 )
 
 #define DO_OPER_WITH_TWO_NUMS(cpu, oper)               \
@@ -112,24 +100,14 @@ CMD_DEF(POP, 11, 1,
 			RAM[(size_t)GetReg(cpu, CMD_ARG)] = num_to_pop;
 		else if (CMD_TYPE & REGISTER_TYPE)
 			SetReg(cpu, CMD_ARG, num_to_pop);
+		else 
+			assert(0);
 	}
 	else
 		SET_ERROR(CPU_WRONG_COMMAND_USAGE);
 )
 															      
-#define JUMP()                                       \
-	{												 \
-	Elem_t num_to_jump = {};			     		 \
-	if (CMD_TYPE & NUMBER_TYPE)			             \
-		num_to_jump = CMD_ARG;				         \
-	else if (CMD_TYPE & REGISTER_TYPE)		         \
-		num_to_jump = GetReg(cpu, CMD_ARG);          \
-													 \
-	if (CMD_TYPE & MEMORY_TYPE)			             \
-		CURRENT_LINE = RAM[(size_t)num_to_jump - 1]; \
-	else											 \
-		CURRENT_LINE = num_to_jump - 1;              \
-	}
+#define JUMP() CURRENT_LINE = GetProperArgument(cpu) - 1;
 
 #define JUMP_ON_COND(cond) \
 	{					   \
@@ -196,18 +174,7 @@ CMD_DEF(OUTC, 21, 0,
 )
 
 CMD_DEF(DRAW, 22, 0,
-	for(size_t i = 0; i < 10; i++)
-	{
-		for(size_t j = 0; j < 10; j++)
-		{
-			size_t current_index = i * 10 + j;
-			if(RAM[current_index] != 0)
-				printf("* ");
-			else
-				printf("- ");
-		}
-		printf("\n");
-	}
+	DrawRAM(RAM);
 )
 
 #undef JUMP_ON_COND

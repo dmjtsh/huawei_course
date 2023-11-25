@@ -36,7 +36,7 @@ unsigned ListDataReallocUp(List* list, size_t new_capacity)
 	list->capacity = new_capacity - 1;
 
 	// FILL DATA WITH POISON AND CONNECT FREE
-	for(int i = list->size + 1; i < list->capacity + 1; i++)
+	for (int i = list->size + 1; i < list->capacity + 1; i++)
 	{
 		list->data[i].prev = list->free;
 		list->free = i;
@@ -149,7 +149,6 @@ unsigned ListCtor(List* list)
 	list->data[LIST_FREE_START_INDEX].prev = ELEM_INDEX_POISON; // FILLING WITH POISON END OF FREE LIST
 	
 	fopen_s(&list->logger, "list_logger.txt", "w");
-
 	fopen_s(&list->graph,  "list_graph.gv",   "w");
 
 	list->data[FICT_ELEM_INDEX].next  = FICT_ELEM_INDEX;
@@ -172,6 +171,7 @@ unsigned ListDtor(List* list)
 	free(list->data);
 
 	fclose(list->logger);
+	fclose(list->graph);
 
 	return 0;
 }

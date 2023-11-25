@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "cpu.h"
+#include "video_memory.h"
 #include "../../cpu_source/commands.h"
 #include "../../DimasLIB/DimasUtilities/utilities.h"
 #include "../../cpu_source/error_processing.h"
@@ -228,6 +229,25 @@ void CPUProcessFile(CPU* cpu)
 	}
 }
 
+Elem_t GetProperArgument(CPU* cpu)
+{
+	assert(cpu != NULL);
+
+	CommandArgType cmd_type = cpu->current_command.cmd_arg_type;
+	Elem_t cmd_arg  = cpu->current_command.CPU_cmd_with_arg.arg;
+
+	if (cmd_type & NUMBER_TYPE & MEMORY_TYPE)
+		return cpu->RAM[(size_t)cmd_arg];
+	else if (cmd_type & REGISTER_TYPE & MEMORY_TYPE)		        
+		return cpu->RAM[(size_t)GetReg(cpu, cmd_arg)];         
+	else if (cmd_type & NUMBER_TYPE)			            
+		return cmd_arg;
+	else if (cmd_type & REGISTER_TYPE)											
+		return GetReg(cpu, cmd_arg);            
+	else
+		assert(0);
+}
+
 void SetReg(CPU* cpu, Elem_t reg, Elem_t value)
 {
 	assert(cpu != NULL);
@@ -267,7 +287,6 @@ int CPUCtor(CPU* cpu, const char* file_path)
 		return CPU_PTR_NULL;
 	
 	size_t compiled_file_size = GetFileSize(file_path);
-
 	cpu->commands_num = compiled_file_size/sizeof(CPUCommandWithArg);
 	
 	fopen_s(&cpu->compiled_file, file_path, "r");
@@ -293,8 +312,6 @@ int CPUCtor(CPU* cpu, const char* file_path)
 	if (StackCtor(&cpu->stack))
 		SetErrorBit(&cpu->errors, CPU_BAD_STACK);
 
-	size_t cpu_errors = 0;
-	
 	ERROR_PROCESSING(cpu, CPUVerifier, CPUDump, CPUDtor, BEFORE_PROCRESSING_FILE);
 
 	return 0;
@@ -314,5 +331,5 @@ int CPUDtor(CPU* cpu)
 	if (StackDtor(&cpu->stack))
 		SetErrorBit(&destructor_errors, CPU_BAD_STACK);
 
-	return cpu->errors;
+	return destructor_errors;
 }

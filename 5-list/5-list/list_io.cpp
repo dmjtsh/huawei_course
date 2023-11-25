@@ -120,9 +120,12 @@ void ListDump(List* list, FILE* logger)
 	assert(logger != NULL);
 
 	static size_t num_of_call = 1;
+
 	fprintf(logger, 
-	"=======================================\n"
-	"List DUMP CALL #%zu\n", num_of_call);
+		"=======================================\n"
+		"List DUMP CALL #%zu\n",
+		num_of_call);
+
 	if (list->errors)
 	{
 		fprintf(logger,

@@ -27,10 +27,10 @@ const size_t LIST_START_CAPACITY = 4;
 const Value_t ELEM_VALUE_POISON = 0x666; 
 const int     ELEM_INDEX_POISON = -1;
 
-#define LIST_ELEM_SET_POISON(elem)  \
-	elem.next  = ELEM_INDEX_POISON; \
-	elem.prev  = ELEM_INDEX_POISON; \
-	elem.value = ELEM_VALUE_POISON;
+#define LIST_ELEM_SET_POISON(elem)		\
+		elem.next  = ELEM_INDEX_POISON; \
+		elem.prev  = ELEM_INDEX_POISON; \
+		elem.value = ELEM_VALUE_POISON;
 
 const int     FICT_ELEM_INDEX       = 0;
 const Value_t FICT_ELEM_VALUE       = 0xF1C;
@@ -55,8 +55,7 @@ struct List
 	size_t free;
 
 	unsigned errors;
-	FILE*    logger;
-
+	FILE* logger;
 	FILE* graph;
 };
 

@@ -9,13 +9,12 @@
 #include "akinator.h"
 #include "error_processing.h"
 
-Node* OpNew(char* data)
+Node* OpNew(char data)
 {
 	if (!data) return 0;
 
-	Node* node = {};
-	node = (Node*)calloc(1, sizeof(Node));
-	if(!node) return 0;
+	Node* node = (Node*)calloc(1, sizeof(Node));
+	if (!node) return 0;
 
 	strcpy(node->elem + 1, data);
 	node->elem[0] = '"';
@@ -35,12 +34,9 @@ void PrintNode(const Node* node, FILE* logger)
 {
 	if (!node) { fprintf(logger, "nil "); return; }
 	
-	fprintf(logger, "( ");
-
-	fprintf(logger, "%s ", node->elem);
+	fprintf(logger, "( %s ", node->elem);
 	
 	PrintNode(node->left, logger);
-	
 	PrintNode(node->right, logger);
 	
 	fprintf(logger, ") ");
@@ -126,7 +122,8 @@ void DestroyTree(Node** node_ptr)
 bool FillElemPropertyStack(Node* node, Stack* property_stack, char* elem_to_search)
 {
 	if(!node)
-		return;
+		return false;
+
 	if (node->elem == elem_to_search)
 		return true;
 
@@ -151,8 +148,9 @@ void AkinatorGiveDefinition(Akinator* akinator, char* node_elem)
 
 	if (FillElemPropertyStack(akinator->root, &akinator->node_properties, node_elem))
 	{
-		PropertyPresence property_presence = {};
+		PropertyPresense property_presence = {};
 		Node* current_node = akinator->root;
+
 		for(int i = 0; i < akinator->node_properties.size; i++)
 		{
 			StackPop(&akinator->node_properties, &property_presence);
@@ -166,8 +164,8 @@ void AkinatorGiveDefinition(Akinator* akinator, char* node_elem)
 				txSpeak("\v not %s,", current_node->elem);
 				current_node = current_node->right;
 			}
-			else
-				assert(0);
+			/*else
+				assert(0);*/
 		}
 	}
 	else
@@ -186,14 +184,14 @@ void AkinatorDoComparison(Akinator* akinator, char* node_elem1, char* node_elem2
 #define DESTROY_TREE_AND_RET(node_ptr) \
 	*errors_ptr &= TREE_STR_INVALID;   \
 	DestroyTree(node_ptr);             \
-	return 0;                          \
+	return 0;
 
-#define DO_AND_CHECK_SSCANF(check_cond)                                                                   \
-	read_args_num = sscanf(tree_text_repr + read_ch_count, "\"%[^\"]\"%n", node_data, &current_word_len); \
-	read_ch_count += current_word_len + 1;                                                                \
-	if (!(check_cond))                                                                                    \
-	{                                                                                                     \
-		DESTROY_TREE_AND_RET(node_ptr)                                                                    \
+#define DO_AND_CHECK_SSCANF(check_cond, scanf_format)                                                        \
+	read_args_num = sscanf(tree_text_repr + read_ch_count, scanf_format "%n", node_data, &current_word_len); \
+	read_ch_count += current_word_len + 1;                                                                   \
+	if (!(check_cond))                                                                                       \
+	{                                                                                                        \
+		DESTROY_TREE_AND_RET(node_ptr)                                                                       \
 	}                                                                                              
 
 size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_ptr)
@@ -210,12 +208,12 @@ size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_pt
 	size_t current_word_len = 0;
 	size_t read_args_num     = 0;
 	char node_data[MAX_NODE_STR_LEN] = "";
-
-	DO_AND_CHECK_SSCANF(read_args_num == 1)
+                           
+	DO_AND_CHECK_SSCANF(read_args_num == 1, "%s%n")
 
 	if(node_data[0] == '(' && current_word_len == 1)
 	{
-		DO_AND_CHECK_SSCANF(read_args_num == 1)
+		DO_AND_CHECK_SSCANF(read_args_num == 1, " \"%[^\"]\"%n")
 
 		Node* new_node = OpNew(node_data);
 		*node_ptr = new_node;
@@ -223,7 +221,7 @@ size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_pt
 		read_ch_count += ReadNode(&(*node_ptr)->left,  tree_text_repr + read_ch_count, errors_ptr);
 		read_ch_count += ReadNode(&(*node_ptr)->right, tree_text_repr + read_ch_count, errors_ptr);
 		
-		DO_AND_CHECK_SSCANF(read_args_num && node_data[0] == ')' && current_word_len == 1)
+		DO_AND_CHECK_SSCANF(read_args_num && node_data[0] == ')' && current_word_len == 1, "%s%n")
 	}
 	else
 	{
@@ -279,7 +277,7 @@ bool AkinatorDoIntro(Akinator* akinator)
 		txSpeak("\vIt so sad that Steve Jobs died from ligma...\n\n");
 	}
 	else
-		assert(0);
+		assert(!"Hz");
 
 	return false;
 }
@@ -341,8 +339,7 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 	
 		while (current_node->left && current_node->right)
 		{
-			PrintFormatedString(current_node->elem);
-			printf("? (y, n)\n");
+			txSpeak("\v \"%[^\"]\" ? (y, n)\n" , current_node->elem);
 
 			user_input = GetUserInput(correct_answers, correct_answers_size);		
 
@@ -350,12 +347,11 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 				current_node = current_node->left;
 			else if (user_input == NO_INPUT)
 				current_node = current_node->right;
-			else
-				assert(0);
+			//else
+			//	assert(0);
 		}
 		
-		PrintFormatedString(current_node->elem);
-		printf(" (y, n)\n");
+		txSpeak("\v \"%[^\"]\" ? (y, n)\n" , current_node->elem);
 
 		user_input = GetUserInput(correct_answers, correct_answers_size);		
 
@@ -372,8 +368,8 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 			if (user_input == YES_INPUT)
 				AkinatorSaveResults(akinator);
 		}
-		else
-			assert(0);
+		//else
+		//	assert(0);
 	}
 	
 	return 0;
@@ -397,7 +393,7 @@ unsigned AkinatorCtor(Akinator* akinator)
     ReadNode(&akinator->root, akinator->text_info.text, &akinator->errors);
 
 	if(!akinator->root)
-		ReadNode(&akinator->root, "( Noname nil nil )", &akinator->errors);
+		ReadNode(&akinator->root, "( \"Noname\" nil nil )", &akinator->errors);
 
 	ERROR_PROCESSING(akinator, AkinatorVerifier, AkinatorDump, AkinatorDtor)
 
