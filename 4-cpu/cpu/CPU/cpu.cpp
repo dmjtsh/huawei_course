@@ -323,14 +323,19 @@ unsigned CPUDtor(CPU* cpu)
 	if (!cpu)
 		return CPU_PTR_NULL;
 
-	fclose(cpu->compiled_file);
-	fclose(cpu->logger);
+	if (!(cpu->errors & CPU_DELETED))
+	{
+		fclose(cpu->compiled_file);
+		fclose(cpu->logger);
 
-	free(cpu->CS);
+		free(cpu->CS);
 
-	unsigned destructor_errors = 0;
-	if (StackDtor(&cpu->stack))
-		SetErrorBit(&destructor_errors, CPU_BAD_STACK);
+		unsigned destructor_errors = 0;
+		if (StackDtor(&cpu->stack))
+			SetErrorBit(&destructor_errors, CPU_BAD_STACK);
 
-	return destructor_errors;
+		return destructor_errors;
+	}
+	else
+		return CPU_DELETED;
 }

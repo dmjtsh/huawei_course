@@ -339,7 +339,7 @@ void ReadLine(char* source_command_str, Command* command)
 	}
 }
 
-void ASMProcessFile(ASM* assembler)
+unsigned ASMProcessFile(ASM* assembler)
 {
 	assert(assembler != NULL);
 
@@ -397,8 +397,7 @@ void ASMProcessFile(ASM* assembler)
 	fwrite(assembler->CS, sizeof(CPUCommandWithArg), assembler->commands_quatity, assembler->compiled_file);
 }
 
-
-int ASMCtor(ASM* assembler, const char* original_file_path, const char* compiled_file_path)
+unsigned ASMCtor(ASM* assembler, const char* original_file_path, const char* compiled_file_path)
 {
 	if (!assembler)
 		return ASM_PTR_NULL;
@@ -426,20 +425,26 @@ int ASMCtor(ASM* assembler, const char* original_file_path, const char* compiled
 	return assembler->errors;
 }
 
-
-int ASMDtor(ASM* assembler)
+unsigned ASMDtor(ASM* assembler)
 {
 	if (!assembler)
 		return ASM_PTR_NULL;
+	
+	if (!(assembler->errors & ASM_DELETED))
+	{
+		fclose(assembler->compiled_file);
+		fclose(assembler->logger);
 
-	fclose(assembler->compiled_file);
-	fclose(assembler->logger);
+		free(assembler->CS);
 
-	free(assembler->CS);
-
-	unsigned destructor_errors = 0;
-	if (TextInfoDtor(&assembler->text_info))
-		SetErrorBit(&destructor_errors, ASM_BAD_TEXT_INFO);
-
-	return destructor_errors;
+		unsigned destructor_errors = 0;
+		if (TextInfoDtor(&assembler->text_info))
+			SetErrorBit(&destructor_errors, ASM_BAD_TEXT_INFO);
+		
+		SetErrorBit(&assembler->errors, ASM_DELETED);
+		
+		return destructor_errors;
+	}
+	else
+		return ASM_DELETED;
 }

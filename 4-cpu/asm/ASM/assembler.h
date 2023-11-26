@@ -20,7 +20,8 @@ enum ASMErrors
 	INVALID_ASM_COMMAND       = 1 << 3,
 	ASM_LOGER_ERROR           = 1 << 4,
 	ASM_COMPILED_FILE_ERROR   = 1 << 5,
-	ASM_CURRENT_COMMAND_ERROR = 1 << 6
+	ASM_CURRENT_COMMAND_ERROR = 1 << 6,
+	ASM_DELETED               = 1 << 7
 };
 
 struct ASM
@@ -39,15 +40,15 @@ struct ASM
 	FILE* compiled_file;
 };
 
-void ASMProcessFile(ASM* assembler);
+unsigned ASMProcessFile(ASM* assembler);
 
 void ASMDump(ASM* assembler, size_t num_of_line, FILE* logger);
 
 const size_t BEFORE_PROCRESSING_FILE = 0; // Num of Line for Verifier
 int ASMVerifier(ASM* assembler);
 
-int ASMCtor(ASM* assembler, const char* file_path, const char* compiled_file_path);
+unsigned ASMCtor(ASM* assembler, const char* file_path, const char* compiled_file_path);
 
-int ASMDtor(ASM* assembler);
+unsigned ASMDtor(ASM* assembler);
 
 #endif
