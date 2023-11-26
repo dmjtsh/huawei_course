@@ -17,9 +17,10 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 {
 	static size_t num_of_call = 1;
 	fprintf(logger, 
-	"=======================================\n"
+		"=======================================\n"
 		"CPU DUMP CALL #%zu\n"
-		"Line: ", num_of_call);
+		"Line: ", 
+		num_of_call);
 	if (num_of_line == BEFORE_PROCRESSING_FILE)
 		fprintf(logger, "Before processing file\n");
 	else
@@ -28,7 +29,7 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 	if (cpu->errors)
 	{
 		fprintf(logger,
-		"-------------ERRORS------------\n");
+			"-------------ERRORS------------\n");
 		if (cpu->errors & CPU_PTR_NULL)
 		{
 			fprintf(logger, "CPU POINTER IS NULL\n");
@@ -43,11 +44,11 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 		CommandDump(&cpu->current_command, logger);
 
 		fprintf(logger,
-		"----------END_OF_ERRORS--------\n");
+			"----------END_OF_ERRORS--------\n");
 	}
 	else
 		fprintf(logger,
-		"------------NO_ERRORS----------\n");
+			"------------NO_ERRORS----------\n");
 
 	if (num_of_line > 0)
 	{
@@ -70,9 +71,9 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 	fprintf(logger, "\n");
 	CommandDump(&cpu->current_command, logger);
 	fprintf(logger,
-	"=======================================\n\n");
+		"=======================================\n\n");
+	
 	num_of_call++;
-
 }
 
 int CPUVerifier(CPU* cpu)
@@ -188,7 +189,7 @@ bool IsValidCommand(Command* command)
 	return true;
 }
 
-void CPUProcessFile(CPU* cpu)
+unsigned CPUProcessFile(CPU* cpu)
 {
 	assert(cpu != NULL);
 
@@ -281,7 +282,7 @@ Elem_t GetReg(CPU* cpu, Elem_t reg)
 	}
 }
 
-int CPUCtor(CPU* cpu, const char* file_path)
+unsigned CPUCtor(CPU* cpu, const char* file_path)
 {
 	if (!cpu)
 		return CPU_PTR_NULL;
@@ -317,7 +318,7 @@ int CPUCtor(CPU* cpu, const char* file_path)
 	return 0;
 }
 
-int CPUDtor(CPU* cpu)
+unsigned CPUDtor(CPU* cpu)
 {
 	if (!cpu)
 		return CPU_PTR_NULL;

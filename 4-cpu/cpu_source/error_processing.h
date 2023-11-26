@@ -9,6 +9,6 @@
 	{																					  \
 		StructDump(structure, line_of_file, stderr);									  \
 		StructDtor(structure);														      \
-		abort();																		  \
+		return structure->errors;														  \
 	}																					  \
 	StructDump(structure, line_of_file, structure->logger);								  

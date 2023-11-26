@@ -181,7 +181,7 @@ CMD_DEF(DRAW, 22, 0,
 
 CMD_DEF(HLT, -1, 0,
 	CPUDtor(cpu);
-	exit(228);
+	return 0;
 )
 
 #undef SPUSH  
