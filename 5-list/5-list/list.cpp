@@ -51,11 +51,11 @@ unsigned ListDataReallocUp(List* list, size_t new_capacity)
 	return 0;
 }
 
-size_t ListInsertAfter(List* list, size_t elem_index, double new_value)
+size_t ListInsertAfter(List* list, size_t elem_index, Value_t new_value)
 {
 	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor);
 
-	if(elem_index == ELEM_INDEX_POISON)
+	if (elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
 
 	Node* data = list->data;
@@ -74,7 +74,7 @@ size_t ListInsertAfter(List* list, size_t elem_index, double new_value)
 
 	list->size++;
 	
-	if(list->size + 1 >= list->capacity)
+	if (list->size + 1 >= list->capacity)
 		ListDataReallocUp(list, (list->capacity + 1) * REALLOC_UP_COEFF);
 
 	list->head = list->data[FICT_ELEM_INDEX].next;
@@ -83,7 +83,7 @@ size_t ListInsertAfter(List* list, size_t elem_index, double new_value)
 	return free_index;
 }
 
-size_t ListInsertBefore(List* list, size_t elem_index, double new_value)
+size_t ListInsertBefore(List* list, size_t elem_index, Value_t new_value)
 {
 	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor);
 
@@ -106,13 +106,23 @@ size_t ListInsertBefore(List* list, size_t elem_index, double new_value)
 
 	list->size++;
 
-	if(list->size + 1 >= list->capacity)
+	if (list->size + 1 >= list->capacity)
 		ListDataReallocUp(list, (list->capacity + 1) * REALLOC_UP_COEFF);
 	
 	list->head = list->data[FICT_ELEM_INDEX].next;
 	list->tail = list->data[FICT_ELEM_INDEX].prev;
 
 	return free_index;
+}
+
+size_t ListInsertFront(List* list, Value_t new_value)
+{
+	return ListInsertBefore(list, list->head, new_value);
+}
+
+size_t ListInsertBack(List* list, Value_t new_value)
+{
+	return ListInsertAfter(list, list->tail, new_value);
 }
 
 unsigned ListRemove(List* list, size_t remove_index)
@@ -143,9 +153,19 @@ unsigned ListRemove(List* list, size_t remove_index)
 	return 0;
 }
 
+unsigned ListRemoveFirst(List* list)
+{
+	return ListRemove(list, list->head);
+}
+
+unsigned ListRemoveLast(List* list)
+{
+	return ListRemove(list, list->tail);
+}
+
 unsigned ListCtor(List* list)
 {
-	if(!list)
+	if (!list)
 		return LIST_PTR_NULL;
 
 	list->free = LIST_FREE_START_INDEX;
@@ -169,7 +189,7 @@ unsigned ListCtor(List* list)
 
 unsigned ListDtor(List* list)
 {
-	if(!list)
+	if (!list)
 		return LIST_PTR_NULL;
 
 	if (!(list->errors & LIST_DELETED))

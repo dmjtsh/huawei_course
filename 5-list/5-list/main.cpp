@@ -2,13 +2,13 @@
 
 void TestList(List* list)
 {
-	ListInsertAfter(list, list->tail, 1);
+	ListInsertBack(list, 1);
 	//ListDump(list, stderr);
 
-	ListInsertAfter(list, list->tail, 2);
+	ListInsertBack(list, 2);
 	//ListDump(list, stderr);
 
- 	ListInsertAfter(list, list->tail, 4);
+ 	ListInsertBack(list, 4);
 	//ListDump(list, stderr);
 }
 

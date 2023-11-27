@@ -60,9 +60,13 @@ struct List
 	FILE* graph;
 };
 
-size_t ListInsertAfter (List* list, size_t elem_index, double new_elem_value);
-size_t ListInsertBefore(List* list, size_t elem_index, double new_elem_value);
+size_t ListInsertFront(List* list, Value_t new_value);
+size_t ListInsertBack(List* list, Value_t new_value);
+size_t ListInsertAfter (List* list, size_t elem_index, Value_t new_elem_value);
+size_t ListInsertBefore(List* list, size_t elem_index, Value_t new_elem_value);
 
+unsigned ListRemoveFirst(List* list);
+unsigned ListRemoveLast(List* list);
 unsigned ListRemove(List* list, size_t elem_index);
 
 unsigned ListCtor(List* list);
