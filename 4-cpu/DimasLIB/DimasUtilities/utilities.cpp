@@ -17,7 +17,7 @@ void SetErrorBit(unsigned* error, int error_bit)
 void UnsetErrorBit(unsigned* error, int error_bit)
 {
     assert(error != NULL);
-    *error &= ~error_bit;
+    *error &= ~(error_bit);
 }
 
 int GetFileSize(const char* file_name)

@@ -16,7 +16,8 @@ enum ListErrorBits
 	LIST_BAD_CAPACITY          = 1 << 5,
 	LIST_BAD_SIZE              = 1 << 6,
 	LIST_LOGER_ERROR           = 1 << 7,
-	LIST_GRAPH_ERROR           = 1 << 8
+	LIST_GRAPH_ERROR           = 1 << 8,
+	LIST_DELETED               = 1 << 9
 };
 
 const int    REALLOC_UP_COEFF    = 2;
@@ -24,8 +25,9 @@ const int    REALLOC_UP_COEFF    = 2;
 const size_t LIST_MAX_SIZE       = 10e15;
 const size_t LIST_START_CAPACITY = 4;
 
+constexpr const char* lol = "lolchik";
 const Value_t ELEM_VALUE_POISON = 0x666; 
-const int     ELEM_INDEX_POISON = -1;
+const size_t  ELEM_INDEX_POISON = 666;
 
 #define LIST_ELEM_SET_POISON(elem)		\
 		elem.next  = ELEM_INDEX_POISON; \

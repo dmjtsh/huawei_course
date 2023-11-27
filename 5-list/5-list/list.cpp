@@ -35,104 +35,110 @@ unsigned ListDataReallocUp(List* list, size_t new_capacity)
 	list->data     = new_data;
 	list->capacity = new_capacity - 1;
 
-	// FILL DATA WITH POISON AND CONNECT FREE
-	for (int i = list->size + 1; i < list->capacity + 1; i++)
-	{
-		list->data[i].prev = list->free;
-		list->free = i;
+	list->data[list->free].next = list->size + 1;
 
-		list->data[list->free].next  = ELEM_INDEX_POISON; // POISON
-		list->data[list->free].value = ELEM_VALUE_POISON; // POISON
+	// FILL DATA WITH POISON AND CONNECT FREE
+	for (size_t i = list->size + 1; i < list->capacity + 1; i++)
+	{
+		list->data[i].next = i + 1;
+
+		list->data[i].prev  = ELEM_INDEX_POISON; // POISON
+		list->data[i].value = ELEM_VALUE_POISON; // POISON
 	}
+
+	list->data[list->capacity].next = ELEM_INDEX_POISON; // FILLING LAST FREE ELEM WITH POISON
 
 	return 0;
 }
 
-size_t ListInsertAfter(List* list, size_t elem_index, double new_elem_value)
+size_t ListInsertAfter(List* list, size_t elem_index, double new_value)
 {
 	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
 
 	if(elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
 
-	size_t next_elem_index      = list->data[elem_index].next;
-	size_t free_prev_elem_index = list->data[list->free].prev;
-	size_t free_elem_index      = list->free;
+	Node* data = list->data;
+	size_t next_index      = list->data[elem_index].next;
+	size_t free_next_index = list->data[list->free].next;
+	size_t free_index      = list->free;
 
-	list->data[next_elem_index].prev  = free_elem_index;
-	list->data[elem_index].next       = free_elem_index;
+	data[next_index].prev  = free_index;
+	data[elem_index].next  = free_index;
 
-	list->data[free_elem_index].next  = next_elem_index;
-	list->data[free_elem_index].prev  = elem_index;
-	list->data[free_elem_index].value = new_elem_value;
+	data[free_index].next  = next_index;
+	data[free_index].prev  = elem_index;
+	data[free_index].value = new_value;
 
-	list->free = free_prev_elem_index;
+	list->free = free_next_index;
 
 	list->size++;
 	
-	if(list->size >= list->capacity)
+	if(list->size + 1 >= list->capacity)
 		ListDataReallocUp(list, (list->capacity + 1) * REALLOC_UP_COEFF);
 
 	list->head = list->data[FICT_ELEM_INDEX].next;
 	list->tail = list->data[FICT_ELEM_INDEX].prev;
 
-	return free_elem_index;
+	return free_index;
 }
 
-size_t ListInsertBefore(List* list, size_t elem_index, double new_elem_value)
+size_t ListInsertBefore(List* list, size_t elem_index, double new_value)
 {
 	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
 
 	if(elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
 
-	size_t prev_elem_index      = list->data[elem_index].prev;
-	size_t free_prev_elem_index = list->data[list->free].prev;
-	size_t free_elem_index      = list->free;
+	Node* data = list->data;
+	size_t prev_index      = list->data[elem_index].prev;
+	size_t free_index      = list->free;
+	size_t free_next_index = list->data[list->free].next;
 
-	list->data[prev_elem_index].next = free_elem_index;
-	list->data[elem_index].prev      = free_elem_index;
+	data[prev_index].next = free_index;
+	data[elem_index].prev = free_index;
 
-	list->data[free_elem_index].next  = elem_index;
-	list->data[free_elem_index].prev  = prev_elem_index;
-	list->data[free_elem_index].value = new_elem_value;
+	data[free_index].next  = elem_index;
+	data[free_index].prev  = prev_index;
+	data[free_index].value = new_value;
 	
-	list->free = free_prev_elem_index;
+	list->free = free_next_index;
 
 	list->size++;
 
-	if(list->size >= list->capacity)
+	if(list->size + 1 >= list->capacity)
 		ListDataReallocUp(list, (list->capacity + 1) * REALLOC_UP_COEFF);
 	
 	list->head = list->data[FICT_ELEM_INDEX].next;
 	list->tail = list->data[FICT_ELEM_INDEX].prev;
 
-	return free_elem_index;
+	return free_index;
 }
 
-unsigned ListRemove(List* list, size_t elem_index)
+unsigned ListRemove(List* list, size_t remove_index)
 {
 	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
 
-	if(elem_index == FICT_ELEM_INDEX || elem_index == ELEM_INDEX_POISON)
+	if(remove_index == FICT_ELEM_INDEX || remove_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
 	
-	size_t next_elem_index = list->data[elem_index].next;
-	size_t prev_elem_index = list->data[elem_index].prev;	
+	Node* data = list->data;
+	size_t next_index = data[remove_index].next;
+	size_t prev_index = data[remove_index].prev;	
 	
-	list->data[prev_elem_index].next = list->data[elem_index].next;
-	list->data[next_elem_index].prev = list->data[elem_index].prev;
+	data[prev_index].next = data[remove_index].next;
+	data[next_index].prev = data[remove_index].prev;
 
-	list->data[elem_index].prev = list->free;
-	list->free = elem_index;
+	data[remove_index].next = list->free;
+	list->free = remove_index;
 
-	list->data[list->free].next  = ELEM_INDEX_POISON; // POISON
-	list->data[list->free].value = ELEM_VALUE_POISON; // POISON
+	data[list->free].prev  = ELEM_INDEX_POISON; // POISON
+	data[list->free].value = ELEM_VALUE_POISON; // POISON
 
 	list->size--;
 	
-	list->head = list->data[FICT_ELEM_INDEX].next;
-	list->tail = list->data[FICT_ELEM_INDEX].prev;
+	list->head = data[FICT_ELEM_INDEX].next;
+	list->tail = data[FICT_ELEM_INDEX].prev;
 
 	return 0;
 }
@@ -146,8 +152,6 @@ unsigned ListCtor(List* list)
 
 	ListDataReallocUp(list, LIST_START_CAPACITY);
 
-	list->data[LIST_FREE_START_INDEX].prev = ELEM_INDEX_POISON; // FILLING WITH POISON END OF FREE LIST
-	
 	fopen_s(&list->logger, "list_logger.txt", "w");
 	fopen_s(&list->graph,  "list_graph.gv",   "w");
 
@@ -168,10 +172,17 @@ unsigned ListDtor(List* list)
 	if(!list)
 		return LIST_PTR_NULL;
 
-	free(list->data);
+	if (!(list->errors & LIST_DELETED))
+	{
+		free(list->data);
 
-	fclose(list->logger);
-	fclose(list->graph);
+		fclose(list->logger);
+		fclose(list->graph);
+
+		list->errors |= LIST_DELETED;
+	}
+	else
+		return LIST_DELETED;
 
 	return 0;
 }

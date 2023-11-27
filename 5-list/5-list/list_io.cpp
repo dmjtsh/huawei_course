@@ -11,21 +11,27 @@ void ListPrint(List* list, FILE* logger)
 
 	Node current_node = list->data[FICT_ELEM_INDEX];
 	size_t current_node_index = 0;
-	for(size_t i = 0; i < list->size + 1; i++)
-	{
-		current_node_index = list->data[current_node.next].prev;
-		fprintf(logger,   " | \n");
-
+	if(list->size == 0)
 		fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
-		current_node_index, current_node.value, current_node.prev, current_node.next);
-		if (current_node_index == list->head)
-			fprintf(logger, " <- head");
-		if (current_node_index == list->tail)
-			fprintf(logger, " <- tail");
+			current_node_index, current_node.value, current_node.prev, current_node.next);
+	else
+	{
+		for(size_t i = 0; i < list->size + 1; i++)
+		{
+			current_node_index = list->data[current_node.next].prev;
+			fprintf(logger,   " | \n");
 
-		fprintf(logger, "\n");
+			fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
+			current_node_index, current_node.value, current_node.prev, current_node.next);
+			if (current_node_index == list->head)
+				fprintf(logger, " <- head");
+			if (current_node_index == list->tail)
+				fprintf(logger, " <- tail");
 
-		current_node = list->data[current_node.next];
+			fprintf(logger, "\n");
+
+			current_node = list->data[current_node.next];
+		}
 	}
 
 	fprintf(logger, "\nfree nodes:\n");
@@ -34,8 +40,8 @@ void ListPrint(List* list, FILE* logger)
 	for (int i = 0; i < list->capacity + 1 - list->size - 1; i++)
 	{
 		fprintf(logger, " | \n");
-		fprintf(logger, "[%zu] prev: %zu\n", current_node_index, list->data[current_node_index].prev);
-		current_node_index = list->data[current_node_index].prev;
+		fprintf(logger, "[%zu] next: %zu\n", current_node_index, list->data[current_node_index].next);
+		current_node_index = list->data[current_node_index].next;
 	}
 }
 
@@ -48,7 +54,7 @@ void ListGraphDump(List* list)
 	// CREATING ELEMS
 	for(int i = 0; i < list->capacity + 1; i++)
 	{
-		if (list->data[i].next == ELEM_INDEX_POISON)
+		if (list->data[i].prev == ELEM_INDEX_POISON)
 		{
 			fprintf(list->graph, 
 			"node [shape=\"box\", style=\"filled\", fillcolor=\"#93ffc5\", fontcolor=\"#0e0a2a\", margin=\"0.01\"];\n");
