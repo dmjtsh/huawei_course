@@ -42,7 +42,7 @@ int StackDataReallocIfNeeded(Stack* stk, DataReallocAction realloc_action)
 	return 0;
 }
 
-int StackPushKernal(Stack* stk, Elem_t elem)
+int StackPushKernal(Stack* stk, StackElem_t elem)
 {
 	assert(stk != NULL);
 	assert(stk->data != NULL);
@@ -55,7 +55,7 @@ int StackPushKernal(Stack* stk, Elem_t elem)
 	return realloc_res;
 }
 
-int StackPopKernal(Stack* stk, Elem_t* deleted_elem)
+int StackPopKernal(Stack* stk, StackElem_t* deleted_elem)
 {
 	assert(stk != NULL);
 	assert(stk->data != NULL);
@@ -122,7 +122,7 @@ Hash_t StackHash(Stack* stk)
 
 	stk->hash   = 0;
 	stk->errors = 0;
-	Hash_t new_hash = Hash(stk, sizeof(Stack)) + Hash(stk->data, stk->size * sizeof(Elem_t));
+	Hash_t new_hash = Hash(stk, sizeof(Stack)) + Hash(stk->data, stk->size * sizeof(StackElem_t));
 	
 	stk->hash = old_hash;
 	stk->errors = errors;
@@ -216,12 +216,12 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	}
 
 	if (stk->data != NULL) // IF NOT FIRST CALL
-		stk->data = (Elem_t*)GetDataLeftCanaryPtr(stk);
+		stk->data = (StackElem_t*)GetDataLeftCanaryPtr(stk);
 
-	while ((new_capacity * sizeof(Elem_t)) % sizeof(Canary_t) != 0) // MEMORY ALIGNMENT
+	while ((new_capacity * sizeof(StackElem_t)) % sizeof(Canary_t) != 0) // MEMORY ALIGNMENT
 		new_capacity++;
 
-	Elem_t* new_data = (Elem_t*)realloc(stk->data, new_capacity * sizeof(Elem_t) + 2 * sizeof(Canary_t));
+	StackElem_t* new_data = (StackElem_t*)realloc(stk->data, new_capacity * sizeof(StackElem_t) + 2 * sizeof(Canary_t));
 	
 	stk->capacity = new_capacity;
 
@@ -232,7 +232,7 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	}
 
 	stk->data = new_data;
-	stk->data = (Elem_t*)((char *)stk->data + sizeof(Canary_t)); // MOVING DATA PTR
+	stk->data = (StackElem_t*)((char *)stk->data + sizeof(Canary_t)); // MOVING DATA PTR
 	
 	StackFillPoison(stk, new_capacity);
 
@@ -242,7 +242,7 @@ int StackDataRealloc(Stack* stk, size_t new_capacity)
 	return 0;
 }
 
-int StackPush(Stack* stk, Elem_t elem)
+int StackPush(Stack* stk, StackElem_t elem)
 {
 	int stack_state = StackCheckState(stk);
 	STACK_DUMP_TO_FILE(stk);
@@ -283,7 +283,7 @@ int StackPop(Stack* stk)
 	return stack_state;
 }
 
-int StackPop(Stack* stk, Elem_t* deleted_elem)
+int StackPop(Stack* stk, StackElem_t* deleted_elem)
 {
 	int stack_state = StackCheckStateBeforePop(stk);
 	STACK_DUMP_TO_FILE(stk);
@@ -353,7 +353,7 @@ int StackDtor(Stack* stk)
 	stk->stack_creation_inf.func = NULL;
 	stk->stack_creation_inf.var_name = NULL;
 
-	stk->data = (Elem_t*)GetDataLeftCanaryPtr(stk);
+	stk->data = (StackElem_t*)GetDataLeftCanaryPtr(stk);
 	stk->errors = STACK_POINTER_NULL | STACK_DATA_POINTER_NULL;
 
 	StackDtorKernal(stk);

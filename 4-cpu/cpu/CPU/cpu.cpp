@@ -81,6 +81,8 @@ int CPUVerifier(CPU* cpu)
 	if (!cpu)
 		return CPU_PTR_NULL;
 
+	StackCheckState(&cpu->stack);
+
 	CHECK_ERROR(cpu, cpu->stack.errors,         CPU_BAD_STACK)
 	CHECK_ERROR(cpu, !cpu->logger,              CPU_LOGER_ERROR)
 	CHECK_ERROR(cpu, !cpu->compiled_file,       CPU_COMPILED_FILE_ERROR)

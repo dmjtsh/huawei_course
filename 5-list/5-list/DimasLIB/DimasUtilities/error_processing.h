@@ -1,3 +1,6 @@
+#ifndef ERROR_PROCESSING_H
+#define ERROR_PROCESSING_H
+
 #define CHECK_ERROR(obj, condition, error)  \
 do										    \
 {											\
@@ -20,3 +23,5 @@ do																			\
 	}																		\
 	StructDump(structure, (structure)->logger);								\
 } while(0)
+
+#endif

@@ -3,7 +3,7 @@
 
 #include "stack.h"
 
-#define PRINT_DATA_TO_FILE(file, i, stk_data_elem)  fprintf(file, "  [%zu] = " ELEM_T_SPECIFIER, i, stk_data_elem)
+#define PRINT_DATA_TO_FILE(file, i, stk_data_elem)  fprintf(file, "  [%zu] = " STACK_ELEM_T_SPECIFIER, i, stk_data_elem)
 #define PRINT_DATA(i, stk_data_elem)                PRINT_DATA_TO_FILE(stdout, i, stk_data_elem)
 
 void PrintStackElems(Stack* stk);

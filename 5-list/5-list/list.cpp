@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "list.h"
-#include "error_processing.h"
+#include "DimasLIB/DimasUtilities/error_processing.h"
 #include "list_io.h"
 
 unsigned ListVerifier(List* list)
@@ -12,7 +12,7 @@ unsigned ListVerifier(List* list)
 		return LIST_PTR_NULL;
 
 	CHECK_ERROR(list, list->data == NULL,                  LIST_DATA_PTR_NULL);
-	CHECK_ERROR(list, list->logger == NULL,                LIST_LOGER_ERROR);
+	CHECK_ERROR(list, list->logger == NULL,                LIST_LOGGER_ERROR);
 	CHECK_ERROR(list, list->logger == NULL,                LIST_GRAPH_ERROR);
 	CHECK_ERROR(list, list->size     >= LIST_MAX_SIZE,     LIST_BAD_SIZE);
 	CHECK_ERROR(list, list->capacity + 1 >= LIST_MAX_SIZE, LIST_BAD_CAPACITY);

@@ -57,6 +57,8 @@ struct Stack
 	Canary_t right_canary;
 };
 
+int StackCheckState(Stack* stk);
+
 Hash_t StackHash(const Stack* stk);
 
 int _StackCtor(Stack* stk, const char* var_name, const char* file_name, size_t line, const char* func_name);

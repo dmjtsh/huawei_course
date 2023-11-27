@@ -3,8 +3,8 @@
 
 enum PropertyPresense { GOT_PROP, DOESNT_GOT_PROP };
 
-typedef PropertyPresense Elem_t;
-#define ELEM_T_SPECIFIER "%d"
+typedef PropertyPresense StackElem_t;
+#define STACK_ELEM_T_SPECIFIER "%d"
 
 #ifdef _DEBUG
 
@@ -28,7 +28,7 @@ enum StackErrorBits
 };
 
 #define StackCtor(stack) _StackCtor ((stack), #stack, __FILE__, __LINE__, __func__)
-const Elem_t POISON_ELEM = (Elem_t)666;
+const StackElem_t POISON_ELEM = (StackElem_t)666;
 
 typedef unsigned long long Canary_t;
 
@@ -50,7 +50,7 @@ struct Stack
 	
 	size_t size;
 	size_t capacity;
-	Elem_t* data;
+	StackElem_t* data;
 
 	unsigned errors;
 	StackCreationInfo stack_creation_inf;
@@ -78,12 +78,10 @@ void StackCtor(Stack* stk);
 
 #endif
 
-int StackPop(Stack* stk);
-
-int StackPop(Stack* stk, Elem_t* deleted_elem);
-
-int StackPush(Stack* stk, Elem_t elem);
-
 int StackDtor(Stack* stk);
 
+int StackPop(Stack* stk);
+int StackPop(Stack* stk, StackElem_t* deleted_elem);
+
+int StackPush(Stack* stk, StackElem_t elem);
 #endif // STACK_H

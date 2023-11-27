@@ -15,7 +15,7 @@ enum ListErrorBits
 	LIST_REALLOC_ERROR         = 1 << 4,
 	LIST_BAD_CAPACITY          = 1 << 5,
 	LIST_BAD_SIZE              = 1 << 6,
-	LIST_LOGER_ERROR           = 1 << 7,
+	LIST_LOGGER_ERROR          = 1 << 7,
 	LIST_GRAPH_ERROR           = 1 << 8,
 	LIST_DELETED               = 1 << 9
 };

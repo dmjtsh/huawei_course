@@ -9,20 +9,20 @@ void ListPrint(List* list, FILE* logger)
 
 	fprintf(logger, "nodes:\n");
 
-	Node current_node = list->data[FICT_ELEM_INDEX];
+	Node* current_node = &list->data[FICT_ELEM_INDEX];
 	size_t current_node_index = 0;
 	if(list->size == 0)
 		fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
-			current_node_index, current_node.value, current_node.prev, current_node.next);
+			current_node_index, current_node->value, current_node->prev, current_node->next);
 	else
 	{
 		for(size_t i = 0; i < list->size + 1; i++)
 		{
-			current_node_index = list->data[current_node.next].prev;
+			current_node_index = list->data[current_node->next].prev;
 			fprintf(logger,   " | \n");
 
 			fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
-			current_node_index, current_node.value, current_node.prev, current_node.next);
+			current_node_index, current_node->value, current_node->prev, current_node->next);
 			if (current_node_index == list->head)
 				fprintf(logger, " <- head");
 			if (current_node_index == list->tail)
@@ -30,7 +30,7 @@ void ListPrint(List* list, FILE* logger)
 
 			fprintf(logger, "\n");
 
-			current_node = list->data[current_node.next];
+			current_node = &list->data[current_node->next];
 		}
 	}
 
@@ -161,7 +161,7 @@ void ListDump(List* list, FILE* logger)
 			fprintf(logger, "List POINTER IS NULL\n");
 			return;
 		}
-		if (list->errors & LIST_LOGER_ERROR)           fprintf(logger, "List LOGER ERROR\n");
+		if (list->errors & LIST_LOGGER_ERROR)          fprintf(logger, "List LOGGER ERROR\n");
 		if (list->errors & LIST_DATA_PTR_NULL)         fprintf(logger, "List Data Ptr Null\n");
         if (list->errors & LIST_SIZE_GREATER_CAPACITY) fprintf(logger, "List Size GREATER Capacity\n");
         if (list->errors & LIST_SIZE_LESS_ONE)         fprintf(logger, "List Size LESS One\n");

@@ -4,43 +4,41 @@
 #include <stdio.h>
 
 #include "TX/TXLib.h"
+#include "tree.h"
 #include "DimasLIB/DimasStack/stack.h"
 #include "DimasLIB/DimasTextInfo/text_info.h"
 
-const size_t MAX_NODE_STR_LEN = 60;
+#define SSCANF_WITH_CHECK(scanf_format, input_elem)				\
+	do															\
+	{															\
+		size_t valid_inputs_num = 0;							\
+		do														\
+		{														\
+			valid_inputs_num = scanf(scanf_format, input_elem);	\
+		}													    \
+		while(valid_inputs_num != 1);							\
+	} while(0)
 
-struct Node
-{
-	char elem[MAX_NODE_STR_LEN];
+#define ARR_LEN(arr) sizeof(arr) / sizeof(arr[0])
 
-	Node* left;
-	Node* right;
-};
+const int SYNTAX_ERROR = -1;
 
-Node* OpNew (char* data);
-void OpDelete (Node* node);
+// YES AND NO USER INPUTS
+const char YES_INPUT = 'y';	
+const char  NO_INPUT = 'n';
+constexpr const char YES_NO_USER_INPUTS[2] = {YES_INPUT, NO_INPUT};
 
-enum AkinatorErrorBits
-{
-	AKINATOR_PTR_NULL        = 1 << 0,
-	ROOT_PTR_NULL            = 1 << 1,
-	NODE_CALLOC_ERROR        = 1 << 2,
-	AKINATOR_BAD_SIZE        = 1 << 3,
-	AKINATOR_LOGER_ERROR     = 1 << 4,
-	AKINATOR_GRAPH_ERROR     = 1 << 5,
-	TREE_STR_INVALID         = 1 << 6,
-	AKINATOR_TEXT_INFO_ERROR = 1 << 7,
-	PROPERTY_STACK_ERROR     = 1 << 8
-};
-
-const size_t AKINATOR_MAX_SIZE = 10e15;
+// GAME MODES
+const char GUESS_GAME_MODE = 'g';
+const char COMP_GAME_MODE  = 'c';
+const char DEF_GAME_MODE   = 'd';
+constexpr const char GAME_MODES[3] = {GUESS_GAME_MODE, COMP_GAME_MODE, DEF_GAME_MODE};
 
 struct Akinator
 {
 	Stack node_properties;
 
-	Node* root;
-	size_t size;
+	Tree tree;
 
 	unsigned errors;
 
@@ -49,17 +47,9 @@ struct Akinator
 	TextInfo text_info;
 };
 
-const char YES_INPUT = 'y';	
-const char  NO_INPUT = 'n';
-
 unsigned AkinatorPerformGame(Akinator* akinator);
 
 unsigned AkinatorCtor(Akinator* akinator);
 unsigned AkinatorDtor(Akinator* akinator);
-
-const int SYNTAX_ERROR = -1;
-
-void PrintNode(const Node* node, FILE* logger);
-size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_ptr);
 
 #endif // AKINATOR_H
