@@ -1,0 +1,18 @@
+=======================================
+AKINATOR DUMP CALL #1
+------------NO_ERRORS----------
+Akinator Tree:
+
+( "This person live in 434" ( "This person is daun" ( "This person is huesos" ( "Rusal" nil nil ) ( "Dimas" nil nil ) ) ( "Elisei" nil nil ) ) ( "Vedet matan" ( "Vedet u fivtov" ( "Lukashev" nil nil ) ( "Petrovich" nil nil ) ) ( "Zeleniy" ( "Krokodil" nil nil ) ( "KSHCHTVR" ( "DED (lox)" nil nil ) ( "Ovchinkin" nil nil ) ) ) ) ) 
+
+=======================================
+
+=======================================
+AKINATOR DUMP CALL #2
+------------NO_ERRORS----------
+Akinator Tree:
+
+( "This person live in 434" ( "This person is daun" ( "This person is huesos" ( "Rusal" nil nil ) ( "Dimas" nil nil ) ) ( "Elisei" nil nil ) ) ( "Vedet matan" ( "Vedet u fivtov" ( "Lukashev" nil nil ) ( "Petrovich" nil nil ) ) ( "Zeleniy" ( "Krokodil" nil nil ) ( "KSHCHTVR" ( "DED (lox)" nil nil ) ( "Ovchinkin" nil nil ) ) ) ) ) 
+
+=======================================
+

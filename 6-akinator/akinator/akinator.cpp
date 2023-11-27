@@ -9,23 +9,21 @@
 #include "akinator.h"
 #include "error_processing.h"
 
-Node* OpNew(char data)
+Node* OpNew(char* data)
 {
-	if (!data) return 0;
+	assert(data != nullptr);
 
 	Node* node = (Node*)calloc(1, sizeof(Node));
-	if (!node) return 0;
+	if (!node) return nullptr;
 
-	strcpy(node->elem + 1, data);
-	node->elem[0] = '"';
-	node->elem[strlen(node->elem)] = '"';
+	strcpy(node->elem, data);
 
 	return node;
 }
 
 void OpDelete(Node* node)
 {
-	if (!node) return;
+	assert(node != nullptr);
 
 	free(node);
 }
@@ -34,7 +32,7 @@ void PrintNode(const Node* node, FILE* logger)
 {
 	if (!node) { fprintf(logger, "nil "); return; }
 	
-	fprintf(logger, "( %s ", node->elem);
+	fprintf(logger, "( \"%s\" ", node->elem);
 	
 	PrintNode(node->left, logger);
 	PrintNode(node->right, logger);
@@ -121,8 +119,9 @@ void DestroyTree(Node** node_ptr)
 
 bool FillElemPropertyStack(Node* node, Stack* property_stack, char* elem_to_search)
 {
-	if(!node)
-		return false;
+	assert(node != nullptr);
+	assert(property_stack != nullptr);
+	assert(elem_to_search != nullptr);
 
 	if (node->elem == elem_to_search)
 		return true;
@@ -144,6 +143,9 @@ bool FillElemPropertyStack(Node* node, Stack* property_stack, char* elem_to_sear
 
 void AkinatorGiveDefinition(Akinator* akinator, char* node_elem)
 {
+	assert(akinator  != nullptr);
+	assert(node_elem != nullptr);
+
 	txSpeak("The person %s is ", node_elem);
 
 	if (FillElemPropertyStack(akinator->root, &akinator->node_properties, node_elem))
@@ -164,8 +166,8 @@ void AkinatorGiveDefinition(Akinator* akinator, char* node_elem)
 				txSpeak("\v not %s,", current_node->elem);
 				current_node = current_node->right;
 			}
-			/*else
-				assert(0);*/
+			else
+				assert(!"0");
 		}
 	}
 	else
@@ -176,6 +178,10 @@ void AkinatorGiveDefinition(Akinator* akinator, char* node_elem)
 
 void AkinatorDoComparison(Akinator* akinator, char* node_elem1, char* node_elem2)
 {
+	assert(akinator   != nullptr);
+	assert(node_elem1 != nullptr);
+	assert(node_elem2 != nullptr);
+
 	AkinatorGiveDefinition(akinator, node_elem1);
 	txSpeak("\v but, ");
 	AkinatorGiveDefinition(akinator, node_elem2);
@@ -196,8 +202,9 @@ void AkinatorDoComparison(Akinator* akinator, char* node_elem1, char* node_elem2
 
 size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_ptr)
 {
-	if (!errors_ptr || !tree_text_repr)
-		return 0;
+	assert(node_ptr       != nullptr);
+	assert(tree_text_repr != nullptr);
+	assert(errors_ptr     != nullptr);
 
 	if(*errors_ptr)
 	{
@@ -208,12 +215,13 @@ size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_pt
 	size_t current_word_len = 0;
 	size_t read_args_num     = 0;
 	char node_data[MAX_NODE_STR_LEN] = "";
-                           
-	DO_AND_CHECK_SSCANF(read_args_num == 1, "%s%n")
+                                                  
+	DO_AND_CHECK_SSCANF(read_args_num == 1, "%s")
 
 	if(node_data[0] == '(' && current_word_len == 1)
 	{
-		DO_AND_CHECK_SSCANF(read_args_num == 1, " \"%[^\"]\"%n")
+
+		DO_AND_CHECK_SSCANF(read_args_num == 1, " \"%[^\"]\"")
 
 		Node* new_node = OpNew(node_data);
 		*node_ptr = new_node;
@@ -221,7 +229,7 @@ size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_pt
 		read_ch_count += ReadNode(&(*node_ptr)->left,  tree_text_repr + read_ch_count, errors_ptr);
 		read_ch_count += ReadNode(&(*node_ptr)->right, tree_text_repr + read_ch_count, errors_ptr);
 		
-		DO_AND_CHECK_SSCANF(read_args_num && node_data[0] == ')' && current_word_len == 1, "%s%n")
+		DO_AND_CHECK_SSCANF(read_args_num && node_data[0] == ')' && current_word_len == 1, "%s")
 	}
 	else
 	{
@@ -239,6 +247,8 @@ size_t ReadNode(Node** node_ptr, const char* tree_text_repr, unsigned* errors_pt
 
 char GetUserInput(char* correct_answers, size_t arr_size)
 {
+	assert(correct_answers != nullptr);
+
 	size_t valid_inputs_num = 0;
 	char         user_input = 0;
 
@@ -259,17 +269,23 @@ char GetUserInput(char* correct_answers, size_t arr_size)
 
 bool AkinatorDoIntro(Akinator* akinator)
 {
-	txSpeak("\vHey BR! Today u will play DIMA! (Delicious Incredible Magestic Akinator) \n"
+	assert(akinator != nullptr);
+
+	//txSpeak("\vHey BR! Today u will play DIMA! (Delicious Incredible Magestic Akinator) \n"
+	//"Do you want to play? (y, n)\n");
+
+	printf("Hey BR! Today u will play DIMA! (Delicious Incredible Magestic Akinator) \n"
 	"Do you want to play? (y, n)\n");
 	
 	char correct_answers[] = {YES_INPUT, NO_INPUT};
-	char        user_input = 0;
+	char user_input = 0;
 
 	user_input = GetUserInput(correct_answers, sizeof(correct_answers) / sizeof(correct_answers[0]));
 
 	if (user_input == YES_INPUT)
 	{
-		txSpeak("\vOkeysi! Lets start the game!\n\n");
+		printf("Okeysi! Lets start the game!\n\n");
+		//txSpeak("\vOkeysi! Lets start the game!\n\n");
 		return true;
 	}
 	else if (user_input == NO_INPUT)
@@ -277,26 +293,30 @@ bool AkinatorDoIntro(Akinator* akinator)
 		txSpeak("\vIt so sad that Steve Jobs died from ligma...\n\n");
 	}
 	else
-		assert(!"Hz");
+		assert(!"0");
 
 	return false;
 }
 
 void AkinatorAddUserNode(Node* node)
 {
+	assert(node != nullptr);
+
 	char new_node_elem[MAX_NODE_STR_LEN]      = "";
 	char new_node_elem_diff[MAX_NODE_STR_LEN] = "";
 	size_t user_input_len   = 0;
 	size_t valid_inputs_num = 0;
 
-	txSpeak("\vWhat's on your mind?\n");
+	printf("What's on your mind?\n");
+	//txSpeak("\vWhat's on your mind?\n");
 	do
 	{
 		valid_inputs_num = scanf(" %[^\n]%n", new_node_elem, &user_input_len);
 	}
 	while(valid_inputs_num != 1);
 
-	txSpeak("\vHow %s different from %s?\n", new_node_elem, node->elem);
+	printf("How %s different from %s?\n", new_node_elem, node->elem);
+	//txSpeak("\vHow %s different from %s?\n", new_node_elem, node->elem);
 	
 	do
 	{
@@ -304,7 +324,8 @@ void AkinatorAddUserNode(Node* node)
 	}
 	while(valid_inputs_num != 1);
 
-	txSpeak("\vOkay I'll remember it!!!\n");
+	printf("Okay I'll remember it!!!\n");
+	//txSpeak("\vOkay I'll remember it!!!\n");
 
 	node->right  = OpNew(node->elem);
 	strcpy(node->elem, new_node_elem_diff);
@@ -313,11 +334,14 @@ void AkinatorAddUserNode(Node* node)
 
 void AkinatorCelebrateVictory()
 {
-	txSpeak("\vSo, I won again, thanks to my incredible creator Dimas!\n");
+	printf("So, I won again, thanks to my incredible creator Dimas!\n");
+	//txSpeak("\vSo, I won again, thanks to my incredible creator Dimas!\n");
 }
 
 void AkinatorSaveResults(Akinator* akinator)
 {
+	assert(akinator != nullptr);
+
 	FILE* akinator_tree_file = fopen(akinator->text_info.file_name, "w");
 	
 	PrintNode(akinator->root, akinator_tree_file);
@@ -329,9 +353,9 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 {
 	ERROR_PROCESSING(akinator, AkinatorVerifier, AkinatorDump, AkinatorDtor);
 		
-	char        user_input      = 0;
-	char correct_answers[]      = {YES_INPUT, NO_INPUT};
+	char correct_answers[] = {YES_INPUT, NO_INPUT};
 	size_t correct_answers_size = sizeof(correct_answers) / sizeof(correct_answers[0]);
+	char user_input = 0;
 
 	if (AkinatorDoIntro(akinator))
 	{
@@ -339,7 +363,8 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 	
 		while (current_node->left && current_node->right)
 		{
-			txSpeak("\v \"%[^\"]\" ? (y, n)\n" , current_node->elem);
+			printf("%s? (y, n)\n" , current_node->elem);
+			//txSpeak("\v%s? (y, n)\n" , current_node->elem);
 
 			user_input = GetUserInput(correct_answers, correct_answers_size);		
 
@@ -347,11 +372,12 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 				current_node = current_node->left;
 			else if (user_input == NO_INPUT)
 				current_node = current_node->right;
-			//else
-			//	assert(0);
+			else
+				assert(!"0");
 		}
 		
-		txSpeak("\v \"%[^\"]\" ? (y, n)\n" , current_node->elem);
+		printf("%s? (y, n)\n" , current_node->elem);
+		//txSpeak("\v%s? (y, n)\n" , current_node->elem);
 
 		user_input = GetUserInput(correct_answers, correct_answers_size);		
 
@@ -361,15 +387,16 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 		{
 			AkinatorAddUserNode(current_node);
 
-			txSpeak("\vDo you want to save results in Data Base? (y, n)\n");
+			printf("Do you want to save results in Data Base? (y, n)\n");
+			//txSpeak("\vDo you want to save results in Data Base? (y, n)\n");
 
 			user_input = GetUserInput(correct_answers, correct_answers_size);
 
 			if (user_input == YES_INPUT)
 				AkinatorSaveResults(akinator);
 		}
-		//else
-		//	assert(0);
+		else
+			assert(!"0");
 	}
 	
 	return 0;
@@ -377,8 +404,7 @@ unsigned AkinatorPerformGame(Akinator* akinator)
 
 unsigned AkinatorCtor(Akinator* akinator)
 {
-	if(!akinator)
-		return AKINATOR_PTR_NULL;
+	assert(akinator != nullptr);
 
 	fopen_s(&akinator->logger, "akinator_logger.txt", "w");
 
@@ -402,8 +428,7 @@ unsigned AkinatorCtor(Akinator* akinator)
 
 unsigned AkinatorDtor(Akinator* akinator)
 {
-	if (!akinator)
-		return AKINATOR_PTR_NULL;
+	assert(akinator != nullptr);
 
 	if (StackDtor(&akinator->node_properties))
 		return akinator->node_properties.errors;

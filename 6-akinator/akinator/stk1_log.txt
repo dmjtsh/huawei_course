@@ -2,11 +2,27 @@
 STACK DUMP CALL #1
 Called from: _StackCtor(335)
 -----------NO_ERRORS-----------
-Stack [000000672B95FC40], name: "&akinator->node_properties" from: AkinatorCtor(393)
+Stack [0000007E8818F850], name: "&akinator->node_properties" from: AkinatorCtor(416)
 {
 size = 0
 capacity = 2
-data[000002469DB5A2A8]
+data[000001F356B332A8]
+  {
+  [0] = 666 ( POISON )
+  [1] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #2
+Called from: StackDtor(343)
+-----------NO_ERRORS-----------
+Stack [0000007E8818F850], name: "&akinator->node_properties" from: AkinatorCtor(416)
+{
+size = 0
+capacity = 2
+data[000001F356B332A8]
   {
   [0] = 666 ( POISON )
   [1] = 666 ( POISON )
