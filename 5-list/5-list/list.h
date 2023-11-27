@@ -25,7 +25,6 @@ const int    REALLOC_UP_COEFF    = 2;
 const size_t LIST_MAX_SIZE       = 10e15;
 const size_t LIST_START_CAPACITY = 4;
 
-constexpr const char* lol = "lolchik";
 const Value_t ELEM_VALUE_POISON = 0x666; 
 const size_t  ELEM_INDEX_POISON = 666;
 

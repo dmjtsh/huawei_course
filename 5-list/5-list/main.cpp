@@ -17,7 +17,7 @@ int main()
 	List list = {};
 	
 	ListCtor(&list);
-	ListDump(&list, stderr);
+	//ListDump(&list, stderr);
 
 	TestList(&list);
 

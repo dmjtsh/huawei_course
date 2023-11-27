@@ -11,12 +11,12 @@ unsigned ListVerifier(List* list)
 	if (!list)
 		return LIST_PTR_NULL;
 
-	CHECK_ERROR(list, list->data == NULL,                  LIST_DATA_PTR_NULL)
-	CHECK_ERROR(list, list->logger == NULL,                LIST_LOGER_ERROR)
-	CHECK_ERROR(list, list->logger == NULL,                LIST_GRAPH_ERROR)
-	CHECK_ERROR(list, list->size     >= LIST_MAX_SIZE,     LIST_BAD_SIZE)
-	CHECK_ERROR(list, list->capacity + 1 >= LIST_MAX_SIZE, LIST_BAD_CAPACITY)
-	CHECK_ERROR(list, list->capacity + 1 < list->size,     LIST_SIZE_GREATER_CAPACITY)
+	CHECK_ERROR(list, list->data == NULL,                  LIST_DATA_PTR_NULL);
+	CHECK_ERROR(list, list->logger == NULL,                LIST_LOGER_ERROR);
+	CHECK_ERROR(list, list->logger == NULL,                LIST_GRAPH_ERROR);
+	CHECK_ERROR(list, list->size     >= LIST_MAX_SIZE,     LIST_BAD_SIZE);
+	CHECK_ERROR(list, list->capacity + 1 >= LIST_MAX_SIZE, LIST_BAD_CAPACITY);
+	CHECK_ERROR(list, list->capacity + 1 < list->size,     LIST_SIZE_GREATER_CAPACITY);
 
 	return list->errors;
 }
@@ -53,7 +53,7 @@ unsigned ListDataReallocUp(List* list, size_t new_capacity)
 
 size_t ListInsertAfter(List* list, size_t elem_index, double new_value)
 {
-	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
+	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor);
 
 	if(elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
@@ -85,7 +85,7 @@ size_t ListInsertAfter(List* list, size_t elem_index, double new_value)
 
 size_t ListInsertBefore(List* list, size_t elem_index, double new_value)
 {
-	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
+	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor);
 
 	if(elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
@@ -117,7 +117,7 @@ size_t ListInsertBefore(List* list, size_t elem_index, double new_value)
 
 unsigned ListRemove(List* list, size_t remove_index)
 {
-	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
+	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor);
 
 	if(remove_index == FICT_ELEM_INDEX || remove_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
@@ -162,7 +162,7 @@ unsigned ListCtor(List* list)
 	list->head = FICT_ELEM_INDEX;
 	list->tail = FICT_ELEM_INDEX;
 
-	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor)
+	ERROR_PROCESSING(list, ListVerifier, ListDump, ListDtor);
 	
 	return 0;
 }

@@ -45,80 +45,100 @@ void ListPrint(List* list, FILE* logger)
 	}
 }
 
+const char* HEAD_COLOR      = "#ff0eef";
+const char* TAIL_COLOR      = "#ff0eef";
+const char* FREE_COLOR      = "#93ffc5";
+const char* LIST_INFO_COLOR = "#ffdf83";
+const char* NEXT_COLOR      = "#7540ff";
+const char* PREV_COLOR      = "#ff5b23";
+const char* FICT_COLOR      = "#24b0ff";
+const char* USUAL_COLOR     = "#c3c1f1";
+const char* FONT_COLOR      = "#0e0a2a";
+const char* INVISIBLE_COLOR = "#43ff6400";
+
 void ListGraphDump(List* list)
 {
 	assert(list != NULL);
 
 	fprintf(list->graph, "digraph ListGraph {\n"
 						 "rankdir=\"LR\";\n");
+
 	// CREATING ELEMS
 	for(int i = 0; i < list->capacity + 1; i++)
 	{
-		if (list->data[i].prev == ELEM_INDEX_POISON)
-		{
-			fprintf(list->graph, 
-			"node [shape=\"box\", style=\"filled\", fillcolor=\"#93ffc5\", fontcolor=\"#0e0a2a\", margin=\"0.01\"];\n");
-		}
-		else if (i == FICT_ELEM_INDEX)
-		{
-			fprintf(list->graph, 
-			"node [shape=\"box\", style=\"filled\", fillcolor=\"#24b0ff\", fontcolor=\"#0e0a2a\", margin=\"0.01\"];\n");
-		}
-		fprintf(list->graph, 
-		"\"Node%d\" [shape=\"record\", label=\"\\n Node: %d \\n\\n|\\n Value:" VALUE_T_SPECIFIER "\\n\\n | Prev: %d | Next: %d\"];\n",
-		i, i, list->data[i].value, list->data[i].prev, list->data[i].next);	
+		const char* fillColor = (list->data[i].prev == ELEM_INDEX_POISON) ? FREE_COLOR :
+                                (i == FICT_ELEM_INDEX) ? FICT_COLOR : USUAL_COLOR;
 
-		fprintf(list->graph, 
-		"node [shape=\"box\", style=\"filled\", fillcolor=\"#c3c1f1\", fontcolor=\"#0e0a2a\", margin=\"0.01\"];\n");
+		fprintf(list->graph,
+			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n",
+			fillColor, FONT_COLOR);
+
+		fprintf(list->graph,
+			"\"Node%d\" [shape=\"record\", label=\"\\n Node: %d \\n\\n|\\n Value:" VALUE_T_SPECIFIER "\\n\\n | Prev: %d | Next: %d\"];\n",
+			i, i, list->data[i].value, list->data[i].prev, list->data[i].next);
+
+		fprintf(list->graph,
+			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n",
+			FONT_COLOR);
 	}
 
 	// INVISIBLE LINES FOR ALIGNMENT
-	for(int i = 0; i < list->capacity; i++) 
+	for(int i = 0; i < list->capacity; i++)
 	{
-		fprintf(list->graph, "\"Node%d\" -> \"Node%d\" [color=\"#43ff6400\"];", i, i+1);
+		fprintf(list->graph, "\"Node%d\" -> \"Node%d\" [color=\"%s\"];", i, i+1, INVISIBLE_COLOR);
 	}
-	
+
 	// CREATING LINKS BETWEEN ELEMS
 	for(int i = 0; i < list->capacity + 1; i++)
 	{
 		if (list->data[i].prev != ELEM_INDEX_POISON)
 		{
-			fprintf(list->graph, "\"Node%d\" -> \"Node%d\"  [color=\"#ff5b23\" fontcolor=\"#ff5b23\"];\n", 
-			i, list->data[i].prev);
+			fprintf(list->graph, "\"Node%d\" -> \"Node%d\"  [color=\"%s\" fontcolor=\"%s\"];\n",
+				i, list->data[i].prev, PREV_COLOR, PREV_COLOR);
 		}
 
 		if (list->data[i].next != ELEM_INDEX_POISON)
 		{
-			fprintf(list->graph, "\"Node%d\" -> \"Node%d\" [color=\"#7540ff\" fontcolor=\"#7540ff\"];\n", 
-			i, list->data[i].next);
+			fprintf(list->graph, "\"Node%d\" -> \"Node%d\" [color=\"%s\" fontcolor=\"%s\"];\n",
+				i, list->data[i].next, NEXT_COLOR, NEXT_COLOR);
 		}
 	}
-	
+
 	// Creating LIST OBJ, FREE PTR, HEAD PTR, TAIL PTR
-	fprintf(list->graph, 
-	"node [shape=\"box\", style=\"filled\", fillcolor=\"#ffdf83\", fontcolor=\"#0e0a2a\", margin=\"0.1\"];\n"
-	"List [shape=record, label=\"\\n DIMAS LIST \\n \\n | \\n Capacity: 7 \\n \\n | \\n Size: 4 \\n \\n\" , fontsize=18];\n"
+	fprintf(list->graph,
+		"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.1\"];\n"
+		"List [shape=record, label=\"\\n DIMAS LIST \\n \\n | \\n Capacity: 7 \\n \\n | \\n Size: 4 \\n \\n\" , fontsize=18];\n"
 
-	"node [shape=box, style=filled, fillcolor=\"#93ffc5\", fontcolor=\"#0e0a2a\", margin=\"0.01\"];\n"
-	"Free [shape=record, label=\"Free\", fontsize=16];\n"
+		"node [shape=box, style=filled, fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n"
+		"Free [shape=record, label=\"Free\", fontsize=16];\n"
 
-	"node [shape=box, style=filled, fillcolor=\"#ff0eef\", fontcolor=\"#0e0a2a\", margin=\"0.01\"];\n"
-	"Head [shape=record, label=\"Head\", fontsize=16];\n"
+		"node [shape=box, style=filled, fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n"
+		"Head [shape=record, label=\"Head\", fontsize=16];\n"
 
-	"node [shape=box, style=filled, fillcolor=\"#ff0eef\", fontcolor=\"#0e0a2a\", margin=\"0.01\"];\n"
-	"Tail [shape=record, label=\"Tail\", fontsize=16];\n");
+		"node [shape=box, style=filled, fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n"
+		"Tail [shape=record, label=\"Tail\", fontsize=16];\n",
+		LIST_INFO_COLOR, FONT_COLOR,
+		FREE_COLOR, FONT_COLOR,
+		HEAD_COLOR, FONT_COLOR,
+		TAIL_COLOR, FONT_COLOR);
 
-	fprintf(list->graph, "\"List\" -> \"Node0\" [weight=1, color=\"#43ff6400\", headport=n, tailport=n];\n"); // INVISIBLE LINK FOR ALIGNMENT
+	// INVISIBLE LINE FOR LIST_INFO ALLIGNMENT
+	fprintf(list->graph, "\"List\" -> \"Node0\" [weight=1, color=\"%s\", headport=n, tailport=n];\n", INVISIBLE_COLOR);
 
 	// CREATING LINKS BETWEEN FREE PTR, HEAD PTR, TAIL PTR
-	fprintf(list->graph, 
-	"\"Free\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"#93ffc5\"];\n"
-	"\"Tail\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"#ff0eef\"];\n"
-	"\"Head\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"#ff0eef\"];\n",
-	list->free, list->tail, list->head);
-	
-    fprintf(list->graph,"}");
+	fprintf(list->graph,
+		"\"Free\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"%s\"];\n"
+
+		"\"Tail\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"%s\"];\n"
+		
+		"\"Head\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"%s\"];\n",
+		list->free, FREE_COLOR,
+		list->tail, TAIL_COLOR,
+		list->head, HEAD_COLOR);
+
+	fprintf(list->graph,"}");
 }
+
 
 void ListDump(List* list, FILE* logger)
 {

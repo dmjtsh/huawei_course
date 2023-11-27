@@ -1,16 +1,22 @@
 #define CHECK_ERROR(obj, condition, error)  \
+do										    \
+{											\
 	if(condition)						    \
-		obj->errors |= error;               \
+		(obj)->errors |= error;             \
 	else								    \
-		obj->errors &= ~error;
+		(obj)->errors &= ~(error);			\
+} while(0)
 
 const unsigned WRONG_COMMAND_USAGE = -1;
 
 #define ERROR_PROCESSING(structure, StructVerifier, StructDump, StructDtor) \
+do																			\
+{																			\
 	if (StructVerifier(structure))											\
 	{																		\
 		StructDump(structure, stderr);						                \
 		StructDtor(structure);												\
-		return structure->errors;											\
+		return (structure)->errors;											\
 	}																		\
-	StructDump(structure, structure->logger);
+	StructDump(structure, (structure)->logger);								\
+} while(0)
