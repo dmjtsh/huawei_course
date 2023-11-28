@@ -21,7 +21,7 @@ int main()
 
 	TestList(&list);
 
-	ListGraphDump(&list);
+	ListGraphPrint(&list);
 
 	ListDtor(&list);
 

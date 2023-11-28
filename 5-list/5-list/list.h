@@ -28,15 +28,10 @@ const size_t LIST_START_CAPACITY = 4;
 const Value_t ELEM_VALUE_POISON = 0x666; 
 const size_t  ELEM_INDEX_POISON = 666;
 
-#define LIST_ELEM_SET_POISON(elem)		\
-		elem.next  = ELEM_INDEX_POISON; \
-		elem.prev  = ELEM_INDEX_POISON; \
-		elem.value = ELEM_VALUE_POISON;
-
 const int     FICT_ELEM_INDEX       = 0;
 const Value_t FICT_ELEM_VALUE       = 0xF1C;
 
-const int     LIST_FREE_START_INDEX = FICT_ELEM_INDEX + 1;
+const int LIST_FREE_START_INDEX = FICT_ELEM_INDEX + 1;
 
 struct Node
 {
@@ -70,12 +65,11 @@ unsigned ListRemoveLast(List* list);
 unsigned ListRemove(List* list, size_t elem_index);
 
 unsigned ListCtor(List* list);
-
 unsigned ListDtor(List* list);
 
 unsigned ListVerifier(List* list);
 
 void ListDump(List* list, FILE* logger);
-void ListGraphDump(List* list);
+void ListGraphPrint(List* list);
 
 #endif // LIST_H

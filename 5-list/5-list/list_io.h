@@ -5,7 +5,7 @@
 
 void ListPrint(List* list, FILE* logger);
 
-void ListGraphDump(List* list);
+void ListGraphPrint(List* list);
 
 void ListDump(List* list, FILE* logger);
 

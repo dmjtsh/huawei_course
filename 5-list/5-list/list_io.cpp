@@ -2,6 +2,54 @@
 
 #include "list_io.h"
 
+void ListDump(List* list, FILE* logger)
+{
+	assert(list   != NULL);
+	assert(logger != NULL);
+
+	static size_t num_of_call = 1;
+
+	fprintf(logger, 
+		"=======================================\n"
+		"List DUMP CALL #%zu\n",
+		num_of_call);
+
+	if (list->errors)
+	{
+		fprintf(logger,
+		"-------------ERRORS------------\n");
+		if (list->errors & LIST_PTR_NULL)
+		{
+			fprintf(logger, "List POINTER IS NULL\n");
+			return;
+		}
+		if (list->errors & LIST_LOGGER_ERROR)          fprintf(logger, "List LOGGER ERROR\n");
+		if (list->errors & LIST_DATA_PTR_NULL)         fprintf(logger, "List Data Ptr Null\n");
+        if (list->errors & LIST_SIZE_GREATER_CAPACITY) fprintf(logger, "List Size GREATER Capacity\n");
+        if (list->errors & LIST_SIZE_LESS_ONE)         fprintf(logger, "List Size LESS One\n");
+        if (list->errors & LIST_REALLOC_ERROR)         fprintf(logger, "List REALLOC ERROR\n");
+        if (list->errors & LIST_BAD_SIZE)              fprintf(logger, "List Size TOO BIG\n");
+        if (list->errors & LIST_BAD_CAPACITY)          fprintf(logger, "List Capacity TOO BIG\n");
+		if (list->errors & LIST_GRAPH_ERROR)           fprintf(logger, "List Graph Error\n");
+
+		fprintf(logger,
+		"----------END_OF_ERRORS--------\n");
+	}
+	else
+	{
+		fprintf(logger,
+		"------------NO_ERRORS----------\n");
+
+		ListPrint(list, logger);
+	}
+	
+	fprintf(logger,
+	"=======================================\n\n");
+
+	num_of_call++;
+}							  
+
+
 void ListPrint(List* list, FILE* logger)
 {
 	assert(list != NULL);
@@ -19,10 +67,11 @@ void ListPrint(List* list, FILE* logger)
 		for(size_t i = 0; i < list->size + 1; i++)
 		{
 			current_node_index = list->data[current_node->next].prev;
-			fprintf(logger,   " | \n");
 
+			fprintf(logger, " | \n");
 			fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
-			current_node_index, current_node->value, current_node->prev, current_node->next);
+				current_node_index, current_node->value, current_node->prev, current_node->next);
+
 			if (current_node_index == list->head)
 				fprintf(logger, " <- head");
 			if (current_node_index == list->tail)
@@ -30,14 +79,14 @@ void ListPrint(List* list, FILE* logger)
 
 			fprintf(logger, "\n");
 
-			current_node = &list->data[current_node->next];
+			current_node = list->data + current_node->next;
 		}
 	}
 
 	fprintf(logger, "\nfree nodes:\n");
 
 	current_node_index = list->free;
-	for (int i = 0; i < list->capacity + 1 - list->size - 1; i++)
+	for (int i = 0; i < list->capacity - list->size; i++)
 	{
 		fprintf(logger, " | \n");
 		fprintf(logger, "[%zu] next: %zu\n", current_node_index, list->data[current_node_index].next);
@@ -56,7 +105,7 @@ const char* USUAL_COLOR     = "#c3c1f1";
 const char* FONT_COLOR      = "#0e0a2a";
 const char* INVISIBLE_COLOR = "#43ff6400";
 
-void ListGraphDump(List* list)
+void ListGraphPrint(List* list)
 {
 	assert(list != NULL);
 
@@ -66,20 +115,22 @@ void ListGraphDump(List* list)
 	// CREATING ELEMS
 	for(int i = 0; i < list->capacity + 1; i++)
 	{
-		const char* fillColor = (list->data[i].prev == ELEM_INDEX_POISON) ? FREE_COLOR :
-                                (i == FICT_ELEM_INDEX) ? FICT_COLOR : USUAL_COLOR;
-
-		fprintf(list->graph,
-			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n",
-			fillColor, FONT_COLOR);
+		if (list->data[i].prev == ELEM_INDEX_POISON)
+			fprintf(list->graph,
+				"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n",
+				 FREE_COLOR, FONT_COLOR);
+		else if (i == FICT_ELEM_INDEX)
+			fprintf(list->graph,
+				"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n",
+				 FICT_COLOR, FONT_COLOR);
+		else 
+			fprintf(list->graph,
+				"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n",
+				 USUAL_COLOR, FONT_COLOR);
 
 		fprintf(list->graph,
 			"\"Node%d\" [shape=\"record\", label=\"\\n Node: %d \\n\\n|\\n Value:" VALUE_T_SPECIFIER "\\n\\n | Prev: %d | Next: %d\"];\n",
 			i, i, list->data[i].value, list->data[i].prev, list->data[i].next);
-
-		fprintf(list->graph,
-			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n",
-			FONT_COLOR);
 	}
 
 	// INVISIBLE LINES FOR ALIGNMENT
@@ -138,51 +189,3 @@ void ListGraphDump(List* list)
 
 	fprintf(list->graph,"}");
 }
-
-
-void ListDump(List* list, FILE* logger)
-{
-	assert(list   != NULL);
-	assert(logger != NULL);
-
-	static size_t num_of_call = 1;
-
-	fprintf(logger, 
-		"=======================================\n"
-		"List DUMP CALL #%zu\n",
-		num_of_call);
-
-	if (list->errors)
-	{
-		fprintf(logger,
-		"-------------ERRORS------------\n");
-		if (list->errors & LIST_PTR_NULL)
-		{
-			fprintf(logger, "List POINTER IS NULL\n");
-			return;
-		}
-		if (list->errors & LIST_LOGGER_ERROR)          fprintf(logger, "List LOGGER ERROR\n");
-		if (list->errors & LIST_DATA_PTR_NULL)         fprintf(logger, "List Data Ptr Null\n");
-        if (list->errors & LIST_SIZE_GREATER_CAPACITY) fprintf(logger, "List Size GREATER Capacity\n");
-        if (list->errors & LIST_SIZE_LESS_ONE)         fprintf(logger, "List Size LESS One\n");
-        if (list->errors & LIST_REALLOC_ERROR)         fprintf(logger, "List REALLOC ERROR\n");
-        if (list->errors & LIST_BAD_SIZE)              fprintf(logger, "List Size TOO BIG\n");
-        if (list->errors & LIST_BAD_CAPACITY)          fprintf(logger, "List Capacity TOO BIG\n");
-		if (list->errors & LIST_GRAPH_ERROR)           fprintf(logger, "List Graph Error\n");
-
-		fprintf(logger,
-		"----------END_OF_ERRORS--------\n");
-	}
-	else
-	{
-		fprintf(logger,
-		"------------NO_ERRORS----------\n");
-
-		ListPrint(list, logger);
-	}
-	
-	fprintf(logger,
-	"=======================================\n\n");
-
-	num_of_call++;
-}							  
