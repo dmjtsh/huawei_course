@@ -21,13 +21,14 @@ int main()
 	ListCtor(&list);
 
 	ListInsertAfter(&list, list.tail, 1);
-	ListInsertAfter(&list, list.tail, 2);
+	ListInsertBack(&list, 2);
 	ListInsertAfter(&list, list.head, 4);
-	ListRemove(&list, 1);
+	ListRemoveLast(&list);
 	ListInsertBefore(&list, list.tail, 5);
+	ListRemove(&list, 4);
 	ListInsertAfter(&list, list.tail, 228);
 
-	ListGraphDump(&list);
+	ListGraphPrint(&list);
 
 	ListDtor(&list);
 
