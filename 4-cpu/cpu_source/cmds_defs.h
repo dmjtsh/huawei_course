@@ -1,11 +1,12 @@
-#define SPUSH(elem)  StackPush(&cpu->stack, elem)
-#define SPOP(num)    StackPop(&cpu->stack, &num)
-#define SIZE         cpu->stack.size
 
-#define RAM cpu->RAM
-#define CMD_TYPE     command->cmd_arg_type 
-#define CMD_ARG      command->CPU_cmd_with_arg.arg
-#define CURRENT_LINE cpu->current_line_num          
+#define SPUSH(elem)		  StackPush(&cpu->stack, elem)
+#define SPOP(num)		  StackPop(&cpu->stack, &num)
+#define SIZE			  cpu->stack.size
+
+#define RAM				  cpu->RAM
+#define CMD_TYPE		  command->cmd_arg_type 
+#define CMD_ARG			  command->CPU_cmd_with_arg.arg
+#define CURRENT_LINE	  cpu->current_line_num          
 
 #define SET_ERROR(error)  SetErrorBit(&cpu->errors, error)
 
@@ -30,21 +31,20 @@ CMD_DEF(OUT, 2, 0,
 )
 
 CMD_DEF(PUSH, 3, 1,
-	SPUSH(GetProperArgument(cpu));
+	SPUSH(*GetProperArgument(cpu));
 )
 
-#define DO_OPER_WITH_TWO_NUMS(cpu, oper)               \
-if (SIZE >= 2)                                         \
-{				                                       \
-	Elem_t num1 = {};                                  \
-	Elem_t num2 = {};                                  \
-	SPOP(num1);			                               \
-	SPOP(num2);                                        \
-	SPUSH(num1 oper num2);                             \
-}                                                      \
-else                                                   \
-	SET_ERROR(CPU_WRONG_COMMAND_USAGE);                \
-
+#define DO_OPER_WITH_TWO_NUMS(cpu, oper) \
+if (SIZE >= 2)                           \
+{				                         \
+	Elem_t num1 = {};                    \
+	Elem_t num2 = {};                    \
+	SPOP(num1);			                 \
+	SPOP(num2);                          \
+	SPUSH(num1 oper num2);               \
+}                                        \
+else                                     \
+	SET_ERROR(CPU_WRONG_COMMAND_USAGE);  \
 
 CMD_DEF(DIV, 4, 0,
 	DO_OPER_WITH_TWO_NUMS(cpu, /);
@@ -94,6 +94,8 @@ CMD_DEF(POP, 11, 1,
 
 		SPOP(num_to_pop);
 		
+		*GetProperArgument(...) = num_to_pop;
+
 		if (CMD_TYPE & MEMORY_TYPE && CMD_TYPE & NUMBER_TYPE)
 			RAM[(size_t)CMD_ARG] = num_to_pop;
 		else if (CMD_TYPE & MEMORY_TYPE && CMD_TYPE & REGISTER_TYPE)
@@ -107,49 +109,49 @@ CMD_DEF(POP, 11, 1,
 		SET_ERROR(CPU_WRONG_COMMAND_USAGE);
 )
 															      
-#define JUMP() CURRENT_LINE = GetProperArgument(cpu) - 1;
+#define JUMP() CURRENT_LINE = GetProperArgument(cpu) - 1
 
-#define JUMP_ON_COND(cond) \
-	{					   \
-	Elem_t num1 = {};      \
-	Elem_t num2 = {};	   \
-	SPOP(num1);			   \
-	SPOP(num2);			   \
-	if(num1 cond num2)     \
-		JUMP()             \
-	}
+#define JUMP_ON_COND(cond)  \
+	do                      \
+	{					    \
+	Elem_t num1 = {};       \
+	Elem_t num2 = {};	    \
+	SPOP(num1);			    \
+	SPOP(num2);			    \
+	if(num1 cond num2)      \
+		JUMP();             \
+	} while(0)
 
 CMD_DEF(JMP, 12, 1,
-	JUMP()
+	JUMP();
 )
 
 CMD_DEF(JA, 13, 1,
-	JUMP_ON_COND(>)
+	JUMP_ON_COND(>);
 )
 
 CMD_DEF(JB, 14, 1, 
-	JUMP_ON_COND(<)
+	JUMP_ON_COND(<);
 )
 
 CMD_DEF(JAE, 15, 1,
-	JUMP_ON_COND(>=)
+	JUMP_ON_COND(>=);
 )
 
 CMD_DEF(JBE, 16, 1,
-	JUMP_ON_COND(<=)
+	JUMP_ON_COND(<=);
 )
 
 CMD_DEF(JE, 17, 1,
-	JUMP_ON_COND(==)
+	JUMP_ON_COND(==);
 )
 
 CMD_DEF(JNE, 18, 1,
-	JUMP_ON_COND(!=)
-)
+	JUMP_ON_COND(!=);
 
 CMD_DEF(CALL, 19, 1,
 	SPUSH(CURRENT_LINE);
-	JUMP()
+	JUMP();
 )
 
 CMD_DEF(RET, 20, 0,

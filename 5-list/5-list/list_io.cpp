@@ -1,4 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <assert.h>
+#include <stdlib.h>
 
 #include "list_io.h"
 
@@ -40,7 +43,6 @@ void ListDump(List* list, FILE* logger)
 		fprintf(logger,
 		"------------NO_ERRORS----------\n");
 
-		ListPrint(list, logger);
 	}
 	
 	fprintf(logger,
@@ -50,49 +52,48 @@ void ListDump(List* list, FILE* logger)
 }							  
 
 
-void ListPrint(List* list, FILE* logger)
-{
-	assert(list != NULL);
-	assert(logger != NULL);
-
-	fprintf(logger, "nodes:\n");
-
-	Node* current_node = &list->data[FICT_ELEM_INDEX];
-	size_t current_node_index = 0;
-	if(list->size == 0)
-		fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
-			current_node_index, current_node->value, current_node->prev, current_node->next);
-	else
-	{
-		for(size_t i = 0; i < list->size + 1; i++)
-		{
-			current_node_index = list->data[current_node->next].prev;
-
-			fprintf(logger, " | \n");
-			fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
-				current_node_index, current_node->value, current_node->prev, current_node->next);
-
-			if (current_node_index == list->head)
-				fprintf(logger, " <- head");
-			if (current_node_index == list->tail)
-				fprintf(logger, " <- tail");
-
-			fprintf(logger, "\n");
-
-			current_node = list->data + current_node->next;
-		}
-	}
-
-	fprintf(logger, "\nfree nodes:\n");
-
-	current_node_index = list->free;
-	for (int i = 0; i < list->capacity - list->size; i++)
-	{
-		fprintf(logger, " | \n");
-		fprintf(logger, "[%zu] next: %zu\n", current_node_index, list->data[current_node_index].next);
-		current_node_index = list->data[current_node_index].next;
-	}
-}
+//void ListPrint(List* list, const char* reason_blya)
+//{
+//	assert(list != NULL);
+//
+//	fprintf(logger, "nodes:\n");
+//
+//	Node* current_node = &list->data[FICT_ELEM_INDEX];
+//	size_t current_node_index = 0;
+//	if(list->size == 0)
+//		fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
+//			current_node_index, current_node->value, current_node->prev, current_node->next);
+//	else
+//	{
+//		for(size_t i = 0; i < list->size + 1; i++)
+//		{
+//			current_node_index = list->data[current_node->next].prev;
+//
+//			fprintf(logger, " | \n");
+//			fprintf(logger, "(%zu)[%lf] prev: %zu next: %zu", 
+//				current_node_index, current_node->value, current_node->prev, current_node->next);
+//
+//			if (current_node_index == list->head)
+//				fprintf(logger, " <- head");
+//			if (current_node_index == list->tail)
+//				fprintf(logger, " <- tail");
+//
+//			fprintf(logger, "\n");
+//
+//			current_node = list->data + current_node->next;
+//		}
+//	}
+//
+//	fprintf(logger, "\nfree nodes:\n");
+//
+//	current_node_index = list->free;
+//	for (int i = 0; i < list->capacity - list->size; i++)
+//	{
+//		fprintf(logger, " | \n");
+//		fprintf(logger, "[%zu] next: %zu\n", current_node_index, list->data[current_node_index].next);
+//		current_node_index = list->data[current_node_index].next;
+//	}
+//}
 
 const char* HEAD_COLOR      = "#ff0eef";
 const char* TAIL_COLOR      = "#ff0eef";
@@ -105,7 +106,7 @@ const char* USUAL_COLOR     = "#c3c1f1";
 const char* FONT_COLOR      = "#0e0a2a";
 const char* INVISIBLE_COLOR = "#43ff6400";
 
-void ListGraphPrint(List* list)
+const char* ListGraphPrint(List* list, const char* reason_blya)
 {
 	assert(list != NULL);
 
@@ -168,6 +169,7 @@ void ListGraphPrint(List* list)
 
 		"node [shape=box, style=filled, fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n"
 		"Tail [shape=record, label=\"Tail\", fontsize=16];\n",
+
 		LIST_INFO_COLOR, FONT_COLOR,
 		FREE_COLOR, FONT_COLOR,
 		HEAD_COLOR, FONT_COLOR,
@@ -183,9 +185,32 @@ void ListGraphPrint(List* list)
 		"\"Tail\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"%s\"];\n"
 		
 		"\"Head\" -> \"Node%d\" [headport=n, tailport=s, constraint=true, fillcolor=\"%s\"];\n",
+		
 		list->free, FREE_COLOR,
 		list->tail, TAIL_COLOR,
 		list->head, HEAD_COLOR);
 
-	fprintf(list->graph,"}");
+	fprintf(list->graph,"}\n");
+    fflush (list->graph);
+
+	static int num = 0;
+	static char cmd[1000] = "";
+
+	sprintf (cmd, "dot -T png list_graph.gv -o list_graph_%02d.png", num);
+
+	system (cmd);
+
+	sprintf (cmd, "list_graph_%02d.png", num);
+
+	fprintf (list->logger, "<h2>PIDOR called this: %s:</h2>\n", reason_blya);
+	fprintf (list->logger, "<img src=\"%s\" width = 50%%>\n", cmd);
+	fprintf(list->logger, "<h1> ded pidor (no) </h1>");
+
+	num++;
+	return cmd;
 }
+
+
+// Primary Identifier Dedicated to Online Redirection
+
+

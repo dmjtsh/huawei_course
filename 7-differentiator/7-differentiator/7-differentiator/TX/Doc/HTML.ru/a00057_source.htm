@@ -1,0 +1,465 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>TX Library: Исходный файл TXGL.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript">
+$(document).ready(initResizable);
+</script>
+<link href="Doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Создано системой Doxygen 1.7.3 -->
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="TXLib.png"></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TX Library&#160;<span id="projectnumber">Help &ndash; Version: 00173a, Revision: 172</span></div>
+   <div id="projectbrief"><s>&nbsp;ALL&nbsp;</s> Windows graphics in a sandbox</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+</div>
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+  initNavTree('a00057.htm','');
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle">
+<h1>TXGL.cpp</h1>  </div>
+</div>
+<div class="contents">
+<a href="a00057.htm">См. документацию.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//{================================================================================================================</span>
+<a name="l00013"></a>00013 <span class="comment"></span><span class="comment">//              $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) &lt;mail@txlib.ru&gt; $</span>
+<a name="l00014"></a>00014 <span class="comment">//}================================================================================================================</span>
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;TXLib.h&quot;</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;GL\gl.h&quot;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;GL\glu.h&quot;</span>
+<a name="l00020"></a>00020 
+<a name="l00021"></a>00021 <span class="preprocessor">#if !defined (_TX_VER) || (_TX_VER &lt; 0x173a0165)</span>
+<a name="l00022"></a>00022 <span class="preprocessor"></span><span class="preprocessor">#error Must use TXLib.h version &gt;= 1.73 and revision &gt;= 165 to compile this. -- Ded</span>
+<a name="l00023"></a>00023 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00024"></a>00024 <span class="preprocessor"></span>
+<a name="l00025"></a>00025 <span class="comment">//=================================================================================================================</span>
+<a name="l00026"></a>00026 <span class="comment">//{          OpenGL support</span>
+<a name="l00028"></a>00028 <span class="comment"></span><span class="comment">//=================================================================================================================</span>
+<a name="l00029"></a>00029 
+<a name="l00030"></a>00030 <span class="keyword">typedef</span> <span class="keywordtype">float</span> vec4f[4];
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032 <span class="keyword">const</span> vec4f TX_GL_BLACK = {0, 0,    0, 1},
+<a name="l00033"></a>00033             TX_GL_RED   = {1, 0,    0, 1},
+<a name="l00034"></a>00034             TX_GL_GREEN = {0, 1,    0, 1},
+<a name="l00035"></a>00035             TX_GL_BLUE  = {0, 0.25, 1, 1},
+<a name="l00036"></a>00036             TX_GL_WHITE = {1, 1,    1, 1};
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 HGLRC txglCreateContext (HDC dc);
+<a name="l00039"></a>00039 <span class="keywordtype">bool</span>  txglDeleteContext (HGLRC rc);
+<a name="l00040"></a>00040 <span class="keywordtype">bool</span>  txglSetDefaults();
+<a name="l00041"></a>00041 <span class="keywordtype">void</span>  txglSwapBuffers();
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043 <span class="keywordtype">void</span>  txglClear     (<span class="keywordtype">double</span> red, <span class="keywordtype">double</span> green, <span class="keywordtype">double</span> blue, <span class="keywordtype">double</span> alpha = 0);
+<a name="l00044"></a>00044 <span class="keywordtype">void</span>  txgluSphere   (<span class="keywordtype">double</span> radius, <span class="keywordtype">int</span> slices = 100, <span class="keywordtype">int</span> stacks = 100);
+<a name="l00045"></a>00045 <span class="keywordtype">void</span>  txgluDisk     (<span class="keywordtype">double</span> innerRadius, <span class="keywordtype">double</span> outerRadius, <span class="keywordtype">int</span> slices = 100, <span class="keywordtype">int</span> loops = 100);
+<a name="l00046"></a>00046 <span class="keywordtype">void</span>  txgluCylinder (<span class="keywordtype">double</span> baseRadius, <span class="keywordtype">double</span> topRadius, <span class="keywordtype">double</span> height, <span class="keywordtype">int</span> slices = 100, <span class="keywordtype">int</span> stacks = 100);
+<a name="l00047"></a>00047 <span class="keywordtype">void</span>  txglTextOut   (<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <span class="keyword">const</span> <span class="keywordtype">char</span>* text);
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049 <span class="keywordtype">bool</span>  txglLight     (<span class="keywordtype">int</span> light, <span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <span class="keywordtype">double</span> z, 
+<a name="l00050"></a>00050                      <span class="keywordtype">double</span> ambient, <span class="keywordtype">double</span> diffuse, <span class="keywordtype">double</span> specular);
+<a name="l00051"></a>00051 <span class="keywordtype">bool</span>  txglMaterial  (<span class="keywordtype">double</span> specular, <span class="keywordtype">double</span> emittance, <span class="keywordtype">double</span> shining);
+<a name="l00052"></a>00052 <span class="keywordtype">bool</span>  txglSetCamera (POINT size, <span class="keywordtype">bool</span> perspective = <span class="keyword">true</span>);
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056 <span class="keyword">namespace </span>{ <span class="keyword">namespace </span>TX { <span class="keyword">namespace </span>Win32 {
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glBlendFunc,         (<span class="keywordtype">int</span> sFactor, <span class="keywordtype">int</span> dFactor));
+<a name="l00059"></a>00059 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glClear,             (GLbitfield mask));
+<a name="l00060"></a>00060 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glClearAccum,        (<span class="keywordtype">float</span> red, <span class="keywordtype">float</span> green, <span class="keywordtype">float</span> blue, <span class="keywordtype">float</span> alpha));
+<a name="l00061"></a>00061 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glClearColor,        (<span class="keywordtype">float</span> red, <span class="keywordtype">float</span> green, <span class="keywordtype">float</span> blue, <span class="keywordtype">float</span> alpha));
+<a name="l00062"></a>00062 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glClearDepth,        (<span class="keywordtype">double</span> depth));
+<a name="l00063"></a>00063 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glClearIndex,        (<span class="keywordtype">float</span> color));
+<a name="l00064"></a>00064 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glClearStencil,      (<span class="keywordtype">int</span> stencil));
+<a name="l00065"></a>00065 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glColor3d,           (<span class="keywordtype">double</span> red, <span class="keywordtype">double</span> green, <span class="keywordtype">double</span> blue));
+<a name="l00066"></a>00066 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glColor3dv,          (<span class="keyword">const</span> <span class="keywordtype">double</span>* color));
+<a name="l00067"></a>00067 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glColor4d,           (<span class="keywordtype">double</span> red, <span class="keywordtype">double</span> green, <span class="keywordtype">double</span> blue, <span class="keywordtype">double</span> alpha));
+<a name="l00068"></a>00068 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glColor4dv,          (<span class="keyword">const</span> <span class="keywordtype">double</span>* color));
+<a name="l00069"></a>00069 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glDepthFunc,         (<span class="keywordtype">int</span> func));
+<a name="l00070"></a>00070 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glDisable,           (<span class="keywordtype">int</span> cap));
+<a name="l00071"></a>00071 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glDisableClientState,(<span class="keywordtype">int</span> array));
+<a name="l00072"></a>00072 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glEnable,            (<span class="keywordtype">int</span> cap));
+<a name="l00073"></a>00073 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glEnableClientState, (<span class="keywordtype">int</span> array));
+<a name="l00074"></a>00074 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glHint,              (<span class="keywordtype">int</span> target, <span class="keywordtype">int</span> mode));
+<a name="l00075"></a>00075 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glLightfv,           (<span class="keywordtype">int</span> light, <span class="keywordtype">int</span> name, <span class="keyword">const</span> <span class="keywordtype">float</span>* params));
+<a name="l00076"></a>00076 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glLoadIdentity,      (<span class="keywordtype">void</span>));
+<a name="l00077"></a>00077 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glMaterialf,         (<span class="keywordtype">int</span> face, <span class="keywordtype">int</span> name, <span class="keywordtype">float</span> param));
+<a name="l00078"></a>00078 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glMaterialfv,        (<span class="keywordtype">int</span> face, <span class="keywordtype">int</span> name, <span class="keyword">const</span> <span class="keywordtype">float</span>* params));
+<a name="l00079"></a>00079 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glMatrixMode,        (<span class="keywordtype">int</span> mode));
+<a name="l00080"></a>00080 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glOrtho,             (<span class="keywordtype">double</span> left, <span class="keywordtype">double</span> right, <span class="keywordtype">double</span> bottom, <span class="keywordtype">double</span> top, <span class="keywordtype">double</span> zNear, <span class="keywordtype">double</span> zFar));
+<a name="l00081"></a>00081 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glPixelStorei,       (<span class="keywordtype">int</span> pName, <span class="keywordtype">int</span> param));
+<a name="l00082"></a>00082 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glPixelZoom,         (<span class="keywordtype">float</span> xFactor, <span class="keywordtype">float</span> yFactor));
+<a name="l00083"></a>00083 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glPointSize,         (<span class="keywordtype">float</span> size));
+<a name="l00084"></a>00084 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glShadeModel,        (<span class="keywordtype">int</span> mode));
+<a name="l00085"></a>00085 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glCallLists,         (<span class="keywordtype">unsigned</span> size, <span class="keywordtype">int</span> type, <span class="keyword">const</span> <span class="keywordtype">void</span>* lists));
+<a name="l00086"></a>00086 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glDeleteLists,       (<span class="keywordtype">unsigned</span> list, <span class="keywordtype">int</span> range));
+<a name="l00087"></a>00087 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glFlush,             (<span class="keywordtype">void</span>));
+<a name="l00088"></a>00088 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glListBase,          (<span class="keywordtype">unsigned</span> base));
+<a name="l00089"></a>00089 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glMateriali,         (<span class="keywordtype">int</span> face, <span class="keywordtype">int</span> name, <span class="keywordtype">int</span> param));
+<a name="l00090"></a>00090 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glRasterPos2d,       (<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y));
+<a name="l00091"></a>00091 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glRotated,           (<span class="keywordtype">double</span> angle, <span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <span class="keywordtype">double</span> z));
+<a name="l00092"></a>00092 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glTranslated,        (<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <span class="keywordtype">double</span> z));
+<a name="l00093"></a>00093 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">void</span>,        glViewport,          (<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height));
+<a name="l00094"></a>00094 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, HGLRC,       wglCreateContext,    (HDC dc));
+<a name="l00095"></a>00095 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">bool</span>,        wglDeleteContext,    (HGLRC context));
+<a name="l00096"></a>00096 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">bool</span>,        wglMakeCurrent,      (HDC dc, HGLRC context));
+<a name="l00097"></a>00097 _TX_DLLIMPORT (<span class="stringliteral">&quot;OpenGL32&quot;</span>, <span class="keywordtype">bool</span>,        wglUseFontBitmapsA,  (HDC dc, DWORD first, DWORD count, DWORD listBase));
+<a name="l00098"></a>00098                                        
+<a name="l00099"></a>00099 _TX_DLLIMPORT (<span class="stringliteral">&quot;GLU32&quot;</span>,    GLUquadric*, gluNewQuadric,       (<span class="keywordtype">void</span>));
+<a name="l00100"></a>00100 _TX_DLLIMPORT (<span class="stringliteral">&quot;GLU32&quot;</span>,    <span class="keywordtype">void</span>,        gluDeleteQuadric,    (GLUquadric* state));
+<a name="l00101"></a>00101 _TX_DLLIMPORT (<span class="stringliteral">&quot;GLU32&quot;</span>,    <span class="keywordtype">void</span>,        gluCylinder,         (GLUquadric *obj, <span class="keywordtype">double</span> baseRadius, <span class="keywordtype">double</span> topRadius, <span class="keywordtype">double</span> height, <span class="keywordtype">int</span> slices, <span class="keywordtype">int</span> stacks));
+<a name="l00102"></a>00102 _TX_DLLIMPORT (<span class="stringliteral">&quot;GLU32&quot;</span>,    <span class="keywordtype">void</span>,        gluDisk,             (GLUquadric* obj, <span class="keywordtype">double</span> innerRadius, <span class="keywordtype">double</span> outerRadius, <span class="keywordtype">int</span> slices, <span class="keywordtype">int</span> loops));
+<a name="l00103"></a>00103 _TX_DLLIMPORT (<span class="stringliteral">&quot;GLU32&quot;</span>,    <span class="keywordtype">void</span>,        gluSphere,           (GLUquadric* obj, <span class="keywordtype">double</span> radius, <span class="keywordtype">int</span> slices, <span class="keywordtype">int</span> stacks));
+<a name="l00104"></a>00104 _TX_DLLIMPORT (<span class="stringliteral">&quot;GLU32&quot;</span>,    <span class="keywordtype">void</span>,        gluLookAt,           (<span class="keywordtype">double</span> eyeX, <span class="keywordtype">double</span> eyeY, <span class="keywordtype">double</span> eyeZ, <span class="keywordtype">double</span> centerX, <span class="keywordtype">double</span> centerY, <span class="keywordtype">double</span> centerZ, <span class="keywordtype">double</span> upX, <span class="keywordtype">double</span> upY, <span class="keywordtype">double</span> upZ));
+<a name="l00105"></a>00105 _TX_DLLIMPORT (<span class="stringliteral">&quot;GLU32&quot;</span>,    <span class="keywordtype">void</span>,        gluPerspective,      (<span class="keywordtype">double</span> fovy, <span class="keywordtype">double</span> aspect, <span class="keywordtype">double</span> zNear, <span class="keywordtype">double</span> zFar));
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107 _TX_DLLIMPORT (<span class="stringliteral">&quot;GDI32&quot;</span>,    <span class="keywordtype">int</span>,         ChoosePixelFormat,   (HDC dc, <span class="keyword">const</span> PIXELFORMATDESCRIPTOR* pPfd));
+<a name="l00108"></a>00108 _TX_DLLIMPORT (<span class="stringliteral">&quot;GDI32&quot;</span>,    <span class="keywordtype">int</span>,         DescribePixelFormat, (HDC dc, <span class="keywordtype">int</span> numPfd, <span class="keywordtype">unsigned</span> szPfd, <span class="keyword">const</span> PIXELFORMATDESCRIPTOR* pfd));
+<a name="l00109"></a>00109 _TX_DLLIMPORT (<span class="stringliteral">&quot;GDI32&quot;</span>,    <span class="keywordtype">bool</span>,        SetPixelFormat,      (HDC dc, <span class="keywordtype">int</span> numPfd, <span class="keyword">const</span> PIXELFORMATDESCRIPTOR* pfd));
+<a name="l00110"></a>00110 _TX_DLLIMPORT (<span class="stringliteral">&quot;GDI32&quot;</span>,    <span class="keywordtype">bool</span>,        SwapBuffers,         (HDC dc));
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112 }}}
+<a name="l00113"></a>00113 
+<a name="l00114"></a>00114 <span class="comment">//=================================================================================================================</span>
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116 HGLRC txglCreateContext (HDC dc)
+<a name="l00117"></a>00117     {
+<a name="l00118"></a>00118     PIXELFORMATDESCRIPTOR pfd = {0};
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120     pfd.nSize       = (WORD) <span class="keyword">sizeof</span> (pfd);
+<a name="l00121"></a>00121     pfd.nVersion    = 1;
+<a name="l00122"></a>00122                    
+<a name="l00123"></a>00123     pfd.dwFlags     = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+<a name="l00124"></a>00124                    
+<a name="l00125"></a>00125     pfd.iLayerType  = PFD_MAIN_PLANE;
+<a name="l00126"></a>00126     pfd.iPixelType  = PFD_TYPE_RGBA;
+<a name="l00127"></a>00127     pfd.cColorBits  = 24;
+<a name="l00128"></a>00128     pfd.cDepthBits  = 32;
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130     pfd.cAuxBuffers = 0; 
+<a name="l00131"></a>00131 
+<a name="l00132"></a>00132     <span class="keywordtype">int</span> index = Win32::ChoosePixelFormat (dc, &amp;pfd);
+<a name="l00133"></a>00133 
+<a name="l00134"></a>00134     <span class="keywordflow">if</span> (!index) index = 1;
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136     <span class="keywordflow">if</span> (!Win32::DescribePixelFormat (dc, index, <span class="keyword">sizeof</span> (pfd), &amp;pfd)) <span class="keywordflow">return</span> 0;
+<a name="l00137"></a>00137     <span class="keywordflow">if</span> (!Win32::SetPixelFormat (dc, index, &amp;pfd)) <span class="keywordflow">return</span> 0;
+<a name="l00138"></a>00138 
+<a name="l00139"></a>00139     HGLRC rc = Win32::wglCreateContext (dc); rc <a class="code" href="a00081.htm#ga889b74443b3e918adee3e31fad4653f7" title="Выводит диагностическое сообщение в случае нулевого или ложного результата.">asserted</a>;
+<a name="l00140"></a>00140     Win32::wglMakeCurrent (dc, rc)              asserted;
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142     txglSetDefaults();
+<a name="l00143"></a>00143     txglSetCamera (<a class="code" href="a00082.htm#ga11074386e81c0c8677f36c0a16ac0aa1" title="Возвращает размер окна, картинки или холста в виде структуры POINT.">txGetExtent</a> (dc), false);
+<a name="l00144"></a>00144 
+<a name="l00145"></a>00145     return rc;
+<a name="l00146"></a>00146     }
+<a name="l00147"></a>00147 
+<a name="l00148"></a>00148 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150 <span class="keywordtype">bool</span> txglDeleteContext (HGLRC rc)
+<a name="l00151"></a>00151     {
+<a name="l00152"></a>00152     <span class="keywordflow">if</span> (!rc) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00153"></a>00153 
+<a name="l00154"></a>00154     Win32::glDeleteLists (0, INT_MAX);
+<a name="l00155"></a>00155 
+<a name="l00156"></a>00156     Win32::wglMakeCurrent (NULL, NULL) asserted;
+<a name="l00157"></a>00157     Win32::wglDeleteContext (rc)       asserted;
+<a name="l00158"></a>00158 
+<a name="l00159"></a>00159     return true;
+<a name="l00160"></a>00160     }
+<a name="l00161"></a>00161 
+<a name="l00162"></a>00162 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00163"></a>00163 
+<a name="l00164"></a>00164 <span class="keywordtype">bool</span> txglSetDefaults()
+<a name="l00165"></a>00165     {
+<a name="l00166"></a>00166     Win32::glEnable (GL_DEPTH_TEST);                           !tx_glGetError() asserted;
+<a name="l00167"></a>00167     Win32::glEnable (GL_ALPHA_TEST);                           !tx_glGetError() asserted;
+<a name="l00168"></a>00168     Win32::glEnable (GL_BLEND);                                !tx_glGetError() asserted;
+<a name="l00169"></a>00169     Win32::glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); !tx_glGetError() asserted;
+<a name="l00170"></a>00170 
+<a name="l00171"></a>00171     Win32::glEnable (GL_POINT_SMOOTH);                         !tx_glGetError() asserted;
+<a name="l00172"></a>00172     Win32::glEnable (GL_LINE_SMOOTH);                          !tx_glGetError() asserted;
+<a name="l00173"></a>00173     Win32::glShadeModel (GL_SMOOTH);                           !tx_glGetError() asserted;
+<a name="l00174"></a>00174     
+<a name="l00175"></a>00175     Win32::glPixelStorei (GL_UNPACK_ALIGNMENT, 1);             !tx_glGetError() asserted;
+<a name="l00176"></a>00176 
+<a name="l00177"></a>00177     Win32::glPointSize (2);                                    !tx_glGetError() asserted;
+<a name="l00178"></a>00178     
+<a name="l00179"></a>00179     Win32::wglUseFontBitmaps (<a class="code" href="a00082.htm#ga6e641bf88bafb9bc5297354adb3aeb56" title="Возвращает холст (дескриптор контекста рисования, HDC) окна рисования TXLib.">txDC</a>(), 0, 256, 1000); 
+<a name="l00180"></a>00180     Win32::glListBase (1000); 
+<a name="l00181"></a>00181 
+<a name="l00182"></a>00182     txglMaterial (0.6, 0.1, 0.5) asserted;
+<a name="l00183"></a>00183 
+<a name="l00184"></a>00184     txglLight (0,  1000, 1000,  1000, 0.2, 0.4, 0.6) asserted;
+<a name="l00185"></a>00185     txglLight (1, -1000,  100,  -500, 0.1, 0.4, 0.2) asserted;
+<a name="l00186"></a>00186     txglLight (2,   500,  500, -1000, 0.0, 0.8, 0.0) asserted;
+<a name="l00187"></a>00187 
+<a name="l00188"></a>00188     return true;
+<a name="l00189"></a>00189     }
+<a name="l00190"></a>00190 
+<a name="l00191"></a>00191 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00192"></a>00192 
+<a name="l00193"></a>00193 <span class="keywordtype">bool</span> txglLight (<span class="keywordtype">int</span> light, <span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <span class="keywordtype">double</span> z, 
+<a name="l00194"></a>00194                 <span class="keywordtype">double</span> ambient, <span class="keywordtype">double</span> diffuse, <span class="keywordtype">double</span> specular)
+<a name="l00195"></a>00195     {
+<a name="l00196"></a>00196     Win32::glEnable (GL_LIGHTING);       !tx_glGetError() asserted;
+<a name="l00197"></a>00197     Win32::glEnable (GL_LIGHT0 + light); !tx_glGetError() asserted;
+<a name="l00198"></a>00198     
+<a name="l00199"></a>00199     <span class="keywordtype">float</span>  pos[4] = {(float)x, (<span class="keywordtype">float</span>)y, (float)z};                      
+<a name="l00200"></a>00200     <span class="keywordtype">float</span>  amb[4] = {(float)ambient,  (<span class="keywordtype">float</span>)ambient,  (float)ambient};  
+<a name="l00201"></a>00201     <span class="keywordtype">float</span> diff[4] = {(float)diffuse,  (<span class="keywordtype">float</span>)diffuse,  (float)diffuse};  
+<a name="l00202"></a>00202     <span class="keywordtype">float</span> spec[4] = {(float)specular, (<span class="keywordtype">float</span>)specular, (float)specular}; 
+<a name="l00203"></a>00203 
+<a name="l00204"></a>00204     Win32::glLightfv (GL_LIGHT0 + light, GL_POSITION,  pos); !tx_glGetError() asserted;
+<a name="l00205"></a>00205     Win32::glLightfv (GL_LIGHT0 + light, GL_AMBIENT,   amb); !tx_glGetError() asserted;
+<a name="l00206"></a>00206     Win32::glLightfv (GL_LIGHT0 + light, GL_DIFFUSE,  diff); !tx_glGetError() asserted;
+<a name="l00207"></a>00207     Win32::glLightfv (GL_LIGHT0 + light, GL_SPECULAR, spec); !tx_glGetError() asserted;
+<a name="l00208"></a>00208 
+<a name="l00209"></a>00209     return true;
+<a name="l00210"></a>00210     }
+<a name="l00211"></a>00211 
+<a name="l00212"></a>00212 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00213"></a>00213 
+<a name="l00214"></a>00214 <span class="keywordtype">bool</span> txglMaterial (<span class="keywordtype">double</span> specular, <span class="keywordtype">double</span> emittance, <span class="keywordtype">double</span> shining)
+<a name="l00215"></a>00215     {
+<a name="l00216"></a>00216     Win32::glEnable (GL_COLOR_MATERIAL); !tx_glGetError() asserted;
+<a name="l00217"></a>00217 
+<a name="l00218"></a>00218     <span class="keywordtype">float</span> spec[4] = {(float)specular,  (<span class="keywordtype">float</span>)specular,  (float)specular,  1.0f}; 
+<a name="l00219"></a>00219     <span class="keywordtype">float</span> emit[4] = {(float)emittance, (<span class="keywordtype">float</span>)emittance, (float)emittance, 1.0f}; 
+<a name="l00220"></a>00220 
+<a name="l00221"></a>00221     Win32::glMateriali  (GL_FRONT_AND_BACK, GL_SHININESS, (<span class="keywordtype">int</span>) (shining*128)); !tx_glGetError() asserted;
+<a name="l00222"></a>00222     Win32::glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR,  spec);                !tx_glGetError() asserted;
+<a name="l00223"></a>00223     Win32::glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION,  emit);                !tx_glGetError() asserted;
+<a name="l00224"></a>00224 
+<a name="l00225"></a>00225     return true;
+<a name="l00226"></a>00226     }
+<a name="l00227"></a>00227 
+<a name="l00228"></a>00228 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00229"></a>00229 
+<a name="l00230"></a>00230 <span class="keywordtype">bool</span> txglSetCamera (POINT size, <span class="keywordtype">bool</span> perspective <span class="comment">/*= true*/</span>)
+<a name="l00231"></a>00231     {
+<a name="l00232"></a>00232     Win32::glViewport (0, 0, size.x, size.y); !tx_glGetError() asserted;
+<a name="l00233"></a>00233 
+<a name="l00234"></a>00234     Win32::glMatrixMode (GL_PROJECTION);      !tx_glGetError() asserted;
+<a name="l00235"></a>00235     Win32::glLoadIdentity();                  !tx_glGetError() asserted;
+<a name="l00236"></a>00236 
+<a name="l00237"></a>00237     if (perspective) { Win32::gluPerspective (40, 1.0*size.x/size.y, 1, 1001);                 !tx_glGetError() asserted; }
+<a name="l00238"></a>00238     else             { Win32::glOrtho (-size.x/2, size.x/2, -size.y/2, size.y/2, -1000, 1000); !tx_glGetError() asserted; }
+<a name="l00239"></a>00239 
+<a name="l00240"></a>00240     Win32::gluLookAt (0,0,500, 0,0,0, 0,1,0); !tx_glGetError() asserted;
+<a name="l00241"></a>00241 
+<a name="l00242"></a>00242     Win32::glMatrixMode (GL_MODELVIEW);       !tx_glGetError() asserted;
+<a name="l00243"></a>00243 
+<a name="l00244"></a>00244     return true;
+<a name="l00245"></a>00245     }    
+<a name="l00246"></a>00246 
+<a name="l00247"></a>00247 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00248"></a>00248 
+<a name="l00249"></a>00249 <span class="keywordtype">void</span> txglClear (<span class="keywordtype">double</span> red, <span class="keywordtype">double</span> green, <span class="keywordtype">double</span> blue, <span class="keywordtype">double</span> alpha <span class="comment">/*= 0*/</span>)
+<a name="l00250"></a>00250     {
+<a name="l00251"></a>00251     Win32::glClearColor ((<span class="keywordtype">float</span>) red, (<span class="keywordtype">float</span>) green, (<span class="keywordtype">float</span>) blue, (<span class="keywordtype">float</span>) alpha);
+<a name="l00252"></a>00252 
+<a name="l00253"></a>00253     Win32::glClear (GL_COLOR_BUFFER_BIT);
+<a name="l00254"></a>00254     Win32::glClear (GL_DEPTH_BUFFER_BIT);
+<a name="l00255"></a>00255     }
+<a name="l00256"></a>00256 
+<a name="l00257"></a>00257 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00258"></a>00258 
+<a name="l00259"></a>00259 <span class="keywordtype">void</span> txgluSphere (<span class="keywordtype">double</span> radius, <span class="keywordtype">int</span> slices <span class="comment">/*= 100*/</span>, <span class="keywordtype">int</span> stacks <span class="comment">/*= 100*/</span>)
+<a name="l00260"></a>00260     {
+<a name="l00261"></a>00261     GLUquadricObj* obj = Win32::gluNewQuadric();
+<a name="l00262"></a>00262     Win32::gluSphere (obj, radius, slices, stacks);
+<a name="l00263"></a>00263     Win32::gluDeleteQuadric (obj);
+<a name="l00264"></a>00264     }
+<a name="l00265"></a>00265 
+<a name="l00266"></a>00266 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00267"></a>00267 
+<a name="l00268"></a>00268 <span class="keywordtype">void</span> txgluCylinder (<span class="keywordtype">double</span> baseRadius, <span class="keywordtype">double</span> topRadius, <span class="keywordtype">double</span> height, <span class="keywordtype">int</span> slices <span class="comment">/*= 100*/</span>, <span class="keywordtype">int</span> stacks <span class="comment">/*= 100*/</span>)
+<a name="l00269"></a>00269     {
+<a name="l00270"></a>00270     GLUquadricObj* obj = Win32::gluNewQuadric();
+<a name="l00271"></a>00271     Win32::gluCylinder (obj, baseRadius, topRadius, height, slices, stacks);
+<a name="l00272"></a>00272     Win32::gluDeleteQuadric (obj);
+<a name="l00273"></a>00273     }
+<a name="l00274"></a>00274 
+<a name="l00275"></a>00275 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00276"></a>00276 
+<a name="l00277"></a>00277 <span class="keywordtype">void</span> txgluDisk (<span class="keywordtype">double</span> innerRadius, <span class="keywordtype">double</span> outerRadius, <span class="keywordtype">int</span> slices <span class="comment">/*= 100*/</span>, <span class="keywordtype">int</span> loops <span class="comment">/*= 100*/</span>)
+<a name="l00278"></a>00278     {
+<a name="l00279"></a>00279     GLUquadricObj* obj = Win32::gluNewQuadric();
+<a name="l00280"></a>00280     Win32::gluDisk (obj, innerRadius, outerRadius, slices, loops);
+<a name="l00281"></a>00281     Win32::gluDeleteQuadric (obj);
+<a name="l00282"></a>00282     }
+<a name="l00283"></a>00283 
+<a name="l00284"></a>00284 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00285"></a>00285 
+<a name="l00286"></a>00286 <span class="keywordtype">void</span> txglTextOut (<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y, <span class="keyword">const</span> <span class="keywordtype">char</span>* text)
+<a name="l00287"></a>00287     {
+<a name="l00288"></a>00288     Win32::glRasterPos2d (x, y);
+<a name="l00289"></a>00289     Win32::glCallLists ((<span class="keywordtype">unsigned</span>) strlen (text), GL_UNSIGNED_BYTE, text); 
+<a name="l00290"></a>00290     }
+<a name="l00291"></a>00291 
+<a name="l00292"></a>00292 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00293"></a>00293 
+<a name="l00294"></a>00294 <span class="keywordtype">void</span> txglSwapBuffers()
+<a name="l00295"></a>00295     {
+<a name="l00296"></a>00296     Win32::glFlush();
+<a name="l00297"></a>00297     Win32::SwapBuffers (Win32::wglGetCurrentDC());
+<a name="l00298"></a>00298     }
+<a name="l00299"></a>00299 
+<a name="l00300"></a>00300 <span class="comment">//}</span>
+<a name="l00301"></a>00301 <span class="comment">//=================================================================================================================</span>
+<a name="l00302"></a>00302 
+<a name="l00303"></a>00303 <span class="keywordtype">void</span> DrawBackgr (<span class="keywordtype">int</span> mode);
+<a name="l00304"></a>00304 <span class="keywordtype">void</span> DrawBackgr (<span class="keywordtype">int</span> mode)
+<a name="l00305"></a>00305     {
+<a name="l00306"></a>00306     COLORREF white = <a class="code" href="a00082.htm#ga5e96023070a7e836d57ff9f4fac8a341" title="Создает (смешивает) цвет из трех базовых цветов (компонент).">RGB</a> (24, 24, 32), red = <a class="code" href="a00082.htm#ga5e96023070a7e836d57ff9f4fac8a341" title="Создает (смешивает) цвет из трех базовых цветов (компонент).">RGB</a> (32, 0, 0), blue = <a class="code" href="a00082.htm#ga5e96023070a7e836d57ff9f4fac8a341" title="Создает (смешивает) цвет из трех базовых цветов (компонент).">RGB</a> ( 0, 0, 32);
+<a name="l00307"></a>00307     POINT sz = <a class="code" href="a00082.htm#ga11074386e81c0c8677f36c0a16ac0aa1" title="Возвращает размер окна, картинки или холста в виде структуры POINT.">txGetExtent</a>();
+<a name="l00308"></a>00308 
+<a name="l00309"></a>00309     <span class="comment">// For tests only. Do not use for brexit() purposes</span>
+<a name="l00310"></a>00310 
+<a name="l00311"></a>00311     <span class="keywordflow">if</span> (mode == 1)
+<a name="l00312"></a>00312         {
+<a name="l00313"></a>00313         <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a> (<a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5a081ac86689e98e0c036e960e9cb159ac" title="Прозрачный цвет. Отключает рисование.">TX_NULL</a>); <a class="code" href="a00082.htm#gad21ad5660a5423f31c2c8e77329758b2" title="Устанавливает текущий цвет заполнения фигур.">txSetFillColor</a> (blue); <a class="code" href="a00082.htm#ga18a0418f3c06463e958077cddf2a4864" title="Рисует прямоугольник.">txRectangle</a> (0, 0, sz.x, sz.y);
+<a name="l00314"></a>00314         <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a> (white, 75); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (0, 0, sz.x, sz.y); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (0, sz.y, sz.x, 0);
+<a name="l00315"></a>00315         <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a> (red,   25); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (0, 0, sz.x, sz.y); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (0, sz.y, sz.x, 0);
+<a name="l00316"></a>00316         }
+<a name="l00317"></a>00317     <span class="keywordflow">else</span>
+<a name="l00318"></a>00318         {
+<a name="l00319"></a>00319         <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a> (white, 100); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (0, sz.y/2, sz.x, sz.y/2); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (sz.x/2, 0, sz.x/2, sz.y);
+<a name="l00320"></a>00320         <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a> (red,    50); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (0, sz.y/2, sz.x, sz.y/2); <a class="code" href="a00082.htm#gaaee38df6f38b6f1729b9db1c4ac23e65" title="Рисует линию.">txLine</a> (sz.x/2, 0, sz.x/2, sz.y);
+<a name="l00321"></a>00321         }
+<a name="l00322"></a>00322     }
+<a name="l00323"></a>00323 
+<a name="l00324"></a>00324 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00325"></a>00325 
+<a name="l00326"></a>00326 <span class="keywordtype">void</span> DrawModel (<span class="keywordtype">double</span> rotation);
+<a name="l00327"></a>00327 <span class="keywordtype">void</span> DrawModel (<span class="keywordtype">double</span> rotation)
+<a name="l00328"></a>00328     {
+<a name="l00329"></a>00329     txglClear (0, 0, 0);
+<a name="l00330"></a>00330     
+<a name="l00331"></a>00331     Win32::glLoadIdentity();
+<a name="l00332"></a>00332     Win32::glRotated (rotation, 1, 0, 1);
+<a name="l00333"></a>00333     
+<a name="l00334"></a>00334     Win32::glTranslated (0, 0, -50);
+<a name="l00335"></a>00335 
+<a name="l00336"></a>00336     Win32::glColor3d (1, 0, 0);
+<a name="l00337"></a>00337     txgluSphere   (75);
+<a name="l00338"></a>00338     
+<a name="l00339"></a>00339     Win32::glColor3d (0, 0, 1);
+<a name="l00340"></a>00340     txgluCylinder (50, 50, 150);
+<a name="l00341"></a>00341     txgluCylinder (40, 40, 150);
+<a name="l00342"></a>00342     txgluDisk     (40, 50);
+<a name="l00343"></a>00343     
+<a name="l00344"></a>00344     Win32::glTranslated (0, 0, 150);
+<a name="l00345"></a>00345     
+<a name="l00346"></a>00346     txgluDisk     (40, 50);
+<a name="l00347"></a>00347     
+<a name="l00348"></a>00348     Win32::glLoadIdentity();
+<a name="l00349"></a>00349 
+<a name="l00350"></a>00350     Win32::glColor3d (1, 1, 0);
+<a name="l00351"></a>00351     txglTextOut (-100, +250, <span class="stringliteral">&quot;Это кто? (Who?)&quot;</span>); 
+<a name="l00352"></a>00352     txglTextOut (-120, +220, <span class="stringliteral">&quot;Это тестовый объект.&quot;</span>);
+<a name="l00353"></a>00353     txglTextOut (- 70, +190, <span class="stringliteral">&quot;Cats rules.&quot;</span>);
+<a name="l00354"></a>00354 
+<a name="l00355"></a>00355     Win32::glColor3d (0, 1, 0);
+<a name="l00356"></a>00356     txglTextOut (-250, -220, <span class="stringliteral">&quot;A quick brown fox jums over the lazy dog.&quot;</span>); 
+<a name="l00357"></a>00357     txglTextOut (-330, -250, <span class="stringliteral">&quot;В чащах юга жил-был цитрус, да, но фальшивый экземпляр.&quot;</span>);
+<a name="l00358"></a>00358     txglTextOut (- 30, -280, <span class="stringliteral">&quot;Meow.&quot;</span>);
+<a name="l00359"></a>00359     }
+<a name="l00360"></a>00360 
+<a name="l00361"></a>00361 <span class="comment">//-----------------------------------------------------------------------------------------------------------------</span>
+<a name="l00362"></a>00362 
+<a name="l00363"></a>00363 <span class="keywordtype">int</span> main()
+<a name="l00364"></a>00364     {
+<a name="l00365"></a>00365     <a class="code" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow</a> (800, 600);
+<a name="l00366"></a>00366 
+<a name="l00367"></a>00367     <a class="code" href="a00082.htm#gae92e621aaed81f90e4d142356e38762a" title="Блокирует обновление изображения окна, во избежание мигания.">txBegin</a>();
+<a name="l00368"></a>00368     <a class="code" href="a00081.htm#ga532fa8a55c4f3d4f94ff0fdceae732b2" title="Блокирует холст (контекст рисования).">txLock</a>();
+<a name="l00369"></a>00369 
+<a name="l00370"></a>00370     DrawBackgr (1);
+<a name="l00371"></a>00371     
+<a name="l00372"></a>00372     HDC   dc = GetDC (<a class="code" href="a00082.htm#gafa31ebd8ed957c41713900a407497cf8" title="Возвращает дескриптор окна рисования">txWindow</a>());
+<a name="l00373"></a>00373     HGLRC rc = txglCreateContext (dc); rc <a class="code" href="a00081.htm#ga889b74443b3e918adee3e31fad4653f7" title="Выводит диагностическое сообщение в случае нулевого или ложного результата.">asserted</a>;
+<a name="l00374"></a>00374     
+<a name="l00375"></a>00375     <span class="keywordflow">for</span> (<span class="keywordtype">double</span> rotation = 0; !<a class="code" href="a00081.htm#ga782025393f08a0efb645b9d2e30f2586" title="Проверяет, нажата ли указанная клавиша.">txGetAsyncKeyState</a> (VK_ESCAPE); )
+<a name="l00376"></a>00376         {
+<a name="l00377"></a>00377         DrawBackgr (2);
+<a name="l00378"></a>00378 
+<a name="l00379"></a>00379         <span class="keywordtype">double</span> fps = <a class="code" href="a00082.htm#ga1aca71127c9986f995b2372903d65964" title="Выдает количество кадров (вызовов этой функции) в секунду.">txGetFPS</a>();
+<a name="l00380"></a>00380         <span class="keywordflow">if</span> (fps &gt; 0) rotation += 50/fps;
+<a name="l00381"></a>00381 
+<a name="l00382"></a>00382         DrawModel (rotation);
+<a name="l00383"></a>00383         
+<a name="l00384"></a>00384         <span class="keywordflow">if</span> (fps &gt; 0) txglSwapBuffers();
+<a name="l00385"></a>00385         Sleep (50);
+<a name="l00386"></a>00386         }
+<a name="l00387"></a>00387 
+<a name="l00388"></a>00388     <a class="code" href="a00081.htm#ga8fe4ec4c66cb69ce337747fe65dd0cc6" title="Разблокирует холст">txUnlock</a>();
+<a name="l00389"></a>00389     <a class="code" href="a00082.htm#ga809dc04afd5348247846ee01ce9a06e6" title="Разблокирует обновление окна, заблокированное функцией txBegin().">txEnd</a>();
+<a name="l00390"></a>00390 
+<a name="l00391"></a>00391     txglDeleteContext (rc) asserted;
+<a name="l00392"></a>00392     ReleaseDC (<a class="code" href="a00082.htm#gafa31ebd8ed957c41713900a407497cf8" title="Возвращает дескриптор окна рисования">txWindow</a>(), dc);
+<a name="l00393"></a>00393     }
+<a name="l00394"></a>00394 
+</pre></div></div>
+</div>
+  <div id="nav-path" class="navpath">
+    <ul>
+      <li class="navelem"><a class="el" href="a00057.htm">TXGL.cpp</a>      </li>
+<!-- --------------------------------------------------------------------------
+  Doxygen_HTM.htm
+  $Version: 00173a, Revision: 172 $
+  $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru> $
+  $Date: 2023-08-07 12:07:33 +0400 $
+ -------------------------------------------------------------------------- -->
+
+<table class="" width="100%"><tr valign="top">
+
+  <td align="left">
+    <small><a href="http://orphus.ru">Нашли ошибку? Выделите ее мышкой и нажмите Ctrl+ENTER. &copy;&#160;Orphus.ru.</a></small><br>
+    <a href="http://orphus.ru" id="orphus" target="_blank"><img class = "footer" alt="Orphus" src="http://storage.ded32.net.ru/orphus.gif" border="0"></a>
+    </td>
+
+  <td align="right">
+    Документация по TX Library. Дата: Mon Nov 13 2023 02:15:53. Создано&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3
+    <img src="http://storage.ded32.net.ru/stat/TXLib-Help.chm" width=1px height=1px border="0">
+    </td>
+  </tr></table>
+
+</ul>
+</div>
+
+<script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol)? "https://ssl." : "http://www."); document.write (unescape ("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); try { var pageTracker = _gat._getTracker ("UA-7927138-1"); pageTracker._trackPageview(); } catch (err) {}</script>
+<script type="text/javascript" src="http://storage.ded32.net.ru/orphus.js"></script>
+
+</body>
+</html>

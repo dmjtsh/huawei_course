@@ -3,9 +3,7 @@
 
 #include "list.h"
 
-void ListPrint(List* list, FILE* logger);
-
-void ListGraphPrint(List* list);
+const char* ListGraphPrint(List* list, const char* reason_blya);
 
 void ListDump(List* list, FILE* logger);
 

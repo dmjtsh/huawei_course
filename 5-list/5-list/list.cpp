@@ -58,7 +58,7 @@ size_t ListInsertAfter(List* list, size_t elem_index, Value_t new_value)
 	if (elem_index == ELEM_INDEX_POISON)
 		return WRONG_COMMAND_USAGE;
 
-	Node* data = list->data;
+	Node*  data            = list->data;
 	size_t next_index      = list->data[elem_index].next;
 	size_t free_next_index = list->data[list->free].next;
 	size_t free_index      = list->free;
@@ -172,9 +172,6 @@ unsigned ListCtor(List* list)
 
 	ListDataReallocUp(list, LIST_START_CAPACITY);
 
-	fopen_s(&list->logger, "list_logger.txt", "w");
-	fopen_s(&list->graph,  "list_graph.gv",   "w");
-
 	list->data[FICT_ELEM_INDEX].next  = FICT_ELEM_INDEX;
 	list->data[FICT_ELEM_INDEX].prev  = FICT_ELEM_INDEX;
 	list->data[FICT_ELEM_INDEX].value = FICT_ELEM_VALUE;
@@ -195,9 +192,6 @@ unsigned ListDtor(List* list)
 	if (!(list->errors & LIST_DELETED))
 	{
 		free(list->data);
-
-		fclose(list->logger);
-		fclose(list->graph);
 
 		list->errors |= LIST_DELETED;
 	}

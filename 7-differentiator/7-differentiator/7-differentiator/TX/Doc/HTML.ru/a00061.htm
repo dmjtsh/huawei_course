@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>TX Library: Файл TXWave.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript">
+$(document).ready(initResizable);
+</script>
+<link href="Doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Создано системой Doxygen 1.7.3 -->
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="TXLib.png"></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TX Library&#160;<span id="projectnumber">Help &ndash; Version: 00173a, Revision: 172</span></div>
+   <div id="projectbrief"><s>&nbsp;ALL&nbsp;</s> Windows graphics in a sandbox</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+</div>
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+  initNavTree('a00061.htm','');
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Классы</a> &#124;
+<a href="#define-members">Макросы</a> &#124;
+<a href="#typedef-members">Определения типов</a> &#124;
+<a href="#func-members">Функции</a> &#124;
+<a href="#var-members">Переменные</a>  </div>
+  <div class="headertitle">
+<h1>Файл TXWave.h</h1>  </div>
+</div>
+<div class="contents">
+
+<p><a href="a00061_source.htm">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Классы</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.htm">txWaveSample_t</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип данных, использующийся для внутреннего представления звуков согласно формату <a class="el" href="a00080.htm#gad34a43dcef175ddac1373a052ae579ea">txWaveFormat</a>.  <a href="a00018.htm#_details">Подробнее...</a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Макросы</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.htm#gadaab2541529e020dfd4059094eff16bb">CALLOC</a>(type, size)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Выделяет блок динамической памяти через calloc с автоматическим преобразованием типа указателя.  <a href="a00081.htm#gadaab2541529e020dfd4059094eff16bb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.htm#ga105949c59c998e38aad80266afac92bf">FREE</a>(ptr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Освобождает динамическую память и обнуляет указатель на нее.  <a href="a00081.htm#ga105949c59c998e38aad80266afac92bf"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="typedef-members"></a>
+Определения типов</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::vector<br class="typebreak"/>
+&lt; <a class="el" href="a00018.htm">txWaveSample_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип, использующийся для буферов данных.  <a href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga0f44cb31e6fab55ba409a510c7346793">MonitorProc_t</a> (HWAVEIN waveIn, <a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a> &amp;data, void *userData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип функции-монитора для функции <a class="el" href="a00080.htm#ga650c6862cf9d0d2e8ab6c8c43e59be18">txWaveIn()</a>.  <a href="a00080.htm#ga0f44cb31e6fab55ba409a510c7346793"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Функции</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">HWAVEOUT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga5381d120d82c043349dc9775f18a5299">txWaveOut</a> (int timeMs=-INT_MAX, double freqL=0, double volL=50, double freqR=-1, double volR=-1, int loops=1, const <a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a> &amp;data=<a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a>())</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Проигрывает звук через звуковую карту.  <a href="a00080.htm#ga5381d120d82c043349dc9775f18a5299"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">HWAVEOUT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#gaa677fdf2c2b515ad6faafc740a4ccf7e">txWaveOut</a> (const <a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a> &amp;data, int loops=1)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Проигрывает подготовленный или загруженный буфер через звуковую карту.  <a href="a00080.htm#gaa677fdf2c2b515ad6faafc740a4ccf7e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga034e9fc739e3a23cc7ff49fbe7ab8205">MonitorProc</a> (HWAVEIN waveIn, <a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a> &amp;data, void *userData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция-монитор, регулярно вызывающаяся при записи звука.  <a href="a00080.htm#ga034e9fc739e3a23cc7ff49fbe7ab8205"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga650c6862cf9d0d2e8ab6c8c43e59be18">txWaveIn</a> (int timeMs, <a class="el" href="a00080.htm#ga0f44cb31e6fab55ba409a510c7346793">MonitorProc_t</a> *monitorProc=NULL, void *monitorData=NULL, unsigned frameTime=0)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Записывает звук со звуковой карты.  <a href="a00080.htm#ga650c6862cf9d0d2e8ab6c8c43e59be18"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#gab571deca09d5854eff03adb4a906e378">txWaveGetPosition</a> (void *wave)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает текущую позицию воспроизведения или записи.  <a href="a00080.htm#gab571deca09d5854eff03adb4a906e378"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga74e32845b5d8f9a538b2c9c1d5c27e35">txWaveLoadWav</a> (const char filename[])</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Загружает звуковые данные из WAV-файла.  <a href="a00080.htm#ga74e32845b5d8f9a538b2c9c1d5c27e35"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#gaf4acf7c838bf10514034eaebffe914bc">txWaveSaveWav</a> (const <a class="el" href="a00080.htm#ga8b47e6b9634139311cc6e9ccc42350fe">txWaveData_t</a> &amp;data, const char filename[])</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Сохраняет звуковые данные в WAV-файле.  <a href="a00080.htm#gaf4acf7c838bf10514034eaebffe914bc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.htm#gab73db78e05652eca05c7efd4768e98ef">operator new</a> (size_t size, int)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Выделяет блок динамической памяти через new с обнулением его содержимого перед вызовом конструктора.  <a href="a00081.htm#gab73db78e05652eca05c7efd4768e98ef"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.htm#gab6432a66009d36b85175c7720a78b1cc">operator new</a> (size_t size, size_t items, int)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Выделяет блок динамической памяти через new[] с обнулением содержимого перед вызовом конструкторов.  <a href="a00081.htm#gab6432a66009d36b85175c7720a78b1cc"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="var-members"></a>
+Переменные</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga7314dc16e153be14dc298cb9cac8fbc0">txWaveSampleRate</a> = 44.100</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Скорость аудиопотока для TXWave в семплах <b>на 1 миллисекунду.</b>  <a href="a00080.htm#ga7314dc16e153be14dc298cb9cac8fbc0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const WAVEFORMATEX&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#gad34a43dcef175ddac1373a052ae579ea">txWaveFormat</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Формат аудиоданных для TXWave.  <a href="a00080.htm#gad34a43dcef175ddac1373a052ae579ea"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.htm#ga5673b664b39beb2afdac5a68ea9dcf32">txWaveVolMax</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Максимальная громкость в <a class="el" href="a00018.htm">txWaveSample_t</a>, согласно формату <a class="el" href="a00080.htm#gad34a43dcef175ddac1373a052ae579ea">txWaveFormat</a>.  <a href="a00080.htm#ga5673b664b39beb2afdac5a68ea9dcf32"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Подробное описание</h2>
+<div class="textblock">
+<p>См. определение в файле <a class="el" href="a00061_source.htm">TXWave.h</a></p>
+</div></div>
+</div>
+  <div id="nav-path" class="navpath">
+    <ul>
+      <li class="navelem"><a class="el" href="a00061.htm">TXWave.h</a>      </li>
+<!-- --------------------------------------------------------------------------
+  Doxygen_HTM.htm
+  $Version: 00173a, Revision: 172 $
+  $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru> $
+  $Date: 2023-08-07 12:07:33 +0400 $
+ -------------------------------------------------------------------------- -->
+
+<table class="" width="100%"><tr valign="top">
+
+  <td align="left">
+    <small><a href="http://orphus.ru">Нашли ошибку? Выделите ее мышкой и нажмите Ctrl+ENTER. &copy;&#160;Orphus.ru.</a></small><br>
+    <a href="http://orphus.ru" id="orphus" target="_blank"><img class = "footer" alt="Orphus" src="http://storage.ded32.net.ru/orphus.gif" border="0"></a>
+    </td>
+
+  <td align="right">
+    Документация по TX Library. Дата: Mon Nov 13 2023 02:15:53. Создано&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3
+    <img src="http://storage.ded32.net.ru/stat/TXLib-Help.chm" width=1px height=1px border="0">
+    </td>
+  </tr></table>
+
+</ul>
+</div>
+
+<script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol)? "https://ssl." : "http://www."); document.write (unescape ("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); try { var pageTracker = _gat._getTracker ("UA-7927138-1"); pageTracker._trackPageview(); } catch (err) {}</script>
+<script type="text/javascript" src="http://storage.ded32.net.ru/orphus.js"></script>
+
+</body>
+</html>

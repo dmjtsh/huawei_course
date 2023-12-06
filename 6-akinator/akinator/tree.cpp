@@ -8,114 +8,175 @@
 #include "tree.h"
 #include "DimasLIB/DimasUtilities/error_processing.h"
 
-TreeNode* OpNew(TreeNode_t data)
+TreeNode* OpNew(Tree* tree, TreeNode_t* data)
 {
+	assert(tree != nullptr);
 	assert(data != nullptr);
 
 	TreeNode* node = (TreeNode*)calloc(1, sizeof(TreeNode));
 	if (!node) return nullptr;
 
-	strcpy(node->elem, data);
+	tree->ElemCtor(&node->elem, data);
 
 	return node;
 }
 
-void OpDelete(TreeNode* node)
+void OpDelete(Tree* tree, TreeNode* node)
 {
+	assert(tree != nullptr);
 	assert(node != nullptr);
+
+	tree->ElemDtor(&node->elem);
 
 	free(node);
 }
 
-void PrintNode(const TreeNode* node, FILE* logger)
+void PrintNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger)
 {
+	assert(tree   != nullptr);
+	assert(logger != nullptr);
+
 	if (!node) { fprintf(logger, EMPTY_NODE " "); return; }
 	
-	fprintf(logger, "( \"%s\" ", node->elem);
-	
-	PrintNode(node->left, logger);
-	PrintNode(node->right, logger);
+	fprintf(logger, "( ");
+
+	fprintf(logger, "%s ", tree->ElemPrinter(&node->elem));
+	PrintNodePreOrder(tree, node->left,  logger);
+	PrintNodePreOrder(tree, node->right, logger);
 	
 	fprintf(logger, ") ");
 }
 
-void DestroyNode(TreeNode** node_ptr)
+void PrintNodeInOrder(Tree* tree, const TreeNode* node, FILE* logger)
 {
-	if (!node_ptr || !*node_ptr)
-		return;
+	assert(tree   != nullptr);
+	assert(logger != nullptr);
 
-	if((*node_ptr)->left)
-		DestroyNode(&(*node_ptr)->left);
-	if((*node_ptr)->right)
-		DestroyNode(&(*node_ptr)->right);
-
-	free(*node_ptr);
-
-	*node_ptr = 0;
+	if (!node) { fprintf(logger, EMPTY_NODE " "); return; }
+	
+	fprintf(logger, "( ");
+	
+	PrintNodeInOrder(tree, node->left, logger);
+	fprintf(logger, "%s ", tree->ElemPrinter(&node->elem));
+	PrintNodeInOrder(tree, node->right, logger);
+	
+	fprintf(logger, ") ");
 }
 
-size_t ReadNode(TreeNode** node_ptr, const char* tree_text_repr, unsigned* errors_ptr)
+void PrintNodePastOrder(Tree* tree, const TreeNode* node, FILE* logger)
 {
-	assert(node_ptr       != nullptr);
-	assert(tree_text_repr != nullptr);
-	assert(errors_ptr     != nullptr);
+	assert(tree   != nullptr);
+	assert(logger != nullptr);
 
-	#define DESTROY_TREE_AND_RET(node_ptr, error_bit) \
-		do									          \
-		{									          \
-			*errors_ptr &= error_bit;                 \
-			DestroyNode(node_ptr);                    \
-			return 0;                                 \
-		} while(0)
+	if (!node) { fprintf(logger, EMPTY_NODE " "); return; }
+	
+	fprintf(logger, "( ");
+	
+	PrintNodePastOrder(tree, node->left,  logger);
+	PrintNodePastOrder(tree, node->right, logger);
+	fprintf(logger, "%s ", tree->ElemPrinter(&node->elem));
 
-	#define DO_AND_CHECK_SSCANF(check_cond, scanf_format)                                                           \
-		do																										    \
-		{																										    \
-			read_args_num = sscanf(tree_text_repr + read_ch_count, scanf_format "%n", node_data, &current_str_len); \
-			read_ch_count += current_str_len + 1;                                                                   \
-			if (!(check_cond))                                                                                      \
-			{                                                                                                       \
-				DESTROY_TREE_AND_RET(node_ptr, TREE_STR_INVALID);                                                   \
-			}																										\
-		} while(0)
+	fprintf(logger, ") ");
+}
 
+void DestroyNode(Tree* tree, TreeNode* node)
+{
+	assert(tree != nullptr);
 
-	if(*errors_ptr)
-		DESTROY_TREE_AND_RET(node_ptr, *errors_ptr);
+	if (!node)
+		return;
 
-	size_t read_ch_count     = 0;
-	size_t current_str_len = 0;
-	size_t read_args_num     = 0;
-	char node_data[MAX_NODE_STR_LEN] = "";
-                                                  
-	DO_AND_CHECK_SSCANF(read_args_num == 1, "%s");
+	if(node->left)
+		DestroyNode(tree, node->left);
+	if(node->right)
+		DestroyNode(tree, node->right);
 
-	if(node_data[0] == '(' && current_str_len == 1)
-	{
+	OpDelete(tree, node);
+}
 
-		DO_AND_CHECK_SSCANF(read_args_num == 1, " \"%[^\"]\"");
+void CreateChileNode(Tree* tree, TreeNode* parent_node, TreeNode_t* child_node_data)
+{
+	assert(tree != nullptr);
+	assert(parent_node != nullptr);
+	assert(child_node_data != nullptr);
 
-		TreeNode* new_node = OpNew(node_data);
-		if(!new_node)
-			DESTROY_TREE_AND_RET(node_ptr, NODE_CALLOC_ERROR);
+	if (!parent_node->left)
+		parent_node->left  = OpNew(tree, child_node_data);
+	else if(!parent_node->right)
+		parent_node->right = OpNew(tree, child_node_data); 
+}
 
-		*node_ptr = new_node;
+void DeleteLeaf(Tree* tree, TreeNode* leaf_to_delete)
+{
+	assert(tree != nullptr);
+	assert(leaf_to_delete != nullptr);
 
-		read_ch_count += ReadNode(&(*node_ptr)->left,  tree_text_repr + read_ch_count, errors_ptr);
-		read_ch_count += ReadNode(&(*node_ptr)->right, tree_text_repr + read_ch_count, errors_ptr);
-		
-		DO_AND_CHECK_SSCANF(read_args_num && node_data[0] == ')' && current_str_len == 1, "%s");
-	}
+	if(!leaf_to_delete->left && !leaf_to_delete->right)
+		OpDelete(tree, leaf_to_delete);
+}
+
+const char* VERTEX_COLOR = "#FFC61A";
+const char* LEAFS_COLOR  = "#FF8100";
+const char* LINKS_COLOR  = "#2E313F";
+const char* FONT_COLOR   = "#0e0a2a";
+
+void PrintGraphNode (Tree* tree, TreeNode* node, FILE* graph)
+{
+	assert(tree  != nullptr);
+	assert(graph != nullptr);
+
+	if(!node)
+		return;
+
+	if (node->left != nullptr && node->right != nullptr)
+		fprintf(graph, 
+			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n", 
+			VERTEX_COLOR, FONT_COLOR);
 	else
+		fprintf(graph, 
+			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n", 
+			LEAFS_COLOR, FONT_COLOR);
+	fprintf(graph,
+		"\"%s\" [shape=\"record\", label=\"\\n %s\"];\n", tree->ElemPrinter(&node->elem), tree->ElemPrinter(&node->elem));
+	
+	PrintGraphNode(tree, node->left,  graph);
+	PrintGraphNode(tree, node->right, graph);
+}
+
+void PrintGraphLinks (Tree* tree, TreeNode* node, FILE* graph)
+{
+	assert(tree != nullptr);
+	assert(graph != nullptr);
+	
+
+	if (node->left != nullptr)
 	{
-		if (!(strcmp(node_data, EMPTY_NODE) == 0))
-			DESTROY_TREE_AND_RET(node_ptr, TREE_STR_INVALID);
+		fprintf(graph, 
+			"\"%s\" -> \"%s\"  [label = \"yes\" color=\"%s\" fontcolor=\"%s\"];\n",
+			tree->ElemPrinter(&node->elem), tree->ElemPrinter(&node->left->elem), LINKS_COLOR, LINKS_COLOR);
+		PrintGraphLinks(tree, node->left, graph);
 	}
+	
+	if (node->right != nullptr)
+	{
+		fprintf(graph, 
+			"\"%s\" -> \"%s\"  [label = \"no\" color=\"%s\" fontcolor=\"%s\"];\n",
+			tree->ElemPrinter(&node->elem), tree->ElemPrinter(&node->right->elem), LINKS_COLOR, LINKS_COLOR);
+		PrintGraphLinks(tree, node->right, graph);	
+	}
+}
 
-	return read_ch_count;
+void TreeGraphPrint(Tree* tree, FILE* graph)
+{
+	assert(tree  != nullptr);
+	assert(graph != nullptr);
 
-	#undef DESTROY_TREE_AND_RET
-	#undef DO_AND_CHECK_SSCANF
+	fprintf(graph, "digraph TreeGraph {\n");
+
+	PrintGraphNode (tree, tree->root, graph);
+	PrintGraphLinks(tree, tree->root, graph);
+
+	fprintf(graph, "}");
 }
 
 void TreeDump(Tree* tree, FILE* logger)
@@ -123,7 +184,7 @@ void TreeDump(Tree* tree, FILE* logger)
 	assert(tree   != nullptr);
 	assert(logger != nullptr);
 
-	PrintNode(tree->root, logger);
+	PrintNodeInOrder(tree, tree->root, logger);
 }
 
 unsigned TreeVerifier(Tree* tree)
@@ -132,20 +193,22 @@ unsigned TreeVerifier(Tree* tree)
 		return TREE_PTR_NULL;
 
 	CHECK_ERROR(tree, !tree->root, ROOT_PTR_NULL);
+
+	return 0;
 }
 
-
-unsigned TreeCtor(Tree* tree, char* tree_text_repr)
+unsigned TreeCtor(Tree* tree, void  (*ElemCtor) (TreeNode_t*, TreeNode_t*), 
+							  void  (*ElemDtor) (TreeNode_t*), 
+							  char* (*ElemPrinter) (const TreeNode_t*))
 {
 	assert(tree != nullptr);
-	assert(tree_text_repr != nullptr);
+	assert(ElemCtor    != nullptr);
+	assert(ElemDtor    != nullptr);
+	assert(ElemPrinter != nullptr);
 
-	ReadNode(&tree->root, tree_text_repr, &tree->errors);
-	if(!tree->root)
-	{
-		ReadNode(&tree->root, "( \"Noname\" nil nil )", &tree->errors);
-		return TREE_STR_INVALID;
-	}
+	tree->ElemCtor    = ElemCtor;
+	tree->ElemDtor    = ElemDtor;
+	tree->ElemPrinter = ElemPrinter;
 
 	return 0;
 }
@@ -156,7 +219,7 @@ unsigned TreeDtor(Tree* tree)
 
 	if (!(tree->errors & TREE_DELETED))
 	{
-		DestroyNode(&tree->root);
+		DestroyNode(tree, tree->root);
 		tree->errors |= TREE_DELETED;
 	}
 	else

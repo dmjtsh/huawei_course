@@ -10,7 +10,9 @@
 #define EMPTY_NODE "nil" 
 const size_t MAX_NODE_STR_LEN = 60;
 
-using TreeNode_t = char[MAX_NODE_STR_LEN];
+struct Tree;
+
+typedef char TreeNode_t[MAX_NODE_STR_LEN];
 
 struct TreeNode
 {
@@ -20,13 +22,14 @@ struct TreeNode
 	TreeNode* right;
 };
 
-TreeNode* OpNew(TreeNode_t data);
-void      OpDelete(TreeNode* node);
+TreeNode* OpNew(Tree* tree, TreeNode_t* data);
+void      OpDelete(Tree* tree, TreeNode* node);
 
-void   PrintNode(const TreeNode* node, FILE* logger);
-size_t ReadNode(TreeNode** node_ptr, const char* tree_text_repr, unsigned* errors_ptr);
+void PrintNodePastOrder(Tree* tree, const TreeNode* node, FILE* logger);
+void PrintNodeInOrder  (Tree* tree, const TreeNode* node, FILE* logger);
+void PrintNodePreOrder (Tree* tree, const TreeNode* node, FILE* logger);
 
-void DestroyNode(TreeNode** node_ptr);
+void DestroyNode(Tree* tree, TreeNode* node_ptr);
 
 /*
 * End of Node Structure Block
@@ -51,15 +54,21 @@ struct Tree
 {
 	TreeNode* root;
 
+	void  (*ElemCtor) (TreeNode_t*, TreeNode_t*);
+	void  (*ElemDtor) (TreeNode_t*);
+	char* (*ElemPrinter) (const TreeNode_t*);
+
 	unsigned errors;
 };
 
-unsigned TreeCtor(Tree* tree, char* tree_text_repr);
+unsigned TreeCtor(Tree* tree, void  (*ElemCtor) (TreeNode_t*, TreeNode_t*), 
+							  void  (*ElemDtor) (TreeNode_t*), 
+							  char* (*ElemPrinter) (const TreeNode_t*));
 unsigned TreeDtor(Tree* tree);
 
 unsigned TreeVerifier(Tree* tree);
-void     TreeDump(Tree* tree, FILE* logger);
-
+void TreeDump(Tree* tree, FILE* logger);
+void TreeGraphPrint(Tree* tree, FILE* graph);
 /*
 * End of Tree Structure Block 
 */

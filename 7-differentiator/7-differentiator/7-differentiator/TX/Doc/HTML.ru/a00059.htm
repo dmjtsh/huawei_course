@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>TX Library: Файл TXNetwork.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript">
+$(document).ready(initResizable);
+</script>
+<link href="Doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Создано системой Doxygen 1.7.3 -->
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="TXLib.png"></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TX Library&#160;<span id="projectnumber">Help &ndash; Version: 00173a, Revision: 172</span></div>
+   <div id="projectbrief"><s>&nbsp;ALL&nbsp;</s> Windows graphics in a sandbox</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+</div>
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+  initNavTree('a00059.htm','');
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Классы</a> &#124;
+<a href="#define-members">Макросы</a> &#124;
+<a href="#enum-members">Перечисления</a> &#124;
+<a href="#func-members">Функции</a>  </div>
+  <div class="headertitle">
+<h1>Файл TXNetwork.h</h1>  </div>
+</div>
+<div class="contents">
+
+<p><a href="a00059_source.htm">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Классы</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.htm">TX_SOCKET</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Cокет TXLib'a.  <a href="a00015.htm#_details">Подробнее...</a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Макросы</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#ga1e359e37a66aaeab778423c0c61923d0">TX_BROADCAST</a>&#160;&#160;&#160;&quot;255.255.255.255&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Широковещательный IP-адрес TXNetwork'a.  <a href="a00078.htm#ga1e359e37a66aaeab778423c0c61923d0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#gad3ab3baeb73e77641e348a9aa33516ec">TX_STD_PORT</a>&#160;&#160;&#160;27050</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Стандартный порт TXNetwork'a.  <a href="a00078.htm#gad3ab3baeb73e77641e348a9aa33516ec"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#gadea4550fd711b4de49839e72be38c2d0">TX_LOCALHOST</a>&#160;&#160;&#160;&quot;127.0.0.1&quot;</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">IP-адрес компьютера, на которм запущен компьютер.  <a href="a00078.htm#gadea4550fd711b4de49839e72be38c2d0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00079.htm#gaa56d5be53827cc51bd2a02fe580e00c9">TXN_NOT_CREATED</a>&#160;&#160;&#160;101</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Сокет не создан.  <a href="a00079.htm#gaa56d5be53827cc51bd2a02fe580e00c9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00079.htm#ga61504ff34c9e7ad86561df1ffca21759">TXN_OK</a>&#160;&#160;&#160;100</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Сокет в порядке.  <a href="a00079.htm#ga61504ff34c9e7ad86561df1ffca21759"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00079.htm#ga8eaa176a913e2ec34778209de1c88983">TXN_ERROR</a>&#160;&#160;&#160;-1</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Ошибка сокета.  <a href="a00079.htm#ga8eaa176a913e2ec34778209de1c88983"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="enum-members"></a>
+Перечисления</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#ga0696d269feb958d9f6fa2d0e1cf7e517">sock_type</a> { <br/>
+&#160;&#160;<a class="el" href="a00078.htm#gga0696d269feb958d9f6fa2d0e1cf7e517a348f2bd7cd4f969b024f32d9cb4c417c">TX_SERVER</a> =  1, 
+<br/>
+&#160;&#160;<a class="el" href="a00078.htm#gga0696d269feb958d9f6fa2d0e1cf7e517a5594ab6ae4c1de966d629c79fd2ffc58">TX_CLIENT</a> =  2, 
+<br/>
+&#160;&#160;<a class="el" href="a00078.htm#gga0696d269feb958d9f6fa2d0e1cf7e517a57c7249731b701a916229d3c795ba9fd">TX_BLOCK</a> =  3, 
+<br/>
+&#160;&#160;<a class="el" href="a00078.htm#gga0696d269feb958d9f6fa2d0e1cf7e517a80597d9c9785fab539e760bebf2acc22">TX_NONBLOCK</a> =  4, 
+<br/>
+&#160;&#160;<a class="el" href="a00078.htm#gga0696d269feb958d9f6fa2d0e1cf7e517a247d953bff98c6ee1de4ddca128848f3">TX_NOTYPE</a> =  -1
+<br/>
+ }</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><p>Типы сокета. </p>
+ <a href="a00078.htm#ga0696d269feb958d9f6fa2d0e1cf7e517">Подробнее...</a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Функции</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00015.htm">TX_SOCKET</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#ga28c1c1600ff0df0a1b4443284e14b6d5">txCreateSocket</a> (<a class="el" href="a00078.htm#ga0696d269feb958d9f6fa2d0e1cf7e517">sock_type</a> type, const char *IP=NULL, int port=TX_STD_PORT, <a class="el" href="a00078.htm#ga0696d269feb958d9f6fa2d0e1cf7e517">sock_type</a> blocking=TX_BLOCK, bool useTCP=true, const unsigned OueueSize=0x10)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Создаёт сокет TXNetwork.  <a href="a00078.htm#ga28c1c1600ff0df0a1b4443284e14b6d5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#gab1932ecc57580c15659f0cc01b695262">txSendTo</a> (<a class="el" href="a00015.htm">TX_SOCKET</a> &amp;to, const void *buf, int size_buf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция для отправки данных через сокет  <a href="a00078.htm#gab1932ecc57580c15659f0cc01b695262"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#gaf700cdda64317854f43186f0cfa003a1">txRecvFrom</a> (<a class="el" href="a00015.htm">TX_SOCKET</a> &amp;to, void *buf, int size_buf)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция для приема данных через сокет  <a href="a00078.htm#gaf700cdda64317854f43186f0cfa003a1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#ga5e61ac3a46192caddcd98b27325ef953">txnAssert</a> (<a class="el" href="a00015.htm">TX_SOCKET</a> &amp;asr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция для проверки сокета  <a href="a00078.htm#ga5e61ac3a46192caddcd98b27325ef953"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#gaac42a63b28b3c029dda53fd90ddd0cb8">txChangeSockType</a> (<a class="el" href="a00015.htm">TX_SOCKET</a> &amp;to, <a class="el" href="a00078.htm#ga0696d269feb958d9f6fa2d0e1cf7e517">sock_type</a> blocking)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция для изменения типа (синхронный - не синхронный) сокета.  <a href="a00078.htm#gaac42a63b28b3c029dda53fd90ddd0cb8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">SOCKET *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.htm#ga9edc914ce0aee67b6dda96cc2132d2e5">txGetWinSocket</a> (<a class="el" href="a00015.htm">TX_SOCKET</a> &amp;what, bool main)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Функция, которая возвращает сокет winsock'а.  <a href="a00078.htm#ga9edc914ce0aee67b6dda96cc2132d2e5"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Подробное описание</h2>
+<div class="textblock">
+<p>См. определение в файле <a class="el" href="a00059_source.htm">TXNetwork.h</a></p>
+</div></div>
+</div>
+  <div id="nav-path" class="navpath">
+    <ul>
+      <li class="navelem"><a class="el" href="a00059.htm">TXNetwork.h</a>      </li>
+<!-- --------------------------------------------------------------------------
+  Doxygen_HTM.htm
+  $Version: 00173a, Revision: 172 $
+  $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru> $
+  $Date: 2023-08-07 12:07:33 +0400 $
+ -------------------------------------------------------------------------- -->
+
+<table class="" width="100%"><tr valign="top">
+
+  <td align="left">
+    <small><a href="http://orphus.ru">Нашли ошибку? Выделите ее мышкой и нажмите Ctrl+ENTER. &copy;&#160;Orphus.ru.</a></small><br>
+    <a href="http://orphus.ru" id="orphus" target="_blank"><img class = "footer" alt="Orphus" src="http://storage.ded32.net.ru/orphus.gif" border="0"></a>
+    </td>
+
+  <td align="right">
+    Документация по TX Library. Дата: Mon Nov 13 2023 02:15:53. Создано&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3
+    <img src="http://storage.ded32.net.ru/stat/TXLib-Help.chm" width=1px height=1px border="0">
+    </td>
+  </tr></table>
+
+</ul>
+</div>
+
+<script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol)? "https://ssl." : "http://www."); document.write (unescape ("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); try { var pageTracker = _gat._getTracker ("UA-7927138-1"); pageTracker._trackPageview(); } catch (err) {}</script>
+<script type="text/javascript" src="http://storage.ded32.net.ru/orphus.js"></script>
+
+</body>
+</html>

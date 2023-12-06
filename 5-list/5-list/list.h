@@ -61,15 +61,12 @@ size_t ListInsertAfter (List* list, size_t elem_index, Value_t new_elem_value);
 size_t ListInsertBefore(List* list, size_t elem_index, Value_t new_elem_value);
 
 unsigned ListRemoveFirst(List* list);
-unsigned ListRemoveLast(List* list);
+unsigned ListRemoveLast (List* list);
 unsigned ListRemove(List* list, size_t elem_index);
 
 unsigned ListCtor(List* list);
 unsigned ListDtor(List* list);
 
 unsigned ListVerifier(List* list);
-
-void ListDump(List* list, FILE* logger);
-void ListGraphPrint(List* list);
 
 #endif // LIST_H

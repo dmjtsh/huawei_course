@@ -1,0 +1,1 @@
+dot -T png akinator_graph.gv -o akinator_graph.png

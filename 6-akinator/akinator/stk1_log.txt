@@ -2,11 +2,11 @@
 STACK DUMP CALL #1
 Called from: _StackCtor(335)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 0
 capacity = 2
-data[000001CFDFC9C1D8]
+data[000001D2020F61B8]
   {
   [0] = 666 ( POISON )
   [1] = 666 ( POISON )
@@ -18,11 +18,11 @@ data[000001CFDFC9C1D8]
 STACK DUMP CALL #2
 Called from: StackPush(248)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 0
 capacity = 2
-data[000001CFDFC9C1D8]
+data[000001D2020F61B8]
   {
   [0] = 666 ( POISON )
   [1] = 666 ( POISON )
@@ -34,11 +34,11 @@ data[000001CFDFC9C1D8]
 STACK DUMP CALL #3
 Called from: StackPush(260)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 1
 capacity = 2
-data[000001CFDFC9C1D8]
+data[000001D2020F61B8]
   {
   [0] = 0
   [1] = 666 ( POISON )
@@ -50,11 +50,11 @@ data[000001CFDFC9C1D8]
 STACK DUMP CALL #4
 Called from: StackPush(248)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 1
 capacity = 2
-data[000001CFDFC9C1D8]
+data[000001D2020F61B8]
   {
   [0] = 0
   [1] = 666 ( POISON )
@@ -66,14 +66,14 @@ data[000001CFDFC9C1D8]
 STACK DUMP CALL #5
 Called from: StackPush(260)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 2
 capacity = 2
-data[000001CFDFC9C1D8]
+data[000001D2020F61B8]
   {
   [0] = 0
-  [1] = 1
+  [1] = 0
   }
 }
 =======================================
@@ -82,14 +82,14 @@ data[000001CFDFC9C1D8]
 STACK DUMP CALL #6
 Called from: StackPush(248)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 2
 capacity = 2
-data[000001CFDFC9C1D8]
+data[000001D2020F61B8]
   {
   [0] = 0
-  [1] = 1
+  [1] = 0
   }
 }
 =======================================
@@ -98,15 +98,15 @@ data[000001CFDFC9C1D8]
 STACK DUMP CALL #7
 Called from: StackPush(260)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 3
 capacity = 8
-data[000001CFDFC97468]
+data[000001D20210AB18]
   {
   [0] = 0
-  [1] = 1
-  [2] = 1
+  [1] = 0
+  [2] = 0
   [3] = 666 ( POISON )
   [4] = 666 ( POISON )
   [5] = 666 ( POISON )
@@ -118,17 +118,17 @@ data[000001CFDFC97468]
 
 =======================================
 STACK DUMP CALL #8
-Called from: StackPush(248)
+Called from: StackPop(289)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 3
 capacity = 8
-data[000001CFDFC97468]
+data[000001D20210AB18]
   {
   [0] = 0
-  [1] = 1
-  [2] = 1
+  [1] = 0
+  [2] = 0
   [3] = 666 ( POISON )
   [4] = 666 ( POISON )
   [5] = 666 ( POISON )
@@ -140,66 +140,54 @@ data[000001CFDFC97468]
 
 =======================================
 STACK DUMP CALL #9
-Called from: StackPush(260)
+Called from: StackPop(302)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
-size = 4
-capacity = 8
-data[000001CFDFC97468]
+size = 2
+capacity = 4
+data[000001D202172128]
   {
   [0] = 0
-  [1] = 1
-  [2] = 1
-  [3] = 1
-  [4] = 666 ( POISON )
-  [5] = 666 ( POISON )
-  [6] = 666 ( POISON )
-  [7] = 666 ( POISON )
+  [1] = 0
+  [2] = 666 ( POISON )
+  [3] = 666 ( POISON )
   }
 }
 =======================================
 
 =======================================
 STACK DUMP CALL #10
-Called from: StackPush(248)
+Called from: StackPop(289)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
-size = 4
-capacity = 8
-data[000001CFDFC97468]
+size = 2
+capacity = 4
+data[000001D202172128]
   {
   [0] = 0
-  [1] = 1
-  [2] = 1
-  [3] = 1
-  [4] = 666 ( POISON )
-  [5] = 666 ( POISON )
-  [6] = 666 ( POISON )
-  [7] = 666 ( POISON )
+  [1] = 0
+  [2] = 666 ( POISON )
+  [3] = 666 ( POISON )
   }
 }
 =======================================
 
 =======================================
 STACK DUMP CALL #11
-Called from: StackPush(260)
+Called from: StackPop(302)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
-size = 5
-capacity = 8
-data[000001CFDFC97468]
+size = 1
+capacity = 4
+data[000001D202172128]
   {
   [0] = 0
-  [1] = 1
-  [2] = 1
-  [3] = 1
-  [4] = 1
-  [5] = 666 ( POISON )
-  [6] = 666 ( POISON )
-  [7] = 666 ( POISON )
+  [1] = 666 ( POISON )
+  [2] = 666 ( POISON )
+  [3] = 666 ( POISON )
   }
 }
 =======================================
@@ -208,13 +196,215 @@ data[000001CFDFC97468]
 STACK DUMP CALL #12
 Called from: StackPop(289)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 1
+capacity = 4
+data[000001D202172128]
+  {
+  [0] = 0
+  [1] = 666 ( POISON )
+  [2] = 666 ( POISON )
+  [3] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #13
+Called from: StackPop(302)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 0
+capacity = 2
+data[000001D202172668]
+  {
+  [0] = 666 ( POISON )
+  [1] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #14
+Called from: StackPush(248)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 0
+capacity = 2
+data[000001D202172668]
+  {
+  [0] = 666 ( POISON )
+  [1] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #15
+Called from: StackPush(260)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 1
+capacity = 2
+data[000001D202172668]
+  {
+  [0] = 1
+  [1] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #16
+Called from: StackPush(248)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 1
+capacity = 2
+data[000001D202172668]
+  {
+  [0] = 1
+  [1] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #17
+Called from: StackPush(260)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 2
+capacity = 2
+data[000001D202172668]
+  {
+  [0] = 1
+  [1] = 1
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #18
+Called from: StackPush(248)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 2
+capacity = 2
+data[000001D202172668]
+  {
+  [0] = 1
+  [1] = 1
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #19
+Called from: StackPush(260)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 3
+capacity = 8
+data[000001D20210A808]
+  {
+  [0] = 1
+  [1] = 1
+  [2] = 1
+  [3] = 666 ( POISON )
+  [4] = 666 ( POISON )
+  [5] = 666 ( POISON )
+  [6] = 666 ( POISON )
+  [7] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #20
+Called from: StackPush(248)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 3
+capacity = 8
+data[000001D20210A808]
+  {
+  [0] = 1
+  [1] = 1
+  [2] = 1
+  [3] = 666 ( POISON )
+  [4] = 666 ( POISON )
+  [5] = 666 ( POISON )
+  [6] = 666 ( POISON )
+  [7] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #21
+Called from: StackPush(260)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 4
+capacity = 8
+data[000001D20210A808]
+  {
+  [0] = 1
+  [1] = 1
+  [2] = 1
+  [3] = 1
+  [4] = 666 ( POISON )
+  [5] = 666 ( POISON )
+  [6] = 666 ( POISON )
+  [7] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #22
+Called from: StackPush(248)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 4
+capacity = 8
+data[000001D20210A808]
+  {
+  [0] = 1
+  [1] = 1
+  [2] = 1
+  [3] = 1
+  [4] = 666 ( POISON )
+  [5] = 666 ( POISON )
+  [6] = 666 ( POISON )
+  [7] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #23
+Called from: StackPush(260)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 5
 capacity = 8
-data[000001CFDFC97468]
+data[000001D20210A808]
   {
-  [0] = 0
+  [0] = 1
   [1] = 1
   [2] = 1
   [3] = 1
@@ -227,16 +417,38 @@ data[000001CFDFC97468]
 =======================================
 
 =======================================
-STACK DUMP CALL #13
+STACK DUMP CALL #24
+Called from: StackPop(289)
+-----------NO_ERRORS-----------
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
+{
+size = 5
+capacity = 8
+data[000001D20210A808]
+  {
+  [0] = 1
+  [1] = 1
+  [2] = 1
+  [3] = 1
+  [4] = 1
+  [5] = 666 ( POISON )
+  [6] = 666 ( POISON )
+  [7] = 666 ( POISON )
+  }
+}
+=======================================
+
+=======================================
+STACK DUMP CALL #25
 Called from: StackPop(302)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 4
 capacity = 8
-data[000001CFDFC97468]
+data[000001D20210A808]
   {
-  [0] = 0
+  [0] = 1
   [1] = 1
   [2] = 1
   [3] = 1
@@ -249,16 +461,16 @@ data[000001CFDFC97468]
 =======================================
 
 =======================================
-STACK DUMP CALL #14
+STACK DUMP CALL #26
 Called from: StackPop(289)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 4
 capacity = 8
-data[000001CFDFC97468]
+data[000001D20210A808]
   {
-  [0] = 0
+  [0] = 1
   [1] = 1
   [2] = 1
   [3] = 1
@@ -271,16 +483,16 @@ data[000001CFDFC97468]
 =======================================
 
 =======================================
-STACK DUMP CALL #15
+STACK DUMP CALL #27
 Called from: StackPop(302)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 3
 capacity = 8
-data[000001CFDFC97468]
+data[000001D20210A808]
   {
-  [0] = 0
+  [0] = 1
   [1] = 1
   [2] = 1
   [3] = 666 ( POISON )
@@ -293,16 +505,16 @@ data[000001CFDFC97468]
 =======================================
 
 =======================================
-STACK DUMP CALL #16
+STACK DUMP CALL #28
 Called from: StackPop(289)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 3
 capacity = 8
-data[000001CFDFC97468]
+data[000001D20210A808]
   {
-  [0] = 0
+  [0] = 1
   [1] = 1
   [2] = 1
   [3] = 666 ( POISON )
@@ -315,16 +527,16 @@ data[000001CFDFC97468]
 =======================================
 
 =======================================
-STACK DUMP CALL #17
+STACK DUMP CALL #29
 Called from: StackPop(302)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 2
 capacity = 4
-data[000001CFDFCECA98]
+data[000001D2021720C8]
   {
-  [0] = 0
+  [0] = 1
   [1] = 1
   [2] = 666 ( POISON )
   [3] = 666 ( POISON )
@@ -333,16 +545,16 @@ data[000001CFDFCECA98]
 =======================================
 
 =======================================
-STACK DUMP CALL #18
+STACK DUMP CALL #30
 Called from: StackPop(289)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 2
 capacity = 4
-data[000001CFDFCECA98]
+data[000001D2021720C8]
   {
-  [0] = 0
+  [0] = 1
   [1] = 1
   [2] = 666 ( POISON )
   [3] = 666 ( POISON )
@@ -351,16 +563,16 @@ data[000001CFDFCECA98]
 =======================================
 
 =======================================
-STACK DUMP CALL #19
+STACK DUMP CALL #31
 Called from: StackPop(302)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 1
 capacity = 4
-data[000001CFDFCECA98]
+data[000001D2021720C8]
   {
-  [0] = 0
+  [0] = 1
   [1] = 666 ( POISON )
   [2] = 666 ( POISON )
   [3] = 666 ( POISON )
@@ -369,16 +581,16 @@ data[000001CFDFCECA98]
 =======================================
 
 =======================================
-STACK DUMP CALL #20
+STACK DUMP CALL #32
 Called from: StackPop(289)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 1
 capacity = 4
-data[000001CFDFCECA98]
+data[000001D2021720C8]
   {
-  [0] = 0
+  [0] = 1
   [1] = 666 ( POISON )
   [2] = 666 ( POISON )
   [3] = 666 ( POISON )
@@ -387,14 +599,14 @@ data[000001CFDFCECA98]
 =======================================
 
 =======================================
-STACK DUMP CALL #21
+STACK DUMP CALL #33
 Called from: StackPop(302)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 0
 capacity = 2
-data[000001CFDFCED578]
+data[000001D202172308]
   {
   [0] = 666 ( POISON )
   [1] = 666 ( POISON )
@@ -403,14 +615,14 @@ data[000001CFDFCED578]
 =======================================
 
 =======================================
-STACK DUMP CALL #22
+STACK DUMP CALL #34
 Called from: StackDtor(343)
 -----------NO_ERRORS-----------
-Stack [000000B9910FFB20], name: "&akinator->node_properties" from: AkinatorCtor(259)
+Stack [000000C89618FA20], name: "&akinator->node_properties" from: AkinatorCtor(327)
 {
 size = 0
 capacity = 2
-data[000001CFDFCED578]
+data[000001D202172308]
   {
   [0] = 666 ( POISON )
   [1] = 666 ( POISON )

@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>TX Library: Класс txAutoLock</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript">
+$(document).ready(initResizable);
+</script>
+<link href="Doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Создано системой Doxygen 1.7.3 -->
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="TXLib.png"></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TX Library&#160;<span id="projectnumber">Help &ndash; Version: 00173a, Revision: 172</span></div>
+   <div id="projectbrief"><s>&nbsp;ALL&nbsp;</s> Windows graphics in a sandbox</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+</div>
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+  initNavTree('a00016.htm','');
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-attribs">Открытые атрибуты</a>  </div>
+  <div class="headertitle">
+<h1>Класс txAutoLock<div class="ingroups"><a class="el" href="a00081.htm">Разное</a></div></h1>  </div>
+</div>
+<div class="contents">
+<!-- doxytag: class="txAutoLock" -->
+<p>Класс для автоматической блокировки и разблокировки критической секции.  
+<a href="#_details">Подробнее...</a></p>
+
+<p><a href="a00088.htm">Полный список членов класса</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.htm#a61feaeca08bc74354fae1dc8ef55b31a">txAutoLock</a> (CRITICAL_SECTION *cs, bool mandatory=true)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, блокирует критическую секцию  <a href="#a61feaeca08bc74354fae1dc8ef55b31a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.htm#a7cf59bdea297feba1a8a1695657817b9">txAutoLock</a> (bool mandatory=true)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор для блокировки холста TXLib.  <a href="#a7cf59bdea297feba1a8a1695657817b9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65ee5bd5cf2560f863a2c8caf26ceb81"></a><!-- doxytag: member="txAutoLock::~txAutoLock" ref="a65ee5bd5cf2560f863a2c8caf26ceb81" args="()" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.htm#a65ee5bd5cf2560f863a2c8caf26ceb81">~txAutoLock</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Деструктор, разблокирует секцию <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.htm#aa385aa18f5e42db5a415c25a90f4193d">operator bool</a> () const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Позволяет проверить, заблокировалась секция или нет  <a href="#aa385aa18f5e42db5a415c25a90f4193d"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a331135d21727f8d293dc9e112ebc59c5"></a><!-- doxytag: member="txAutoLock::cs_" ref="a331135d21727f8d293dc9e112ebc59c5" args="" -->
+CRITICAL_SECTION *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.htm#a331135d21727f8d293dc9e112ebc59c5">cs_</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Блокируемая критическая секция <br/></td></tr>
+<tr><td colspan="2"><h2><a name="pri-methods"></a>
+Закрытые члены</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc7dbe0e19a504338468994140db596e"></a><!-- doxytag: member="txAutoLock::txAutoLock" ref="acc7dbe0e19a504338468994140db596e" args="(const this_t &amp;) _tx_delete" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.htm#acc7dbe0e19a504338468994140db596e">txAutoLock</a> (const <a class="el" href="a00016.htm">this_t</a> &amp;) _tx_delete</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Такой вот копирайт. <br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Подробное описание</h2>
+<div class="textblock"><p>Класс для автоматической блокировки и разблокировки критической секции. </p>
+<p>Начиная с <a href="http://progbook.ru/2008/08/03/sovremennoe-proektirovanie-na-c-andrejj.html">Александреску,</a> его пишут все и он прост, как пробка: в конструкторе -- EnterCriticalSection(), в деструкторе -- LeaveCriticalSection(). Это <code>RAII</code> в чистом виде: вы никогда не забудете разблочить секцию and your thread show will always go on.</p>
+<p>Некоторые добавления: есть возможность вызвать TryEnterCriticalSection(), и, если она не заблочила секцию, деструктор ее не разблочивает. Есть оператор для проверки, заблочилась ли секция или нет (см. конструкторы класса и оператор <code>bool</code>).</p>
+<dl class="note"><dt><b>Заметки:</b></dt><dd>Класс не инициализирует и не удаляет критическую секцию. Только синхронизирует. Остальное сами-сами :)</dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="a00081.htm#ga532fa8a55c4f3d4f94ff0fdceae732b2" title="Блокирует холст (контекст рисования).">txLock()</a>, <a class="el" href="a00081.htm#ga8fe4ec4c66cb69ce337747fe65dd0cc6" title="Разблокирует холст">txUnlock()</a>, <a class="el" href="a00081.htm#gafdd807831b131ba38d5856b6ee4e8287" title="Вызывает функции Win32 GDI с автоматической блокировкой и разблокировкой.">txGDI()</a> </dd></dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l06357">6357</a></p>
+</div><hr/><h2>Конструктор(ы)</h2>
+<a class="anchor" id="a61feaeca08bc74354fae1dc8ef55b31a"></a><!-- doxytag: member="txAutoLock::txAutoLock" ref="a61feaeca08bc74354fae1dc8ef55b31a" args="(CRITICAL_SECTION *cs, bool mandatory=true)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00016.htm">txAutoLock</a> </td>
+          <td>(</td>
+          <td class="paramtype">CRITICAL_SECTION *&#160;</td>
+          <td class="paramname"><em>cs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mandatory</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [explicit]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Конструктор, блокирует критическую секцию </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cs</td><td>Критическая секция для блокировки. </td></tr>
+    <tr><td class="paramname">mandatory</td><td><em>Если <code>true</code>, то блокировать обязательно (EnterCriticalSection). <br/>
+ Если <code>false</code>, то только пытаться блокировать (TryEnterCriticalSection). <br/>
+ Если не указано, то блокировка обязательна.</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          CRITICAL_SECTION cs = {};         <span class="comment">// This is not a Counter Strike</span>
+
+          <span class="keywordtype">void</span> foo()
+              {
+              <a class="code" href="a00016.htm" title="Класс для автоматической блокировки и разблокировки критической секции.">txAutoLock</a> lock (&amp;cs);        <span class="comment">// Здесь вызовется EnterCriticalSection()</span>
+              ...
+              }                             <span class="comment">// а здесь LeaveCriticalsection()</span>
+
+          <span class="keywordtype">void</span> bar()
+              {
+              <a class="code" href="a00016.htm" title="Класс для автоматической блокировки и разблокировки критической секции.">txAutoLock</a> lock (&amp;cs, <span class="keyword">false</span>); <span class="comment">// TryEnterCriticalSection()</span>
+              <span class="keywordflow">if</span> (!lock) <span class="keywordflow">return</span>;            <span class="comment">// ну не смогла</span>
+              ...
+              }
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l06388">6388</a></p>
+
+</div>
+</div>
+<a class="anchor" id="a7cf59bdea297feba1a8a1695657817b9"></a><!-- doxytag: member="txAutoLock::txAutoLock" ref="a7cf59bdea297feba1a8a1695657817b9" args="(bool mandatory=true)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00016.htm">txAutoLock</a> </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mandatory</em> = <code>true</code></td><td>)</td>
+          <td><code> [explicit]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Конструктор для блокировки холста TXLib. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mandatory</td><td><em>Если <code>true</code>, то блокировать <b>обязательно</b>, как в <a class="el" href="a00081.htm#ga532fa8a55c4f3d4f94ff0fdceae732b2">txLock</a> (true). <br/>
+ Если <code>false</code>, то только <b>пытаться</b> блокировать, как в <a class="el" href="a00081.htm#ga532fa8a55c4f3d4f94ff0fdceae732b2">txLock</a> (false). <br/>
+ Если не указано, то блокировка обязательна.</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd><div class="fragment"><pre class="fragment">          <span class="keywordtype">void</span> foobar()
+              {
+              <a class="code" href="a00016.htm" title="Класс для автоматической блокировки и разблокировки критической секции.">txAutoLock</a> lock;      <span class="comment">// Здесь вызовется txLock()</span>
+              ...
+              }                     <span class="comment">// а здесь txUnlock()</span>
+</pre></div> </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l06412">6412</a></p>
+
+</div>
+</div>
+<hr/><h2>Методы</h2>
+<a class="anchor" id="aa385aa18f5e42db5a415c25a90f4193d"></a><!-- doxytag: member="txAutoLock::operator bool" ref="aa385aa18f5e42db5a415c25a90f4193d" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator bool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Позволяет проверить, заблокировалась секция или нет </p>
+<dl class="usage">
+<dt><b>Примеры использования:</b></dt>
+<dd>См. в txAutoLock::AutoLock (CRITICAL_SECTION&amp;, bool) </dd>
+</dl>
+
+<p>См. определение в файле <a class="el" href="a00058_source.htm">TXLib.h</a> строка <a class="el" href="a00058_source.htm#l06433">6433</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов класса находятся в файле:<ul>
+<li><a class="el" href="a00058_source.htm">TXLib.h</a></li>
+</ul>
+</div>
+</div>
+  <div id="nav-path" class="navpath">
+    <ul>
+      <li class="navelem"><a class="el" href="a00016.htm">txAutoLock</a>      </li>
+<!-- --------------------------------------------------------------------------
+  Doxygen_HTM.htm
+  $Version: 00173a, Revision: 172 $
+  $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru> $
+  $Date: 2023-08-07 12:07:33 +0400 $
+ -------------------------------------------------------------------------- -->
+
+<table class="" width="100%"><tr valign="top">
+
+  <td align="left">
+    <small><a href="http://orphus.ru">Нашли ошибку? Выделите ее мышкой и нажмите Ctrl+ENTER. &copy;&#160;Orphus.ru.</a></small><br>
+    <a href="http://orphus.ru" id="orphus" target="_blank"><img class = "footer" alt="Orphus" src="http://storage.ded32.net.ru/orphus.gif" border="0"></a>
+    </td>
+
+  <td align="right">
+    Документация по TX Library. Дата: Mon Nov 13 2023 02:15:53. Создано&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3
+    <img src="http://storage.ded32.net.ru/stat/TXLib-Help.chm" width=1px height=1px border="0">
+    </td>
+  </tr></table>
+
+</ul>
+</div>
+
+<script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol)? "https://ssl." : "http://www."); document.write (unescape ("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); try { var pageTracker = _gat._getTracker ("UA-7927138-1"); pageTracker._trackPageview(); } catch (err) {}</script>
+<script type="text/javascript" src="http://storage.ded32.net.ru/orphus.js"></script>
+
+</body>
+</html>

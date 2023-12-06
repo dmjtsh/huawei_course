@@ -41,7 +41,6 @@ struct Akinator
 	Tree tree;
 
 	unsigned errors;
-
 	FILE* logger;
 	FILE* graph;
 	TextInfo text_info;

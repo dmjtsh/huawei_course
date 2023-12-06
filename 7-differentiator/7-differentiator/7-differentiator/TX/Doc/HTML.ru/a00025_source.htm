@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>TX Library: Исходный файл client.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript">
+$(document).ready(initResizable);
+</script>
+<link href="Doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Создано системой Doxygen 1.7.3 -->
+<div id="top">
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="TXLib.png"></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">TX Library&#160;<span id="projectnumber">Help &ndash; Version: 00173a, Revision: 172</span></div>
+   <div id="projectbrief"><s>&nbsp;ALL&nbsp;</s> Windows graphics in a sandbox</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+</div>
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+  initNavTree('a00025.htm','');
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle">
+<h1>Example03/client.cpp</h1>  </div>
+</div>
+<div class="contents">
+<a href="a00025.htm">См. документацию.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//{===========================================================================</span>
+<a name="l00014"></a>00014 <span class="comment"></span><span class="comment">//}===========================================================================</span>
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016 <span class="comment">// client.cpp</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="a00046.htm" title="[TXNetwork] Простая игра, использующая TXNetwork.">proto.h</a>&quot;</span>
+<a name="l00019"></a>00019 
+<a name="l00020"></a>00020 <span class="preprocessor">#define SERVER_IP &quot;127.0.0.1&quot;  // Измените на IP-адрес сервера</span>
+<a name="l00021"></a>00021 <span class="preprocessor"></span>
+<a name="l00022"></a>00022 <span class="keywordtype">void</span> RunGame    (<a class="code" href="a00015.htm" title="Cокет TXLib&amp;#39;a.">TX_SOCKET</a> peer_sock);
+<a name="l00023"></a>00023 <span class="keywordtype">void</span> DrawPlayer (Player_t player, COLORREF color);
+<a name="l00024"></a>00024 <span class="keywordtype">void</span> DrawBall   (Ball_t ball);
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026 <span class="keywordtype">int</span> main()
+<a name="l00027"></a>00027     {
+<a name="l00028"></a>00028     <a class="code" href="a00082.htm#gafce21ce98474d5559f316b3d47cdbfab" title="Создание окна рисования">txCreateWindow</a> (1024, 768);
+<a name="l00029"></a>00029     <a class="code" href="a00082.htm#gae92e621aaed81f90e4d142356e38762a" title="Блокирует обновление изображения окна, во избежание мигания.">txBegin</a>();
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031     <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a> (<a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5ae45f1e493cce7ef326f8bd9e8c684c6b" title="Светло-зеленый цвет.">TX_LIGHTGREEN</a>);
+<a name="l00032"></a>00032     <a class="code" href="a00082.htm#ga09938df8859ae8b62638a3af76ee6735" title="Устанавливает текущее выравнивание текста (влево/вправо/по центру).">txSetTextAlign</a> (TA_CENTER);
+<a name="l00033"></a>00033     <a class="code" href="a00082.htm#ga52e119361961d9eee33c176a3084e55d" title="Рисует текст.">txTextOut</a> (500, 380, <span class="stringliteral">&quot;I am a server!&quot;</span>);
+<a name="l00034"></a>00034     <a class="code" href="a00082.htm#ga52e119361961d9eee33c176a3084e55d" title="Рисует текст.">txTextOut</a> (500, 450, <span class="stringliteral">&quot;Waiting for client...&quot;</span>);
+<a name="l00035"></a>00035     <a class="code" href="a00082.htm#ga6c293f0b0f71efebdeeb0b56a97ba50c" title="Задерживает выполнение программы на определенное время.">txSleep</a> (0);
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037     <a class="code" href="a00015.htm" title="Cокет TXLib&amp;#39;a.">TX_SOCKET</a> client = <a class="code" href="a00078.htm#ga28c1c1600ff0df0a1b4443284e14b6d5" title="Создаёт сокет TXNetwork.">txCreateSocket</a> (<a class="code" href="a00078.htm#gga0696d269feb958d9f6fa2d0e1cf7e517a5594ab6ae4c1de966d629c79fd2ffc58" title="Сокет является клиентом.">TX_CLIENT</a>, SERVER_IP, <a class="code" href="a00078.htm#gad3ab3baeb73e77641e348a9aa33516ec" title="Стандартный порт TXNetwork&amp;#39;a.">TX_STD_PORT</a>, <a class="code" href="a00078.htm#gga0696d269feb958d9f6fa2d0e1cf7e517a57c7249731b701a916229d3c795ba9fd" title="Сокет блокирует выполнение программы во время приема/передачи.">TX_BLOCK</a>, <span class="keyword">false</span>);
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039     <span class="keywordflow">if</span> (<a class="code" href="a00078.htm#ga5e61ac3a46192caddcd98b27325ef953" title="Функция для проверки сокета">txnAssert</a> (client) == <a class="code" href="a00079.htm#gaa56d5be53827cc51bd2a02fe580e00c9" title="Сокет не создан.">TXN_NOT_CREATED</a>)
+<a name="l00040"></a>00040         {
+<a name="l00041"></a>00041         printf (<span class="stringliteral">&quot;ERROR: BAD SOCKET!!!&quot;</span>);
+<a name="l00042"></a>00042         <span class="keywordflow">return</span> -1;
+<a name="l00043"></a>00043         }
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045     RunGame (client);
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047     <span class="keywordflow">return</span> 0;
+<a name="l00048"></a>00048     }
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="keywordtype">void</span> RunGame (<a class="code" href="a00015.htm" title="Cокет TXLib&amp;#39;a.">TX_SOCKET</a> peer_sock)
+<a name="l00051"></a>00051     {
+<a name="l00052"></a>00052     Player_t me   = {512, 748, 0};
+<a name="l00053"></a>00053     Player_t peer = {512,  20, 0};
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055     Ball_t ball = {100, 100, 15, 15};
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     DWORD timer = 0;
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059     <span class="keywordflow">while</span> (!GetAsyncKeyState (VK_SPACE) &amp;&amp; peer.action != -1)
+<a name="l00060"></a>00060         {
+<a name="l00061"></a>00061         <a class="code" href="a00082.htm#gad21ad5660a5423f31c2c8e77329758b2" title="Устанавливает текущий цвет заполнения фигур.">txSetFillColor</a> (<a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5a9f0adfcb24eeb418fc39fe950db65ec8" title="Черный цвет.">TX_BLACK</a>);
+<a name="l00062"></a>00062         <a class="code" href="a00082.htm#ga78e83baeb6a02d5fa33dd8b062e513d9" title="Стирает холст текущим цветом заполнения.">txClear</a>();
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064         <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a> (<a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5ae45f1e493cce7ef326f8bd9e8c684c6b" title="Светло-зеленый цвет.">TX_LIGHTGREEN</a>);
+<a name="l00065"></a>00065         <a class="code" href="a00082.htm#ga52e119361961d9eee33c176a3084e55d" title="Рисует текст.">txTextOut</a> (500, 380, <span class="stringliteral">&quot;I am a client!&quot;</span>);
+<a name="l00066"></a>00066         <a class="code" href="a00082.htm#ga52e119361961d9eee33c176a3084e55d" title="Рисует текст.">txTextOut</a> (500, 450, <span class="stringliteral">&quot;Use [A], [D]. [Space] to exit.&quot;</span>);
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068         <span class="keywordflow">if</span> (GetAsyncKeyState (<span class="charliteral">&#39;A&#39;</span>) &amp;&amp; me.x &gt;   50) me.x -= 15;
+<a name="l00069"></a>00069         <span class="keywordflow">if</span> (GetAsyncKeyState (<span class="charliteral">&#39;D&#39;</span>) &amp;&amp; me.x &lt; 1019) me.x += 15;
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071         DrawBall (ball);
+<a name="l00072"></a>00072         DrawPlayer (me,   <a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5ae45f1e493cce7ef326f8bd9e8c684c6b" title="Светло-зеленый цвет.">TX_LIGHTGREEN</a>);
+<a name="l00073"></a>00073         DrawPlayer (peer, <a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5ae197423002e969d08646554e8b647454" title="Розовый гламурный :)">TX_PINK</a>);
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075         timer = GetTickCount();
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077         <a class="code" href="a00078.htm#gaf700cdda64317854f43186f0cfa003a1" title="Функция для приема данных через сокет">txRecvFrom</a> (peer_sock, &amp;peer, <span class="keyword">sizeof</span> (peer));
+<a name="l00078"></a>00078         <a class="code" href="a00078.htm#gab1932ecc57580c15659f0cc01b695262" title="Функция для отправки данных через сокет">txSendTo</a>   (peer_sock, &amp;me,   <span class="keyword">sizeof</span> (me));
+<a name="l00079"></a>00079         <a class="code" href="a00078.htm#gaf700cdda64317854f43186f0cfa003a1" title="Функция для приема данных через сокет">txRecvFrom</a> (peer_sock, &amp;ball, <span class="keyword">sizeof</span> (ball));
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081         <span class="keywordflow">while</span> (GetTickCount() - timer &lt; 15);
+<a name="l00082"></a>00082             <a class="code" href="a00082.htm#ga6c293f0b0f71efebdeeb0b56a97ba50c" title="Задерживает выполнение программы на определенное время.">txSleep</a> (0);
+<a name="l00083"></a>00083         }
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085     me.action = -1;
+<a name="l00086"></a>00086     <a class="code" href="a00078.htm#gab1932ecc57580c15659f0cc01b695262" title="Функция для отправки данных через сокет">txSendTo</a> (peer_sock, &amp;me, <span class="keyword">sizeof</span> (me));
+<a name="l00087"></a>00087     }
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 <span class="keywordtype">void</span> DrawPlayer (Player_t player, COLORREF color)
+<a name="l00090"></a>00090     {
+<a name="l00091"></a>00091     <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a>     (color);
+<a name="l00092"></a>00092     <a class="code" href="a00082.htm#gad21ad5660a5423f31c2c8e77329758b2" title="Устанавливает текущий цвет заполнения фигур.">txSetFillColor</a> (color);
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094     <a class="code" href="a00082.htm#ga18a0418f3c06463e958077cddf2a4864" title="Рисует прямоугольник.">txRectangle</a> (player.x - 100, player.y - 10, player.x + 100, player.y + 10);
+<a name="l00095"></a>00095     }
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097 <span class="keywordtype">void</span> DrawBall (Ball_t ball)
+<a name="l00098"></a>00098     {
+<a name="l00099"></a>00099     <a class="code" href="a00082.htm#ga66facc5848748507d3ea48c75b33ba23" title="Устанавливает текущий цвет и толщину линий, цвет текста.">txSetColor</a>     (<a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5a05b6100527e0b7a96dcda198a1439382" title="Светло-бирюзовый цвет.">TX_LIGHTCYAN</a>);
+<a name="l00100"></a>00100     <a class="code" href="a00082.htm#gad21ad5660a5423f31c2c8e77329758b2" title="Устанавливает текущий цвет заполнения фигур.">txSetFillColor</a> (<a class="code" href="a00082.htm#gga3e94cfad3d9080241f84129d6e5c09b5a05b6100527e0b7a96dcda198a1439382" title="Светло-бирюзовый цвет.">TX_LIGHTCYAN</a>);
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102     <a class="code" href="a00082.htm#gaa14e9c2a46cf713efaa1f850074d8adc" title="Рисует окружность или круг.">txCircle</a> (ball.x, ball.y, 20);
+<a name="l00103"></a>00103     }
+<a name="l00104"></a>00104 
+</pre></div></div>
+</div>
+  <div id="nav-path" class="navpath">
+    <ul>
+      <li class="navelem"><a class="el" href="a00025.htm">client.cpp</a>      </li>
+<!-- --------------------------------------------------------------------------
+  Doxygen_HTM.htm
+  $Version: 00173a, Revision: 172 $
+  $Copyright: (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru> $
+  $Date: 2023-08-07 12:07:33 +0400 $
+ -------------------------------------------------------------------------- -->
+
+<table class="" width="100%"><tr valign="top">
+
+  <td align="left">
+    <small><a href="http://orphus.ru">Нашли ошибку? Выделите ее мышкой и нажмите Ctrl+ENTER. &copy;&#160;Orphus.ru.</a></small><br>
+    <a href="http://orphus.ru" id="orphus" target="_blank"><img class = "footer" alt="Orphus" src="http://storage.ded32.net.ru/orphus.gif" border="0"></a>
+    </td>
+
+  <td align="right">
+    Документация по TX Library. Дата: Mon Nov 13 2023 02:15:53. Создано&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3
+    <img src="http://storage.ded32.net.ru/stat/TXLib-Help.chm" width=1px height=1px border="0">
+    </td>
+  </tr></table>
+
+</ul>
+</div>
+
+<script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol)? "https://ssl." : "http://www."); document.write (unescape ("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); try { var pageTracker = _gat._getTracker ("UA-7927138-1"); pageTracker._trackPageview(); } catch (err) {}</script>
+<script type="text/javascript" src="http://storage.ded32.net.ru/orphus.js"></script>
+
+</body>
+</html>
