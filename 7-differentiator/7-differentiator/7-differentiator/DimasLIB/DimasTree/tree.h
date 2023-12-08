@@ -2,15 +2,13 @@
 #define TREE_H
 
 #include <stdio.h>
+#include "../../operation.h"
 
 /*
 * Tree Node Structure Block
 */
 
 #define EMPTY_NODE "." 
-const size_t MAX_OPER_LEN = 4;
-
-struct Tree;
 
 enum TreeElemType { NUM, OPER, VAR };
 
@@ -18,17 +16,6 @@ struct Variable
 {
 	double value;
 	char   name;
-};
-
-enum OperPriority { FIRST_PRIORITY = 3, SECOND_PRIORITY = 2, THIRD_PRIORITY = 1, LAST_PRIORITY = 0};
-
-enum Operation 
-{
-	#define CMD_DEF(name, ...) name,
-
-	#include "../../cmds_defs.h"
-
-	#undef CMD_DEF
 };
 
 union TreeNodeElem
@@ -52,6 +39,8 @@ struct TreeNode
 	TreeNode* right;
 };
 
+struct Tree;
+
 TreeNode* OpNew(Tree* tree, TreeNode_t* data);
 void      OpDelete(Tree* tree, TreeNode* node);
 
@@ -59,8 +48,9 @@ void PrintNodePastOrder(Tree* tree, const TreeNode* node, FILE* logger);
 void PrintNodeInOrder  (Tree* tree, const TreeNode* node, FILE* logger);
 void PrintNodePreOrder (Tree* tree, const TreeNode* node, FILE* logger);
 
-void CreateChildNode(Tree* tree, TreeNode* parent_node, TreeNode_t* child_node_data);
-void DestroyNode(Tree* tree, TreeNode* node);
+TreeNode*   CopyNode(Tree* tree, TreeNode* node);
+TreeNode* CreateNode(Tree* tree, TreeNode_t* data, TreeNode** node, TreeNode* left_node, TreeNode* right_node);
+void      DestroyNode(Tree* tree, TreeNode* node);
 
 /*
 * End of Node Structure Block
@@ -83,8 +73,8 @@ struct Tree
 {
 	TreeNode* root;
 
-	void  (*ElemCtor) (TreeNode_t*, TreeNode_t*);
-	void  (*ElemDtor) (TreeNode_t*);
+	void  (*ElemCtor)    (TreeNode_t*, TreeNode_t*);
+	void  (*ElemDtor)    (TreeNode_t*);
 	char* (*ElemPrinter) (const TreeNode_t*);
 
 	unsigned errors;

@@ -1,17 +1,32 @@
 #define _CRT_SECURE_NO_WARNINGS
 
+#include "read_node.h"
 #include "differentiator.h"
+#include "differentiator_io.h"
+#include "optimization.h"
+
+extern IntermediatePrinter INTERMEDIATE_PRINTER;
 
 int main()
 {
-	Differentiator diff = {};
+	IntermediatePrinterCtor(&INTERMEDIATE_PRINTER);
 
-	DifferentiatorCtor(&diff);
+	Tree expr_tree = {};
+	TreeCtor(&expr_tree, DifferentiatorElemCtor, DifferentiatorElemDtor, DifferentiatorElemPrinter);
+	InitializeExprTree(&expr_tree, "source.txt");
 
-	FILE* file = fopen("nedoteh.txt", "w");
-	PrintLatexDiffNode(stdout, &diff, diff.tree.root, nullptr);
-	printf("\n");
-	Differentiate(&diff, diff.tree.root);
-	PrintLatexDiffNode(stdout, &diff, diff.tree.root, nullptr);
-	printf("\n");
+	expr_tree = GetDifferentiatedTree(expr_tree, 'x');
+
+	OptimizeTree(&expr_tree);
+
+	PlotTreeGraph(&expr_tree, "Graph");
+	PlotTaylorTreeGraph(&expr_tree, "Taylor Graph", 'x', 3, 0);
+	PlotTaylorDiffGraph(&expr_tree, "Taylor Diff Graph", 'x', 3, 0);
+
+	OptimizeTree(&expr_tree);
+
+	TreeDtor(&expr_tree);
+
+	IntermediatePrinterDtor(&INTERMEDIATE_PRINTER);
 }
+

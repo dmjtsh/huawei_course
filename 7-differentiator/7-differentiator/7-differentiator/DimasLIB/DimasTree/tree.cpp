@@ -27,8 +27,6 @@ void OpDelete(Tree* tree, TreeNode* node)
 	assert(node != nullptr);
 
 	tree->ElemDtor(&node->node_elem);
-
-	free(node);
 }
 
 void PrintNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger)
@@ -36,7 +34,7 @@ void PrintNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger)
 	assert(tree   != nullptr);
 	assert(logger != nullptr);
 
-	if (!node) { fprintf(logger, EMPTY_NODE " "); return; }
+	if (!node) { fprintf(logger, " "); return; }
 	
 	fprintf(logger, "( ");
 
@@ -52,7 +50,7 @@ void PrintNodeInOrder(Tree* tree, const TreeNode* node, FILE* logger)
 	assert(tree   != nullptr);
 	assert(logger != nullptr);
 
-	if (!node) { fprintf(logger, EMPTY_NODE " "); return; }
+	if (!node) { fprintf(logger, " "); return; }
 	
 	fprintf(logger, "( ");
 	
@@ -79,6 +77,22 @@ void PrintNodePastOrder(Tree* tree, const TreeNode* node, FILE* logger)
 	fprintf(logger, ") ");
 }
 
+TreeNode* CopyNode(Tree* tree, TreeNode* node)
+{
+	assert(tree != nullptr);
+
+	if(!node)
+		return nullptr;
+
+	TreeNode* new_node = {};
+	new_node = OpNew(tree, &node->node_elem);
+	
+	new_node->left  = CopyNode(tree, node->left);
+	new_node->right = CopyNode(tree, node->right);
+
+	return new_node;
+}
+
 void DestroyNode(Tree* tree, TreeNode* node)
 {
 	assert(tree != nullptr);
@@ -94,25 +108,19 @@ void DestroyNode(Tree* tree, TreeNode* node)
 	OpDelete(tree, node);
 }
 
-void CreateChildNode(Tree* tree, TreeNode* parent_node, TreeNode_t* child_node_data)
+TreeNode* CreateNode(Tree* tree, TreeNode_t* data, TreeNode** node, TreeNode* left_node, TreeNode* right_node)
 {
 	assert(tree != nullptr);
-	assert(parent_node != nullptr);
-	assert(child_node_data != nullptr);
+	assert(node != nullptr);
 
-	if (!parent_node->left)
-		parent_node->left  = OpNew(tree, child_node_data);
-	else if(!parent_node->right)
-		parent_node->right = OpNew(tree, child_node_data); 
-}
+	DestroyNode(tree, *node);
 
-void DeleteLeaf(Tree* tree, TreeNode* leaf_to_delete)
-{
-	assert(tree != nullptr);
-	assert(leaf_to_delete != nullptr);
+	*node = OpNew(tree, data);
 
-	if(!leaf_to_delete->left && !leaf_to_delete->right)
-		OpDelete(tree, leaf_to_delete);
+	(*node)->left  = left_node;
+	(*node)->right = right_node;
+
+	return *node;
 }
 
 const char* VERTEX_COLOR = "#FFC61A";
