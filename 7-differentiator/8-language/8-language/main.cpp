@@ -2,6 +2,6 @@
 
 int main()
 {
-	printf("%d", GetG("1+2*((5-3)+10*2)"));
+	printf("%d", GetG("10+30"));
 	return 0;
 }

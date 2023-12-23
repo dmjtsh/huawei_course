@@ -33,6 +33,10 @@ node [shape="box", style="filled", fillcolor="#FF8100", fontcolor="#0e0a2a", mar
 "Krokodil" [shape="record", label="\n Krokodil"];
 node [shape="box", style="filled", fillcolor="#FFC61A", fontcolor="#0e0a2a", margin="0.01"];
 "KSHCHTVR" [shape="record", label="\n KSHCHTVR"];
+node [shape="box", style="filled", fillcolor="#FFC61A", fontcolor="#0e0a2a", margin="0.01"];
+"Loh too" [shape="record", label="\n Loh too"];
+node [shape="box", style="filled", fillcolor="#FF8100", fontcolor="#0e0a2a", margin="0.01"];
+"Egorik" [shape="record", label="\n Egorik"];
 node [shape="box", style="filled", fillcolor="#FF8100", fontcolor="#0e0a2a", margin="0.01"];
 "DED (lox)" [shape="record", label="\n DED (lox)"];
 node [shape="box", style="filled", fillcolor="#FFC61A", fontcolor="#0e0a2a", margin="0.01"];
@@ -58,6 +62,8 @@ node [shape="box", style="filled", fillcolor="#FF8100", fontcolor="#0e0a2a", mar
 "Kvakaet" -> "Kvakaet"  [label = "no" color="#2E313F" fontcolor="#2E313F"];
 "Zeleniy" -> "Zeleniy"  [label = "no" color="#2E313F" fontcolor="#2E313F"];
 "KSHCHTVR" -> "KSHCHTVR"  [label = "yes" color="#2E313F" fontcolor="#2E313F"];
+"Loh too" -> "Loh too"  [label = "yes" color="#2E313F" fontcolor="#2E313F"];
+"Loh too" -> "Loh too"  [label = "no" color="#2E313F" fontcolor="#2E313F"];
 "KSHCHTVR" -> "KSHCHTVR"  [label = "no" color="#2E313F" fontcolor="#2E313F"];
 "Pidaras" -> "Pidaras"  [label = "yes" color="#2E313F" fontcolor="#2E313F"];
 "Pidaras" -> "Pidaras"  [label = "no" color="#2E313F" fontcolor="#2E313F"];

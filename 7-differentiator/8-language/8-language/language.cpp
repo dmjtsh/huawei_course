@@ -18,8 +18,10 @@ void syn_assert(bool cond)
 int GetN()
 {
 	int val = 0;
-	if ( '0' <= s[p] && s[p] <= '9')
+	for ( int i = 0; '0' <= s[p] && s[p] <= '9'; i++)
+	{
 		val = s[p] - '0';
+	}
 	p++;
 	
 	return val;
@@ -52,10 +54,10 @@ int GetT()
 		int val2 = GetP();
 		switch(s[p_old])
 		{
-		case '*': val1 *= val2; break;
-		case '/': val1 /= val2; break;
+			case '*': val1 *= val2; break;
+			case '/': val1 /= val2; break;
 
-		default: syn_assert(0);
+			default: syn_assert(0);
 		}
 	}
 
@@ -72,10 +74,10 @@ int GetE()
 		int val2 = GetT();
 		switch(s[p_old])
 		{
-		case '+': val1 += val2; break;
-		case '-': val1 -= val2; break;
+			case '+': val1 += val2; break;
+			case '-': val1 -= val2; break;
 
-		default: syn_assert(0);
+			default: syn_assert(0);
 		}
 	}
 

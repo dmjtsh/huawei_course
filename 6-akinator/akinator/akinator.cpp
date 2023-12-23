@@ -113,12 +113,12 @@ void AkinatorGiveDefinition(Akinator* akinator, char* node_elem)
 			StackPop(&akinator->node_properties, &property_presence);
 			if (property_presence == GOT_PROP)
 			{
-				txSpeak("\v\n%s", current_node->elem);
+				txSpeak("\v\n%s", akinator->tree.ElemPrinter(&current_node->elem));
 				current_node = current_node->left;
 			}
 			else if (property_presence == DOESNT_GOT_PROP)
 			{
-				txSpeak("\v\nnot %s", current_node->elem);
+				txSpeak("\v\nnot %s", akinator->tree.ElemPrinter(&current_node->elem));
 				current_node = current_node->right;
 			}
 			else

@@ -2,20 +2,34 @@
 #define TREE_H
 
 #include <stdio.h>
-#include "../../operation.h"
 
 /*
 * Tree Node Structure Block
 */
 
+const int MAX_OPER_LEN = 50;
+
+enum Operation
+{
+	WRONG_OPERATOR,
+
+	#define OPER_DEF(code, ...) code,
+	
+	#include "../../opers_defs.h"
+
+	#undef OPERS_DEFS
+};
+
 #define EMPTY_NODE "." 
 
 enum TreeElemType { NUM, OPER, VAR };
 
+const size_t MAX_ID_SIZE = 200; 
+
 struct Variable
 {
 	double value;
-	char   name[MAX_NAME_SIZE];
+	char   name[MAX_ID_SIZE];
 };
 
 union TreeNodeElem
@@ -44,7 +58,7 @@ struct Tree;
 TreeNode* OpNew(Tree* tree, TreeNode_t* data);
 void      OpDelete(Tree* tree, TreeNode* node);
 
-void PrintNodePastOrder(Tree* tree, const TreeNode* node, FILE* logger);
+void PrintNodePostOrder(Tree* tree, const TreeNode* node, FILE* logger);
 void PrintNodeInOrder  (Tree* tree, const TreeNode* node, FILE* logger);
 void PrintNodePreOrder (Tree* tree, const TreeNode* node, FILE* logger);
 
@@ -86,8 +100,8 @@ unsigned TreeCtor(Tree* tree, void  (*ElemCtor) (TreeNode_t*, TreeNode_t*),
 unsigned TreeDtor(Tree* tree);
 
 unsigned TreeVerifier(Tree* tree);
-void TreeDump(Tree* tree, FILE* logger);
-void TreeGraphPrint(Tree* tree, FILE* graph);
+void     TreeDump(Tree* tree, FILE* logger);
+void     TreeGraphPrint(Tree* tree, const char* file_name);
 
 /*
 * End of Tree Structure Block 

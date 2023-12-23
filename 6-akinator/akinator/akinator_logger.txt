@@ -3,7 +3,7 @@ AKINATOR DUMP CALL #1
 ------------NO_ERRORS----------
 Akinator Tree:
 
-( ( ( ( nil Rusal nil ) Is huesos ( nil Dimas nil ) ) Is daun ( nil Elisei nil ) ) Live in 434 ( ( ( nil Lukashev nil ) Vedet u fivtov ( nil Petrovich nil ) ) Vedet matan ( ( ( nil Serega nil ) Botaet ( ( nil Lyagushka nil ) Kvakaet ( nil Krokodil nil ) ) ) Zeleniy ( ( nil DED (lox) nil ) KSHCHTVR ( ( nil Filatov nil ) Pidaras ( nil Ovchinkin nil ) ) ) ) ) ) 
+( ( ( ( nil Rusal nil ) Is huesos ( nil Dimas nil ) ) Is daun ( nil Elisei nil ) ) Live in 434 ( ( ( nil Lukashev nil ) Vedet u fivtov ( nil Petrovich nil ) ) Vedet matan ( ( ( nil Serega nil ) Botaet ( ( nil Lyagushka nil ) Kvakaet ( nil Krokodil nil ) ) ) Zeleniy ( ( ( nil Egorik nil ) Loh too ( nil DED (lox) nil ) ) KSHCHTVR ( ( nil Filatov nil ) Pidaras ( nil Ovchinkin nil ) ) ) ) ) ) 
 
 =======================================
 
@@ -12,7 +12,7 @@ AKINATOR DUMP CALL #2
 ------------NO_ERRORS----------
 Akinator Tree:
 
-( ( ( ( nil Rusal nil ) Is huesos ( nil Dimas nil ) ) Is daun ( nil Elisei nil ) ) Live in 434 ( ( ( nil Lukashev nil ) Vedet u fivtov ( nil Petrovich nil ) ) Vedet matan ( ( ( nil Serega nil ) Botaet ( ( nil Lyagushka nil ) Kvakaet ( nil Krokodil nil ) ) ) Zeleniy ( ( nil DED (lox) nil ) KSHCHTVR ( ( nil Filatov nil ) Pidaras ( nil Ovchinkin nil ) ) ) ) ) ) 
+( ( ( ( nil Rusal nil ) Is huesos ( nil Dimas nil ) ) Is daun ( nil Elisei nil ) ) Live in 434 ( ( ( nil Lukashev nil ) Vedet u fivtov ( nil Petrovich nil ) ) Vedet matan ( ( ( nil Serega nil ) Botaet ( ( nil Lyagushka nil ) Kvakaet ( nil Krokodil nil ) ) ) Zeleniy ( ( ( nil Egorik nil ) Loh too ( nil DED (lox) nil ) ) KSHCHTVR ( ( nil Filatov nil ) Pidaras ( nil Ovchinkin nil ) ) ) ) ) ) 
 
 =======================================
 
