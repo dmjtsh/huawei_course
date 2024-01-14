@@ -11,13 +11,14 @@ const int MAX_OPER_LEN = 50;
 
 enum Operation
 {
-	WRONG_OPERATOR,
-
 	#define OPER_DEF(code, ...) code,
 	
 	#include "../../opers_defs.h"
 
 	#undef OPERS_DEFS
+
+	OPER_COUNT,
+	WRONG_OPER
 };
 
 #define EMPTY_NODE "." 
@@ -58,9 +59,12 @@ struct Tree;
 TreeNode* OpNew(Tree* tree, TreeNode_t* data);
 void      OpDelete(Tree* tree, TreeNode* node);
 
+void PrintNodePreOrder (Tree* tree, const TreeNode* node, FILE* logger);
 void PrintNodePostOrder(Tree* tree, const TreeNode* node, FILE* logger);
 void PrintNodeInOrder  (Tree* tree, const TreeNode* node, FILE* logger);
-void PrintNodePreOrder (Tree* tree, const TreeNode* node, FILE* logger);
+
+void WriteNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger, int rec_depth);
+void TreeWrite(Tree* tree, FILE* logger);
 
 TreeNode*   CopyNode(Tree* tree, TreeNode* node);
 TreeNode* CreateNode(Tree* tree, TreeNode_t* data, TreeNode** node, TreeNode* left_node, TreeNode* right_node);
@@ -100,7 +104,6 @@ unsigned TreeCtor(Tree* tree, void  (*ElemCtor) (TreeNode_t*, TreeNode_t*),
 unsigned TreeDtor(Tree* tree);
 
 unsigned TreeVerifier(Tree* tree);
-void     TreeDump(Tree* tree, FILE* logger);
 void     TreeGraphPrint(Tree* tree, const char* file_name);
 
 /*

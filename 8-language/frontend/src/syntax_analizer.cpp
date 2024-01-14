@@ -5,41 +5,83 @@
 #include <assert.h>
 #include <string.h>
 
-#include "DimasLIB/DimasUtilities/utilities.h"
-#include "DimasLIB/DimasTree/tree.h"
-#include "lexical_analyzer.h"
+#include "../../common/DimasLIB/DimasUtilities/utilities.h"
+#include "../../common/DimasLIB/DimasTree/tree.h"
+#include "lexical_analizer.h"
 
-#define TOKEN_TYPE tokens[*current_token_num]->node_elem.type
-#define TOKEN_OPER tokens[*current_token_num]->node_elem.elem.oper
+#define TOKEN_TYPE      tokens[*current_token_num]->node_elem.type
+#define TOKEN_OPER      tokens[*current_token_num]->node_elem.elem.oper
+#define TOKEN_VAR_NAME  tokens[*current_token_num]->node_elem.elem.var.name
+#define TOKEN_NUM       tokens[*current_token_num]->node_elem.elem.num
 
-void NameTableAdd(NameTable* name_table, const char* designation, TreeElemType elem_type, int elem_code)
+ //---/\---/\-------Это ASCII KOT!--//
+ //  {  '-'  }                      //
+ //  {  0 0  }     Добавь его себе  //
+ //  --> V <--  в исходник, и тебе  //
+ //   \ \|/ /      будет, наверно,  //
+ //    \___/  приятно отлаживаться  //
+ //---------------долгими ночами:)--//
+
+void PrintExprNode(TreeNode* node)
 {
-	assert(name_table  != nullptr);
-	assert(designation != nullptr);
+	assert(node);
 
-	int curr_elem_index = name_table->size;
-	
-	name_table->elems[curr_elem_index].str  = designation;
-	name_table->elems[curr_elem_index].type = elem_type;
-	name_table->elems[curr_elem_index].code = elem_code;
-	
-	name_table->size++;
-}
-
-void syn_assert(bool cond)
-{
-	if(!cond)
+	switch(node->node_elem.type)
 	{
-		printf("pizdec");
-		abort();
+		case VAR:
+			printf("Var: %s\n", node->node_elem.elem.var.name);
+			break;
+		case NUM:
+			printf("Num: %lf\n", node->node_elem.elem.num);
+			break;
+		case OPER:
+			printf("Oper: %s\n", GetOperDesignation(node->node_elem.elem.oper));
+			break;
+		default:
+			assert(0);
 	}
 }
+
+void PrintCurrentToken(TreeNode** tokens, size_t* current_token_num)
+{
+	assert(tokens);
+	assert(current_token_num);
+
+	switch(TOKEN_TYPE)
+	{
+		case VAR:
+			printf("%s\n", TOKEN_VAR_NAME);
+			break;
+		case NUM:
+			printf("%lf\n", TOKEN_NUM);
+			break;
+		case OPER:
+			printf("%s\n", GetOperDesignation(TOKEN_OPER));
+			break;
+		default:
+			assert(0);
+	}
+}
+
+#define SYN_ASSERT(condition)						   \
+	if(!(condition))								   \
+	{												   \
+		printf("Token TYPE: %d\n", TOKEN_TYPE);        \
+		PrintCurrentToken(tokens, current_token_num);  \
+		abort();									   \
+	}
+
+/****************************************************************************************************************
+* 
+* RECURSIVE DESCENT BLOCK START
+* 
+*****************************************************************************************************************/
 
 TreeNode* GetExpr(TreeNode** tokens, size_t* current_token_num);
 TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num);
 
 TreeNode* GetN(TreeNode** tokens, size_t* current_token_num)
-{ 
+{
 	if(TOKEN_TYPE == NUM)
 	{
 		(*current_token_num)++;
@@ -67,28 +109,28 @@ TreeNode* GetPrimary(TreeNode** tokens, size_t* current_token_num)
 		(*current_token_num)++;
 		TreeNode* expr_token = GetExpr(tokens, current_token_num);
 		
-		syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
+		SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
 		(*current_token_num)++;
 		
-		syn_assert(expr_token != nullptr);
+		SYN_ASSERT(expr_token != nullptr);
 		return expr_token;
 	}
 	else if (TOKEN_TYPE == NUM)
 	{
 		TreeNode* num_token = GetN(tokens, current_token_num);
 	
-		syn_assert(num_token != nullptr);
+		SYN_ASSERT(num_token != nullptr);
 		return num_token;
 	}
 	else if (TOKEN_TYPE == VAR)
 	{
 		TreeNode* id_token = GetId(tokens, current_token_num);
 
-		syn_assert(id_token != nullptr);
+		SYN_ASSERT(id_token != nullptr);
 		return id_token;
 	}
 	else
-		syn_assert(0);
+		SYN_ASSERT(0);
 }
 
 TreeNode* GetTerm(TreeNode** tokens, size_t* current_token_num)
@@ -144,7 +186,7 @@ TreeNode* GetAssign(TreeNode** tokens, size_t* current_token_num)
 	
 	tokens[assign_token_num]->left = id_node;
 	
-	syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == ASSIGN);
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == ASSIGN);
 	(*current_token_num)++;
 
 	tokens[assign_token_num]->right = GetExpr(tokens, current_token_num);
@@ -162,17 +204,17 @@ TreeNode* GetIf(TreeNode** tokens, size_t* current_token_num)
 
 	(*current_token_num)++;
 	
-	syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
 	(*current_token_num)++;
 	
 	TreeNode* expr_node = GetExpr(tokens, current_token_num);
 	
-	syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 	(*current_token_num)++;
 
 	TreeNode* oper_node = GetOper(tokens, current_token_num);
 
-	syn_assert(oper_node != nullptr && expr_node != nullptr);
+	SYN_ASSERT(oper_node != nullptr && expr_node != nullptr);
 
 	tokens[if_token_num]->left  = expr_node;
 	tokens[if_token_num]->right = oper_node;
@@ -188,18 +230,20 @@ TreeNode* GetWhile(TreeNode** tokens, size_t* current_token_num)
 	size_t while_token_num = *current_token_num;
 
 	(*current_token_num)++;
-	
-	syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
+	tokens[*current_token_num-1];
+	tokens[*current_token_num];
+
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
 	(*current_token_num)++;
 	
 	TreeNode* expr_node = GetExpr(tokens, current_token_num);
 	
-	syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 	(*current_token_num)++;
 
 	TreeNode* oper_node = GetOper(tokens, current_token_num);
 
-	syn_assert(oper_node != nullptr && expr_node != nullptr);
+	SYN_ASSERT(oper_node != nullptr && expr_node != nullptr);
 
 	tokens[while_token_num]->left  = expr_node;
 	tokens[while_token_num]->right = oper_node;
@@ -223,20 +267,22 @@ TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num)
 	TreeNode* assign_node = GetAssign(tokens, current_token_num);
 	if(assign_node)
 	{
-		syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
+		SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
 		return assign_node;
 	}
 
 	if (TOKEN_TYPE == OPER && TOKEN_OPER == OFBR)
 	{
+		(*current_token_num)++;
 		TreeNode* oper_node1 = GetOper(tokens, current_token_num);
 		TreeNode* oper_node2 = nullptr;
-		syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
+		SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
+		(*current_token_num)++;
 
 		while(oper_node2 = GetOper(tokens, current_token_num))
 		{
 			size_t sep_token_num = *current_token_num;
-			syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
+			SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
 
 			tokens[sep_token_num]->left  = oper_node1;
 			tokens[sep_token_num]->right = oper_node2;
@@ -246,7 +292,7 @@ TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num)
 			(*current_token_num)++;
 		}
 	
-		syn_assert(TOKEN_OPER == CFBR);
+		SYN_ASSERT(TOKEN_OPER == CFBR);
 		(*current_token_num)++;
 
 		return oper_node1;
@@ -255,37 +301,17 @@ TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num)
 	return nullptr;
 }
 
-TreeNode* GetExpr(TreeNode** tokens, size_t* current_token_num)
-{
-	TreeNode* term_node1 = GetTerm(tokens, current_token_num);
-	
-	while(TOKEN_OPER == ADD || TOKEN_OPER == SUB)
-	{
-		size_t oper_token_num = *current_token_num;
-
-		(*current_token_num)++;
-
-		TreeNode* term_node2 = GetTerm(tokens, current_token_num);
-		
-		tokens[oper_token_num]->left  = term_node1;
-		tokens[oper_token_num]->right = term_node2;	
-
-		term_node1 = tokens[oper_token_num];
-	}
-
-	return term_node1;
-}
-
 TreeNode* GetProgram(TreeNode** tokens, size_t* current_token_num)
 {
 	TreeNode* oper_node1 = GetOper(tokens, current_token_num);
 	TreeNode* oper_node2 = nullptr;
-	syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
+	(*current_token_num)++;
 
 	while(oper_node2 = GetOper(tokens, current_token_num))
 	{
 		size_t sep_token_num = *current_token_num;
-		syn_assert(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
+		SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == SEPARATOR);
 
 		tokens[sep_token_num]->left  = oper_node1;
 		tokens[sep_token_num]->right = oper_node2;
@@ -298,87 +324,11 @@ TreeNode* GetProgram(TreeNode** tokens, size_t* current_token_num)
 	return oper_node1;
 }
 
-TreeNode* CreateNumNode(Tree* expr_tree, double num)
-{
-	assert(expr_tree != nullptr);
-
-	TreeNode*  new_node = {};
-	TreeNode_t new_data = {};
-	
-	new_data.type     = NUM;       
-	new_data.elem.num = num;
-
-	return CreateNode(expr_tree, &new_data, &new_node, nullptr, nullptr);
-}
-
-TreeNode* CreateOperNode(Tree* expr_tree, Operation oper, TreeNode* left_node, TreeNode* right_node)
-{
-	assert(expr_tree != nullptr);;
-
-	TreeNode*  new_node = {};
-	TreeNode_t new_data = {};
-	
-	new_data.type      = OPER;
-	new_data.elem.oper = oper;
-
-	return CreateNode(expr_tree, &new_data, &new_node, left_node, right_node);
-}
-
-TreeNode* CreateVarNode(Tree* expr_tree, char* var_name)
-{
-	assert(expr_tree != nullptr);
-
-	TreeNode*  new_node = {};
-	TreeNode_t new_data = {};
-	
-	new_data.type          = VAR;
-	strcpy(new_data.elem.var.name, var_name);
-
-	return CreateNode(expr_tree, &new_data, &new_node, nullptr, nullptr);
-}
-
-NameTableElem* NameTableFind(NameTable* name_table, const char* elem_to_find)
-{
-	for(size_t i = 0; i < name_table->size; i++)
-	{
-		if(strcmp(name_table->elems[i].str, elem_to_find) == 0)
-			return &name_table->elems[i];
-	}
-
-	return nullptr;
-}
-
-void NameTableCtor(NameTable* name_table)
-{
-	assert(name_table != nullptr);
-
-	#define OPER_DEF(code, designation, ...) NameTableAdd(name_table, designation, OPER, code);
-
-	#include "opers_defs.h"
-
-	#undef OPER_DEF
-}
-
-void NameTableDtor(NameTable* name_table)
-{
-	;
-}
-
-char* GetOperDesignation(Operation oper)
-{
-	static char design[MAX_OPER_LEN] = "";
-
-	if(0);
-	#define OPER_DEF(value, designation, ...) \
-	else if(oper == value)                    \
-		strcpy(design, designation);
-
-	#include "opers_defs.h"
-
-	#undef OPER_DEF
-
-	return design;
-}
+/****************************************************************************************************************
+* 
+* RECURSIVE DESCENT BLOCK END
+* 
+*****************************************************************************************************************/
 
 char* ExprTreeElemPrinter(const TreeNode_t* elem_to_print)
 {
@@ -415,21 +365,16 @@ void ExprTreeElemDtor(TreeNode_t* elem_to_delete)
 	assert(elem_to_delete != nullptr);
 }
 
-Tree GetCodeTree(const char* file_name)
-{
-	NameTable name_table = {}; 
-	NameTableCtor(&name_table);
-	
+Tree GetCodeTree(const char* file_name, NameTable* nametable)
+{ 
 	TreeNode** tokens    = nullptr;
 	Tree       expr_tree = {};
 	TreeCtor(&expr_tree, ExprTreeElemCtor, ExprTreeElemDtor, ExprTreeElemPrinter);
 
-	tokens = DoLexicalAnalisys(&expr_tree, file_name, &name_table);
+	tokens = DoLexicalAnalisys(&expr_tree, file_name, nametable);
 
 	size_t current_token_num = 0;
-	expr_tree.root = GetProgram(tokens, &current_token_num); 
-
-	NameTableDtor(&name_table);
+	expr_tree.root = GetProgram(tokens, &current_token_num);
 
 	return expr_tree;
 }

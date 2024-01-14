@@ -29,7 +29,7 @@ void OpDelete(Tree* tree, TreeNode* node)
 	tree->ElemDtor(&node->node_elem);
 }
 
-void PrintNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger)
+void PrintNodeInOrder(Tree* tree, const TreeNode* node, FILE* logger)
 {
 	assert(tree   != nullptr);
 	assert(logger != nullptr);
@@ -37,24 +37,12 @@ void PrintNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger)
 	if (!node) { fprintf(logger, " " EMPTY_NODE); return; }
 	
 	fprintf(logger, "( ");
-
-	fprintf(logger, "%s ", tree->ElemPrinter(&node->node_elem));
-	PrintNodePreOrder(tree, node->left,  logger);
-	PrintNodePreOrder(tree, node->right, logger);
 	
-	fprintf(logger, ") ");
-}
-
-void PrintNodeInOrder(Tree* tree, const TreeNode* node, FILE* logger)
-{
-	assert(tree   != nullptr);
-	assert(logger != nullptr);
-
-	if (!node) { return; }
-	
-	PrintNodeInOrder(tree, node->left, logger);
+	PrintNodeInOrder(tree, node->left,  logger);
 	fprintf(logger, "%s ", tree->ElemPrinter(&node->node_elem));
 	PrintNodeInOrder(tree, node->right, logger);
+
+	fprintf(logger, ") ");
 }
 
 void PrintNodePostOrder(Tree* tree, const TreeNode* node, FILE* logger)
@@ -69,6 +57,22 @@ void PrintNodePostOrder(Tree* tree, const TreeNode* node, FILE* logger)
 	PrintNodePostOrder(tree, node->left,  logger);
 	PrintNodePostOrder(tree, node->right, logger);
 	fprintf(logger, "%s ", tree->ElemPrinter(&node->node_elem));
+
+	fprintf(logger, ") ");
+}
+
+void PrintNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger)
+{
+	assert(tree   != nullptr);
+	assert(logger != nullptr);
+
+	if (!node) { fprintf(logger, " " EMPTY_NODE); return; }
+	
+	fprintf(logger, "( ");
+	
+	fprintf(logger, "%s ", tree->ElemPrinter(&node->node_elem));
+	PrintNodePreOrder(tree, node->left,  logger);
+	PrintNodePreOrder(tree, node->right, logger);
 
 	fprintf(logger, ") ");
 }
@@ -119,8 +123,9 @@ TreeNode* CreateNode(Tree* tree, TreeNode_t* data, TreeNode** node, TreeNode* le
 	return *node;
 }
 
-const char* VERTEX_COLOR = "#FFC61A";
-const char* LEAFS_COLOR  = "#FF8100";
+const char* NUM_COLOR    = "#77DDE7";
+const char* OPER_COLOR   = "#F8D568";
+const char* VAR_COLOR    = "#B2EC5D";
 const char* LINKS_COLOR  = "#2E313F";
 const char* FONT_COLOR   = "#0e0a2a";
 
@@ -132,16 +137,21 @@ void PrintGraphNode (Tree* tree, TreeNode* node, FILE* graph)
 	if(!node)
 		return;
 
-	if (node->left != nullptr && node->right != nullptr)
+	if (node->node_elem.type == VAR)
 		fprintf(graph, 
 			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n", 
-			VERTEX_COLOR, FONT_COLOR);
-	else
+			VAR_COLOR, FONT_COLOR);
+	else if(node->node_elem.type == OPER)
 		fprintf(graph, 
 			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n", 
-			LEAFS_COLOR, FONT_COLOR);
+			OPER_COLOR, FONT_COLOR);
+	else if(node->node_elem.type == NUM)
+		fprintf(graph, 
+			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n", 
+			NUM_COLOR, FONT_COLOR);
+
 	fprintf(graph,
-		"\"%s%zu\" [shape=\"record\", label=\"\\n %s\"];\n", tree->ElemPrinter(&node->node_elem), node, tree->ElemPrinter(&node->node_elem));
+		"\"node%zu\" [shape=\"record\", label=\"\\n %s\"];\n", node, tree->ElemPrinter(&node->node_elem));
 	
 	PrintGraphNode(tree, node->left,  graph);
 	PrintGraphNode(tree, node->right, graph);
@@ -156,16 +166,16 @@ void PrintGraphLinks (Tree* tree, TreeNode* node, FILE* graph)
 	if (node->left != nullptr)
 	{
 		fprintf(graph, 
-			"\"%s%zu\" -> \"%s%zu\"  [color=\"%s\" fontcolor=\"%s\"];\n",
-			tree->ElemPrinter(&node->node_elem), node, tree->ElemPrinter(&node->left->node_elem), node->left, LINKS_COLOR, LINKS_COLOR);
+			"\"node%zu\" -> \"node%zu\"  [color=\"%s\" fontcolor=\"%s\"];\n",
+			node, node->left, LINKS_COLOR, LINKS_COLOR);
 		PrintGraphLinks(tree, node->left, graph);
 	}
 	
 	if (node->right != nullptr)
 	{
 		fprintf(graph, 
-			"\"%s%zu\" -> \"%s%zu\"  [color=\"%s\" fontcolor=\"%s\"];\n",
-			tree->ElemPrinter(&node->node_elem), node, tree->ElemPrinter(&node->right->node_elem), node->right, LINKS_COLOR, LINKS_COLOR);
+			"\"node%zu\" -> \"node%zu\"  [color=\"%s\" fontcolor=\"%s\"];\n",
+			node, node->right, LINKS_COLOR, LINKS_COLOR);
 		PrintGraphLinks(tree, node->right, graph);	
 	}
 }
@@ -193,19 +203,25 @@ void TreeGraphPrint(Tree* tree, const char* file_name)
 
 	char console_command[MAX_CONSOLE_COMMAND_SIZE] = "";
 	
-	sprintf(console_command, "dot -T png -Gcharset=cp1251 %s -o %s%zu.png", graph_file_name, file_name, graph_num);
-	system(console_command);
-	system();
-
 	fclose(graph);
+
+	sprintf(console_command, "iconv -f CP1251 -t UTF-8 %s | dot -T png -o %s%zu.png", graph_file_name, file_name, graph_num);
+	system(console_command);
+
+	sprintf(console_command, "start %s%zu.png", file_name, graph_num);
+	system(console_command);
+
+	graph_num++;
 }
 
-void TreeDump(Tree* tree, FILE* logger)
+void TreeWrite(Tree* tree, FILE* logger)
 {
 	assert(tree   != nullptr);
 	assert(logger != nullptr);
 
-	PrintNodeInOrder(tree, tree->root, logger);
+	fprintf(logger, "Tree: {\n");
+	WriteNodePreOrder(tree, tree->root, logger, 1);
+	fprintf(logger, "}");
 }
 
 unsigned TreeVerifier(Tree* tree)
