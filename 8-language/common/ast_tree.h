@@ -1,8 +1,15 @@
 #pragma once
 
+#include "DimasLIB/DimasTree/tree.h"
+
 enum AST_ERRORS
 {
 	INVALID_AST_FORMAT = 1 << 1
 };
 
-void ReadTree(Tree* tree, FILE* ast_file, unsigned* errors);
+char* ASTTreeElemPrinter(const TreeNode_t* elem_to_print);
+void  ASTTreeElemCtor(TreeNode_t* new_elem, TreeNode_t* new_data);
+void  ASTTreeElemDtor(TreeNode_t* elem_to_delete);
+
+void ReadASTTree(Tree* tree, NameTable* nametable, FILE* ast_file, unsigned* errors);
+void WriteASTTree(Tree* tree, FILE* logger);

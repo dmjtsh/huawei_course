@@ -1,41 +1,51 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "DimasLIB/DimasTree/tree.h"
+#include "DimasLIB/DimasUtilities/utilities.h"
 #include "ast_tree.h"
 #include "nametable.h"
 #include "../frontend/src/lexical_analizer.h"
+#include "../frontend/src/syntax_analizer.h"
 
 #include <assert.h>
 #include <string.h>
 
-TreeNode* GetProperNode(Tree* tree, FILE* ast_file)
+extern FILE* ded32hui;
+
+TreeNode* GetProperNode(Tree* tree, NameTable* nametable, FILE* ast_file)
 {
 	double num_node_arg            = 0;
 	char str_node_arg[MAX_ID_SIZE] = "";
+	size_t file_cursor_pos         = 0;
 
-	size_t read_args_num = 0;
-
-	read_args_num = fscanf(ast_file, " %lf", &num_node_arg);
+	size_t read_args_num = 0;	
+	
+	file_cursor_pos = ftell(ast_file);
+	read_args_num   = fscanf(ast_file, " %lf", &num_node_arg);
+	
 	if(!read_args_num)
-	{
+	{	
+		fseek(ast_file, file_cursor_pos, SEEK_SET);
+
 		read_args_num = fscanf(ast_file, " %s", str_node_arg);
+		
 		if(IsOper(str_node_arg))
 			return CreateOperNode(tree, GetOperValue(str_node_arg), nullptr, nullptr);
 		else
-			return CreateVarNode(tree, str_node_arg);
+			return CreateVarNode(tree, NameTableFind(nametable, str_node_arg));
 	}
 	else
 		return CreateNumNode(tree, num_node_arg);
 }
 
 #define SET_ERROR_AND_RET_IF_NEEDED(cond, error) \
-	if(!cond)									 \
+	if(!(cond))									 \
 	{											 \
 		*errors |= error;					     \
 		return;									 \
 	}											 \
 
-void ReadNode(Tree* tree, TreeNode** node_ptr, FILE* ast_file, unsigned* errors)
+void ReadNode(Tree* tree, TreeNode** node_ptr, NameTable* nametable, FILE* ast_file, unsigned* errors)
 {
 	assert(tree     != nullptr);
 	assert(node_ptr != nullptr);
@@ -45,37 +55,40 @@ void ReadNode(Tree* tree, TreeNode** node_ptr, FILE* ast_file, unsigned* errors)
 		return;
 
 	size_t read_args_num = 0;
-	size_t cmd_len       = 0;
+	int cmd_len          = 0;
 	
 	read_args_num = fscanf(ast_file, " (%n", &cmd_len);
+
 	if(!cmd_len)
 	{
 		char tmp_str[MAX_ID_SIZE] = "";
 		read_args_num = fscanf(ast_file, " %s", tmp_str);			
-		SET_ERROR_AND_RET_IF_NEEDED(strcmp(tmp_str, EMPTY_NODE) != 0, INVALID_AST_FORMAT);
+		SET_ERROR_AND_RET_IF_NEEDED(strcmp(tmp_str, EMPTY_NODE) == 0, INVALID_AST_FORMAT);
+
+		return;
 	}
 
-	*node_ptr = GetProperNode(tree, ast_file);
+	*node_ptr = GetProperNode(tree, nametable,ast_file);
 
-	ReadNode(tree, &(*node_ptr)->left, ast_file, errors);
-	ReadNode(tree, &(*node_ptr)->right, ast_file, errors);
-	
+	ReadNode(tree, &(*node_ptr)->left,  nametable, ast_file, errors);
+	ReadNode(tree, &(*node_ptr)->right, nametable, ast_file, errors);
+
 	read_args_num = fscanf(ast_file, " )%n", &cmd_len);
 	SET_ERROR_AND_RET_IF_NEEDED(cmd_len, INVALID_AST_FORMAT);
 }
 
-void ReadTree(Tree* tree, FILE* ast_file, unsigned* errors)
+void ReadASTTree(Tree* tree, NameTable* nametable, FILE* ast_file, unsigned* errors)
 {
 	assert(tree     != nullptr);
 	assert(ast_file != nullptr);
 
 	size_t valid_args_num = 0;
-	size_t cmd_len        = 0;
+	int cmd_len           = 0;
 
 	valid_args_num = fscanf(ast_file, " Tree: {%n", &cmd_len);
 	SET_ERROR_AND_RET_IF_NEEDED(cmd_len, INVALID_AST_FORMAT);
 
-	ReadNode(tree, &tree->root, ast_file, errors);
+	ReadNode(tree, &tree->root, nametable, ast_file, errors);
 	
 	valid_args_num = fscanf(ast_file, " }%n", &cmd_len);
 	SET_ERROR_AND_RET_IF_NEEDED(cmd_len, INVALID_AST_FORMAT);
@@ -83,18 +96,69 @@ void ReadTree(Tree* tree, FILE* ast_file, unsigned* errors)
 
 const int REC_INDENT_SIZE = 2;
 
-void WriteNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger, int rec_depth)
+void WriteNodePreOrder(Tree* tree, const TreeNode* node, FILE* ast_file, int rec_depth)
+{
+	assert(tree   != nullptr);
+	assert(ast_file != nullptr);
+	
+	if (!node) { fprintf(ast_file, "%*s" EMPTY_NODE "\n", rec_depth * REC_INDENT_SIZE, ""); return; }
+	
+	fprintf(ast_file, "%*s(", rec_depth * REC_INDENT_SIZE, "");
+
+	fprintf(ast_file, "%s\n", tree->ElemPrinter(&node->node_elem));
+	WriteNodePreOrder(tree, node->left,  ast_file, rec_depth + 1);
+	WriteNodePreOrder(tree, node->right, ast_file, rec_depth + 1);
+	
+	fprintf(ast_file, "%*s)\n", rec_depth * REC_INDENT_SIZE, "");
+}
+
+void WriteASTTree(Tree* tree, FILE* logger)
 {
 	assert(tree   != nullptr);
 	assert(logger != nullptr);
-	
-	if (!node) { fprintf(logger, "%*s" EMPTY_NODE "\n", rec_depth * REC_INDENT_SIZE, ""); return; }
-	
-	fprintf(logger, "%*s(", rec_depth * REC_INDENT_SIZE, "");
 
-	fprintf(logger, "%s\n", tree->ElemPrinter(&node->node_elem));
-	WriteNodePreOrder(tree, node->left,  logger, rec_depth + 1);
-	WriteNodePreOrder(tree, node->right, logger, rec_depth + 1);
+	fprintf(logger, "Tree: {\n");
+	WriteNodePreOrder(tree, tree->root, logger, 1);
+	fprintf(logger, "}");
+}
+
+char* ASTTreeElemPrinter(const TreeNode_t* elem_to_print)
+{
+	assert(elem_to_print != nullptr);
+
+	static char str_to_output[MAX_ID_SIZE] = "";
+
+	if (elem_to_print->type == NUM)
+	{
+		if (IsDoubleInt(elem_to_print->elem.num))
+			sprintf(str_to_output, "%d", (int)elem_to_print->elem.num);
+		else
+			sprintf(str_to_output, "%lf", elem_to_print->elem.num);
+	}
+	else if (elem_to_print->type == VAR)
+	{
+		if(!elem_to_print->elem.var)
+			sprintf(str_to_output, "%s", "Elem Var PIZDEC NULL");
+		else
+			sprintf(str_to_output, "%s", elem_to_print->elem.var->str);
+	}
+	else if (elem_to_print->type == OPER)
+		sprintf(str_to_output, "%s", GetOperDesignation(elem_to_print->elem.oper));
+	else
+		assert(0);
 	
-	fprintf(logger, "%*s)\n", rec_depth * REC_INDENT_SIZE, "");
+	return str_to_output;
+}
+
+void ASTTreeElemCtor(TreeNode_t* new_elem, TreeNode_t* new_data)
+{
+	assert(new_elem != nullptr);
+	assert(new_data != nullptr);
+
+	*new_elem = *new_data;
+} 
+
+void ASTTreeElemDtor(TreeNode_t* elem_to_delete)
+{
+	assert(elem_to_delete != nullptr);
 }

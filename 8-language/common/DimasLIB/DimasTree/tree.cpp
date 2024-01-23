@@ -151,7 +151,7 @@ void PrintGraphNode (Tree* tree, TreeNode* node, FILE* graph)
 			NUM_COLOR, FONT_COLOR);
 
 	fprintf(graph,
-		"\"node%zu\" [shape=\"record\", label=\"\\n %s\"];\n", node, tree->ElemPrinter(&node->node_elem));
+		"\"node%p\" [shape=\"record\", label=\"\\n %s\"];\n", node, tree->ElemPrinter(&node->node_elem));
 	
 	PrintGraphNode(tree, node->left,  graph);
 	PrintGraphNode(tree, node->right, graph);
@@ -162,11 +162,13 @@ void PrintGraphLinks (Tree* tree, TreeNode* node, FILE* graph)
 	assert(tree != nullptr);
 	assert(graph != nullptr);
 	
+	if(!node)
+		return;
 
 	if (node->left != nullptr)
 	{
 		fprintf(graph, 
-			"\"node%zu\" -> \"node%zu\"  [color=\"%s\" fontcolor=\"%s\"];\n",
+			"\"node%p\" -> \"node%p\"  [color=\"%s\" fontcolor=\"%s\"];\n",
 			node, node->left, LINKS_COLOR, LINKS_COLOR);
 		PrintGraphLinks(tree, node->left, graph);
 	}
@@ -174,7 +176,7 @@ void PrintGraphLinks (Tree* tree, TreeNode* node, FILE* graph)
 	if (node->right != nullptr)
 	{
 		fprintf(graph, 
-			"\"node%zu\" -> \"node%zu\"  [color=\"%s\" fontcolor=\"%s\"];\n",
+			"\"node%p\" -> \"node%p\"  [color=\"%s\" fontcolor=\"%s\"];\n",
 			node, node->right, LINKS_COLOR, LINKS_COLOR);
 		PrintGraphLinks(tree, node->right, graph);	
 	}
@@ -187,6 +189,7 @@ void TreeGraphPrint(Tree* tree, const char* file_name)
 
 	const  size_t MAX_FILE_NAME_SIZE       = 50;
 	const  size_t MAX_CONSOLE_COMMAND_SIZE = 100;
+
 	static size_t graph_num                = 1;
 
 	char graph_file_name[MAX_FILE_NAME_SIZE] = "";
@@ -212,16 +215,6 @@ void TreeGraphPrint(Tree* tree, const char* file_name)
 	system(console_command);
 
 	graph_num++;
-}
-
-void TreeWrite(Tree* tree, FILE* logger)
-{
-	assert(tree   != nullptr);
-	assert(logger != nullptr);
-
-	fprintf(logger, "Tree: {\n");
-	WriteNodePreOrder(tree, tree->root, logger, 1);
-	fprintf(logger, "}");
 }
 
 unsigned TreeVerifier(Tree* tree)

@@ -7,11 +7,12 @@
 
 #include "../../common/DimasLIB/DimasUtilities/utilities.h"
 #include "../../common/DimasLIB/DimasTree/tree.h"
+#include "../../common/ast_tree.h"
 #include "lexical_analizer.h"
 
 #define TOKEN_TYPE      tokens[*current_token_num]->node_elem.type
 #define TOKEN_OPER      tokens[*current_token_num]->node_elem.elem.oper
-#define TOKEN_VAR_NAME  tokens[*current_token_num]->node_elem.elem.var.name
+#define TOKEN_VAR_NAME  tokens[*current_token_num]->node_elem.elem.var->str
 #define TOKEN_NUM       tokens[*current_token_num]->node_elem.elem.num
 
  //---/\---/\-------Это ASCII KOT!--//
@@ -21,26 +22,6 @@
  //   \ \|/ /      будет, наверно,  //
  //    \___/  приятно отлаживаться  //
  //---------------долгими ночами:)--//
-
-void PrintExprNode(TreeNode* node)
-{
-	assert(node);
-
-	switch(node->node_elem.type)
-	{
-		case VAR:
-			printf("Var: %s\n", node->node_elem.elem.var.name);
-			break;
-		case NUM:
-			printf("Num: %lf\n", node->node_elem.elem.num);
-			break;
-		case OPER:
-			printf("Oper: %s\n", GetOperDesignation(node->node_elem.elem.oper));
-			break;
-		default:
-			assert(0);
-	}
-}
 
 void PrintCurrentToken(TreeNode** tokens, size_t* current_token_num)
 {
@@ -330,46 +311,12 @@ TreeNode* GetProgram(TreeNode** tokens, size_t* current_token_num)
 * 
 *****************************************************************************************************************/
 
-char* ExprTreeElemPrinter(const TreeNode_t* elem_to_print)
-{
-	assert(elem_to_print != nullptr);
-	static char str_to_output[MAX_ID_SIZE] = "";
-
-	if (elem_to_print->type == NUM)
-	{
-		if (IsDoubleInt(elem_to_print->elem.num))
-			sprintf(str_to_output, "%d", (int)elem_to_print->elem.num);
-		else
-			sprintf(str_to_output, "%lf", elem_to_print->elem.num);
-	}
-	else if (elem_to_print->type == VAR)
-		sprintf(str_to_output, "%s", elem_to_print->elem.var.name);
-	else if (elem_to_print->type == OPER)
-		sprintf(str_to_output, "%s", GetOperDesignation(elem_to_print->elem.oper));
-	else
-		assert(0);
-	
-	return str_to_output;
-}
-
-void ExprTreeElemCtor(TreeNode_t* new_elem, TreeNode_t* new_data)
-{
-	assert(new_elem != nullptr);
-	assert(new_data != nullptr);
-
-	*new_elem = *new_data;
-} 
-
-void ExprTreeElemDtor(TreeNode_t* elem_to_delete)
-{
-	assert(elem_to_delete != nullptr);
-}
 
 Tree GetCodeTree(const char* file_name, NameTable* nametable)
 { 
 	TreeNode** tokens    = nullptr;
 	Tree       expr_tree = {};
-	TreeCtor(&expr_tree, ExprTreeElemCtor, ExprTreeElemDtor, ExprTreeElemPrinter);
+	TreeCtor(&expr_tree, ASTTreeElemCtor, ASTTreeElemDtor, ASTTreeElemPrinter);
 
 	tokens = DoLexicalAnalisys(&expr_tree, file_name, nametable);
 

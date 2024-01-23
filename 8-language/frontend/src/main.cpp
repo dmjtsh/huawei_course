@@ -17,9 +17,9 @@ int main(int argc, char* argv[])
 
 	FILE* ast_file = fopen((argc > 2)? argv[2] : "database.txt", "w");
 
-	NameTableWrite(&nametable, ast_file);
-	TreeWrite(&tree, ast_file);
-	
+	WriteNameTable(&nametable, ast_file);
+	WriteASTTree(&tree, ast_file);
+
 	NameTableDtor(&nametable);
 	TreeDtor(&tree);
 

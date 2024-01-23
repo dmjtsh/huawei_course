@@ -1,5 +1,7 @@
-#ifndef TREE_H
-#define TREE_H
+#pragma once
+
+#include "../../TX/TXLib.h"
+#include "../../nametable.h"
 
 #include <stdio.h>
 
@@ -15,7 +17,7 @@ enum Operation
 	
 	#include "../../opers_defs.h"
 
-	#undef OPERS_DEFS
+	#undef OPER_DEF
 
 	OPER_COUNT,
 	WRONG_OPER
@@ -25,19 +27,11 @@ enum Operation
 
 enum TreeElemType { NUM, OPER, VAR };
 
-const size_t MAX_ID_SIZE = 200; 
-
-struct Variable
-{
-	double value;
-	char   name[MAX_ID_SIZE];
-};
-
 union TreeNodeElem
 {
-	double   num;
-	Operation oper;
-	Variable var;
+	double         num;
+	Operation      oper;
+	NameTableElem* var;
 };
 
 struct TreeNode_t
@@ -64,7 +58,6 @@ void PrintNodePostOrder(Tree* tree, const TreeNode* node, FILE* logger);
 void PrintNodeInOrder  (Tree* tree, const TreeNode* node, FILE* logger);
 
 void WriteNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger, int rec_depth);
-void TreeWrite(Tree* tree, FILE* logger);
 
 TreeNode*   CopyNode(Tree* tree, TreeNode* node);
 TreeNode* CreateNode(Tree* tree, TreeNode_t* data, TreeNode** node, TreeNode* left_node, TreeNode* right_node);
@@ -109,5 +102,3 @@ void     TreeGraphPrint(Tree* tree, const char* file_name);
 /*
 * End of Tree Structure Block 
 */
-
-#endif

@@ -86,7 +86,7 @@ TreeNode* CreateOperNode(Tree* expr_tree, Operation oper, TreeNode* left_node, T
 	return CreateNode(expr_tree, &new_data, &new_node, left_node, right_node);
 }
 
-TreeNode* CreateVarNode(Tree* expr_tree, const char* var_name)
+TreeNode* CreateVarNode(Tree* expr_tree, NameTableElem* nametable_elem_p)
 {
 	assert(expr_tree != nullptr);
 
@@ -94,7 +94,7 @@ TreeNode* CreateVarNode(Tree* expr_tree, const char* var_name)
 	TreeNode_t new_data = {};
 	
 	new_data.type = VAR;
-	strcpy(new_data.elem.var.name, var_name);
+	new_data.elem.var = nametable_elem_p;
 
 	return CreateNode(expr_tree, &new_data, &new_node, nullptr, nullptr);
 }
@@ -148,11 +148,11 @@ size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTab
 	}
 	else if (!nametable_elem_ptr)
 	{
-		NameTableAdd(nametable, name_str, VARIABLE, nametable->size);
-		*token_ptr = CreateVarNode(expr_tree, name_str);
+		NameTableElem* new_var_ptr = NameTableAdd(nametable, name_str, VARIABLE, (int)nametable->size);
+		*token_ptr = CreateVarNode(expr_tree, new_var_ptr);
 	}
 	else
-		*token_ptr = CreateVarNode(expr_tree, name_str);		
+		*token_ptr = CreateVarNode(expr_tree, nametable_elem_ptr);
 
 	return curr_ch_num; 
 }
@@ -217,8 +217,11 @@ TreeNode** DoLexicalAnalisys(Tree* expr_tree, const char* file_name, NameTable* 
 		TRY_SET_ELEM_AND_MOVE_STR_P(TrySetId);
 	}
 
-	tokens = (TreeNode**)realloc(tokens, (token_count+1) * sizeof(TreeNode*));
-	assert(tokens != nullptr);
+	TreeNode** tmp_tokens = (TreeNode**)realloc(tokens, (token_count+1) * sizeof(TreeNode*));
+	if(!tmp_tokens)
+		return nullptr;
+
+	tokens = tmp_tokens;
 
 	free(code);
 
