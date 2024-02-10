@@ -16,6 +16,8 @@ OPER_DEF(ASSIGN,    "ЭтоМНЕ")
 
 OPER_DEF(SEPARATOR, "НЫА")
 
+OPER_DEF(FUNC,      "ПодрубалитиИзРеалити")
+
 OPER_DEF(RETURN,    "ОтлетайОчередняра")
 
 OPER_DEF(OBR,       "(")

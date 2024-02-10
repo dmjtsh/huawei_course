@@ -62,6 +62,17 @@ char* GetFileText(const char* file_name)
     return text;
 }
 
+void CleanStr(char* str)
+{
+	size_t curr_ch_num = 0;
+	
+	while(str[curr_ch_num] != '\0')
+	{
+		str[curr_ch_num] = '\0';
+		curr_ch_num++;
+	}
+}
+
 int CountTextStrings(const char* text)
 {
     if (!text)

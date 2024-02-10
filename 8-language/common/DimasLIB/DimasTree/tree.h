@@ -25,13 +25,13 @@ enum Operation
 
 #define EMPTY_NODE "." 
 
-enum TreeElemType { NUM, OPER, VAR };
+enum TreeElemType { NUM, OPER, ID};
 
 union TreeNodeElem
 {
 	double         num;
 	Operation      oper;
-	NameTableElem* var;
+	NameTableElem* id;
 };
 
 struct TreeNode_t
@@ -59,7 +59,7 @@ void PrintNodeInOrder  (Tree* tree, const TreeNode* node, FILE* logger);
 
 void WriteNodePreOrder(Tree* tree, const TreeNode* node, FILE* logger, int rec_depth);
 
-TreeNode*   CopyNode(Tree* tree, TreeNode* node);
+TreeNode* CopyNode(Tree* tree, TreeNode* node);
 TreeNode* CreateNode(Tree* tree, TreeNode_t* data, TreeNode** node, TreeNode* left_node, TreeNode* right_node);
 void      DestroyNode(Tree* tree, TreeNode* node);
 

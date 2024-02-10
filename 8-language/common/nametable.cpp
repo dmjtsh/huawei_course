@@ -29,20 +29,24 @@ bool IsKeyword(NameTable* nametable, const char* name_str)
 		}                                  \
 	}
 
-void ReadNameTable(NameTable* nametable, FILE* ast_file, unsigned* errors)
+void ReadNameTable(NameTable* nametable, FILE* ast_file, const char* needed_nametable_header, unsigned* errors)
 {
 	assert(nametable != nullptr);
 	assert(ast_file  != nullptr);
 
 	size_t valid_args_num = 0;
 	int cmd_len           = 0;
+	
+	char nametable_header[MAX_NAMETABLE_HEADER_SIZE] = "";
+	CHECK_VALID_ARGS_NUM(fscanf(ast_file, " %s [ %zu ] {", nametable_header, &nametable->size));
 
-	CHECK_VALID_ARGS_NUM(fscanf(ast_file, " NameTable [ %zu ] {", &nametable->size));
+	if(strcmp(needed_nametable_header, nametable_header) != 0)
+		*errors |= INVALID_AST_FORMAT;
 
 	for(size_t i = 0; i < nametable->size; i++)
 	{
-		CHECK_VALID_ARGS_NUM(fscanf(ast_file, " [ \" %[^\"] \" , %d , %d ]", 
-			nametable->elems[i].str, &nametable->elems[i].code, &nametable->elems[i].type));
+		CHECK_VALID_ARGS_NUM(fscanf(ast_file, " [ \" %[^\"] \" , %d]", 
+		nametable->elems[i].str, &nametable->elems[i].code));
 	}
 
 	(void)fscanf(ast_file, " }%n", &cmd_len);
@@ -53,22 +57,22 @@ void ReadNameTable(NameTable* nametable, FILE* ast_file, unsigned* errors)
 
 #undef CHECK_VALID_ARGS_NUM
 
-void WriteNameTable(NameTable* nametable, FILE* output_file)
+void WriteNameTable(NameTable* nametable, const char* nametable_header, FILE* output_file)
 {
 	assert(nametable != nullptr);
 
-	fprintf(output_file, "NameTable [%zu] {\n", nametable->size);
+	fprintf(output_file, "%s [%zu] {\n", nametable_header, nametable->size);
 
 	for (size_t i = 0; i < nametable->size; i++) 
 	{
-		fprintf(output_file, "    [\"%s\", %d, %d]\n", 
-			nametable->elems[i].str, nametable->elems[i].code, nametable->elems[i].type);
+		fprintf(output_file, "    [\"%s\", %d]\n", 
+			nametable->elems[i].str, nametable->elems[i].code);
 	}
 
 	fprintf(output_file, "}\n\n");
 }
 
-NameTableElem* NameTableAdd(NameTable* nametable, const char* designation, KeyWordType elem_type, int elem_code)
+NameTableElem* NameTableAdd(NameTable* nametable, const char* designation, int elem_code)
 {
 	assert(nametable  != nullptr);
 	assert(designation != nullptr);
@@ -76,10 +80,12 @@ NameTableElem* NameTableAdd(NameTable* nametable, const char* designation, KeyWo
 	size_t curr_elem_index = nametable->size;
 	
 	strcpy(nametable->elems[curr_elem_index].str, designation);
-	nametable->elems[curr_elem_index].type = elem_type;
 	nametable->elems[curr_elem_index].code = elem_code;
 	
 	nametable->size++;
+
+	if(nametable->size == MAX_NAMETABLE_SIZE)
+		return nullptr;
 
 	return &nametable->elems[curr_elem_index];
 }
@@ -98,12 +104,6 @@ NameTableElem* NameTableFind(NameTable* nametable, const char* elem_to_find)
 void NameTableCtor(NameTable* nametable)
 {
 	assert(nametable != nullptr);
-
-	#define OPER_DEF(code, designation, ...) NameTableAdd(nametable, designation, KEYWORD, code);
-
-	#include "opers_defs.h"
-
-	#undef OPER_DEF
 }
 
 void NameTableDtor(NameTable* nametable)

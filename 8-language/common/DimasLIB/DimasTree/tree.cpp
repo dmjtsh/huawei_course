@@ -137,7 +137,7 @@ void PrintGraphNode (Tree* tree, TreeNode* node, FILE* graph)
 	if(!node)
 		return;
 
-	if (node->node_elem.type == VAR)
+	if (node->node_elem.type == ID)
 		fprintf(graph, 
 			"node [shape=\"box\", style=\"filled\", fillcolor=\"%s\", fontcolor=\"%s\", margin=\"0.01\"];\n", 
 			VAR_COLOR, FONT_COLOR);

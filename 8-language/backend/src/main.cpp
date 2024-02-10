@@ -2,7 +2,7 @@
 
 #include "../../common/DimasLIB/DimasUtilities/utilities.h"
 #include "../../common/TX/TXLib.h"
-#include "../../common/nametable.h"
+#include "../../common/program_nametables.h"
 #include "../../common/ast_tree.h"
 #include "retranslator.h"
 
@@ -12,8 +12,7 @@ FILE* ded32hui = NULL;
 
 int main(int argc, char* argv[])
 {	
-	NameTable nametable = {};
-	NameTableCtor(&nametable);
+	ProgramNameTables nametables = {};
 	
 	Tree tree = {};
 	TreeCtor(&tree, ASTTreeElemCtor, ASTTreeElemDtor, ASTTreeElemPrinter);
@@ -27,14 +26,15 @@ int main(int argc, char* argv[])
 	unsigned errors = 0;
 
 	setvbuf(ast_file, nullptr, _IOFBF, GetFileSize(ast_file_name));
-	ReadNameTable(&nametable, ast_file, &errors);
-	ReadASTTree(&tree, &nametable, ast_file, &errors);
+
+	ReadProgramNameTables(&nametables, ast_file, &errors);
+	ReadASTTree(&tree, &nametables, ast_file, &errors);
 
 	TreeGraphPrint(&tree, "expr_tree");
 
-	RetranslateTree(&tree, &nametable, stdout);
+	RetranslateTree(&tree, &nametables, stdout);
 	
-	NameTableDtor(&nametable);
+	ProgramNameTablesDtor(&nametables);
 	TreeDtor(&tree);
 
 	return 0;

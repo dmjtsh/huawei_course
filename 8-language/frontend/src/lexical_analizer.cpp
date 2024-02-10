@@ -86,20 +86,20 @@ TreeNode* CreateOperNode(Tree* expr_tree, Operation oper, TreeNode* left_node, T
 	return CreateNode(expr_tree, &new_data, &new_node, left_node, right_node);
 }
 
-TreeNode* CreateVarNode(Tree* expr_tree, NameTableElem* nametable_elem_p)
+TreeNode* CreateIdNode(Tree* expr_tree, NameTableElem* nametable_elem_ptr)
 {
 	assert(expr_tree != nullptr);
 
 	TreeNode*  new_node = {};
 	TreeNode_t new_data = {};
-	
-	new_data.type = VAR;
-	new_data.elem.var = nametable_elem_p;
+
+	new_data.type    = ID;
+	new_data.elem.id = nametable_elem_ptr;
 
 	return CreateNode(expr_tree, &new_data, &new_node, nullptr, nullptr);
 }
 
-size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code, NameTable* nametable)
+size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code)
 {
 	assert(expr_tree != nullptr);
 	assert(code      != nullptr);
@@ -114,51 +114,17 @@ size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code, NameTable* n
 		curr_ch_num++;
 	}
 
+	// Num must contain smth
+	if(!curr_ch_num)
+		return 0;
+
 	*token_ptr = CreateNumNode(expr_tree, num);
 
 	return curr_ch_num;
 }
 
-size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTable* nametable)
-{
-	assert(expr_tree != nullptr);
-	assert(token_ptr != nullptr);
-	assert(code      != nullptr);
-
-	size_t curr_ch_num           = 0;
-	char   name_str[MAX_ID_SIZE] = "";
-
-	// First letter must be letter
-	if(!IsCharLetter(code[curr_ch_num])) 
-		return 0;
-
-	while (IsCharLetter(code[curr_ch_num]) || isdigit(code[curr_ch_num]))
-	{
-		name_str[curr_ch_num] = code[curr_ch_num];
-
-		curr_ch_num++;
-	}
-
-	NameTableElem* nametable_elem_ptr = NameTableFind(nametable, name_str);
-
-	if(IsKeyword(nametable, name_str))
-	{
-		assert(nametable_elem_ptr->type == KEYWORD);
-		*token_ptr = CreateOperNode(expr_tree, (Operation)nametable_elem_ptr->code, nullptr, nullptr);
-	}
-	else if (!nametable_elem_ptr)
-	{
-		NameTableElem* new_var_ptr = NameTableAdd(nametable, name_str, VARIABLE, (int)nametable->size);
-		*token_ptr = CreateVarNode(expr_tree, new_var_ptr);
-	}
-	else
-		*token_ptr = CreateVarNode(expr_tree, nametable_elem_ptr);
-
-	return curr_ch_num; 
-}
-
 // OPER SYMB ex: +, -, /, *, (, etc
-size_t TrySetOperSymb(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTable* nametable)
+size_t TrySetOperSymb(Tree* expr_tree, TreeNode** token_ptr, const char* code)
 {
 	assert(expr_tree != nullptr);
 	assert(token_ptr != nullptr);
@@ -167,30 +133,81 @@ size_t TrySetOperSymb(Tree* expr_tree, TreeNode** token_ptr, const char* code, N
 	char oper_symb[MAX_ID_SIZE] = "";
 	oper_symb[0] = code[0];
 
-	NameTableElem* keyword_ptr = NameTableFind(nametable, oper_symb);
-
-	if(keyword_ptr)
+	if(IsOper(oper_symb))
 	{
-		*token_ptr = CreateOperNode(expr_tree, (Operation)keyword_ptr->code, nullptr, nullptr);
+		*token_ptr = CreateOperNode(expr_tree, GetOperValue(oper_symb), nullptr, nullptr);
+
 		return 1; // MOVING CODE STR ON 1
 	}
 	else
 		return 0;
 }
 
-#define TRY_SET_ELEM_AND_MOVE_STR_P(try_set_func)													  \
-	do																								  \
-	{																								  \
-		old_ch_num = curr_ch_num;																	  \
-		curr_ch_num += try_set_func(expr_tree, &tokens[token_count], code + curr_ch_num, nametable); \
-		if(old_ch_num != curr_ch_num)												                  \
-			token_count++;																              \
-	} while(0)
+size_t SetIdStr(const char* code, char* id_str)
+{
+	size_t curr_ch_num = 0;
+	
+	// First letter must be letter
+	if(!IsCharLetter(code[curr_ch_num])) 
+		return 0;
 
-TreeNode** DoLexicalAnalisys(Tree* expr_tree, const char* file_name, NameTable* nametable)
+	while (IsCharLetter(code[curr_ch_num]) || isdigit(code[curr_ch_num]))
+	{
+		id_str[curr_ch_num] = code[curr_ch_num];
+
+		curr_ch_num++;
+	}
+
+	return curr_ch_num;
+}
+
+size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTable* common_nametable, size_t* scopes_counter)
 {
 	assert(expr_tree != nullptr);
-	assert(file_name != nullptr);
+	assert(token_ptr != nullptr);
+	assert(code      != nullptr);
+
+	char   id_str[MAX_ID_SIZE] = "";
+	size_t curr_ch_num         = 0;
+
+	curr_ch_num += SetIdStr(code + curr_ch_num, id_str);
+
+	// Id name must contain smth
+	if(!curr_ch_num)
+		return 0;
+
+	if(IsOper(id_str))
+	{
+		*token_ptr = CreateOperNode(expr_tree, GetOperValue(id_str), nullptr, nullptr);
+
+		if(GetOperValue(id_str) == FUNC)
+			(*scopes_counter)++;
+	}
+	else
+	{
+		NameTableElem* nametable_elem_ptr = NameTableFind(common_nametable, id_str);
+		if(!nametable_elem_ptr)
+			nametable_elem_ptr = NameTableAdd(common_nametable, id_str, common_nametable->size);
+		
+		*token_ptr = CreateIdNode(expr_tree, nametable_elem_ptr);
+	}
+	return curr_ch_num;
+}
+
+#define TRY_SET_ELEM_AND_MOVE_STR_P(try_set_func, ...)												   \
+	do																								   \
+	{																								   \
+		old_ch_num = curr_ch_num;																	   \
+		curr_ch_num += try_set_func(expr_tree, &tokens[token_count], code + curr_ch_num, __VA_ARGS__); \
+		if(old_ch_num != curr_ch_num)																   \
+			token_count++;																			   \
+	} while(0)
+
+TreeNode** DoLexicalAnalisys(Tree* expr_tree, const char* file_name, NameTable* common_nametable, size_t* scopes_counter)
+{
+	assert(expr_tree        != nullptr);
+	assert(file_name        != nullptr);
+	assert(common_nametable != nullptr);
 	
 	size_t file_size   = GetFileSize(file_name);
 	TreeNode** tokens  = (TreeNode**)calloc(file_size, sizeof(TreeNode*));
@@ -214,7 +231,7 @@ TreeNode** DoLexicalAnalisys(Tree* expr_tree, const char* file_name, NameTable* 
 
 		TRY_SET_ELEM_AND_MOVE_STR_P(TrySetNum);
 		TRY_SET_ELEM_AND_MOVE_STR_P(TrySetOperSymb);
-		TRY_SET_ELEM_AND_MOVE_STR_P(TrySetId);
+		TRY_SET_ELEM_AND_MOVE_STR_P(TrySetId, common_nametable, scopes_counter);
 	}
 
 	TreeNode** tmp_tokens = (TreeNode**)realloc(tokens, (token_count+1) * sizeof(TreeNode*));

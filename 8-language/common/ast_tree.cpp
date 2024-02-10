@@ -4,6 +4,7 @@
 #include "DimasLIB/DimasUtilities/utilities.h"
 #include "ast_tree.h"
 #include "nametable.h"
+#include "program_nametables.h"
 #include "../frontend/src/lexical_analizer.h"
 #include "../frontend/src/syntax_analizer.h"
 
@@ -12,7 +13,7 @@
 
 extern FILE* ded32hui;
 
-TreeNode* GetProperNode(Tree* tree, NameTable* nametable, FILE* ast_file)
+TreeNode* GetProperNode(Tree* tree, ProgramNameTables* nametables, int* current_scope, FILE* ast_file)
 {
 	double num_node_arg            = 0;
 	char str_node_arg[MAX_ID_SIZE] = "";
@@ -29,10 +30,36 @@ TreeNode* GetProperNode(Tree* tree, NameTable* nametable, FILE* ast_file)
 
 		read_args_num = fscanf(ast_file, " %s", str_node_arg);
 		
+		if(!read_args_num)
+			return nullptr;
+
 		if(IsOper(str_node_arg))
+		{
+			if(GetOperValue(str_node_arg) == FUNC)
+				(*current_scope)++;
+
 			return CreateOperNode(tree, GetOperValue(str_node_arg), nullptr, nullptr);
+		}
 		else
-			return CreateVarNode(tree, NameTableFind(nametable, str_node_arg));
+		{
+			TreeNode*         id_node = nullptr;
+			NameTableElemType id_type = WRONG_NT_TYPE;
+			read_args_num = fscanf(ast_file, " type:%d", &id_type);
+
+			if(!read_args_num)
+				return nullptr;
+
+			if(id_type == VARIABLE)
+				id_node = CreateIdNode(tree, NameTableFind(&nametables->scopes_nametables[*current_scope], str_node_arg));			
+			else if(id_type == FUNCTION)
+				id_node = CreateIdNode(tree, NameTableFind(&nametables->functions_nametable, str_node_arg));
+			else
+				assert(0);
+
+			id_node->node_elem.elem.id->type = id_type;
+			
+			return id_node;
+		}
 	}
 	else
 		return CreateNumNode(tree, num_node_arg);
@@ -45,7 +72,7 @@ TreeNode* GetProperNode(Tree* tree, NameTable* nametable, FILE* ast_file)
 		return;									 \
 	}											 \
 
-void ReadNode(Tree* tree, TreeNode** node_ptr, NameTable* nametable, FILE* ast_file, unsigned* errors)
+void ReadNode(Tree* tree, TreeNode** node_ptr, ProgramNameTables* nametables, int* current_scope, FILE* ast_file, unsigned* errors)
 {
 	assert(tree     != nullptr);
 	assert(node_ptr != nullptr);
@@ -68,16 +95,17 @@ void ReadNode(Tree* tree, TreeNode** node_ptr, NameTable* nametable, FILE* ast_f
 		return;
 	}
 
-	*node_ptr = GetProperNode(tree, nametable,ast_file);
+	*node_ptr = GetProperNode(tree, nametables, current_scope, ast_file);
+	SET_ERROR_AND_RET_IF_NEEDED(*node_ptr, INVALID_AST_FORMAT);
 
-	ReadNode(tree, &(*node_ptr)->left,  nametable, ast_file, errors);
-	ReadNode(tree, &(*node_ptr)->right, nametable, ast_file, errors);
+	ReadNode(tree, &(*node_ptr)->left,  nametables, current_scope, ast_file, errors);
+	ReadNode(tree, &(*node_ptr)->right, nametables, current_scope, ast_file, errors);
 
 	read_args_num = fscanf(ast_file, " )%n", &cmd_len);
 	SET_ERROR_AND_RET_IF_NEEDED(cmd_len, INVALID_AST_FORMAT);
 }
 
-void ReadASTTree(Tree* tree, NameTable* nametable, FILE* ast_file, unsigned* errors)
+void ReadASTTree(Tree* tree, ProgramNameTables* nametables, FILE* ast_file, unsigned* errors)
 {
 	assert(tree     != nullptr);
 	assert(ast_file != nullptr);
@@ -88,11 +116,14 @@ void ReadASTTree(Tree* tree, NameTable* nametable, FILE* ast_file, unsigned* err
 	valid_args_num = fscanf(ast_file, " Tree: {%n", &cmd_len);
 	SET_ERROR_AND_RET_IF_NEEDED(cmd_len, INVALID_AST_FORMAT);
 
-	ReadNode(tree, &tree->root, nametable, ast_file, errors);
+	// BEGGING SCOPE (NO FUNC ENCOUNTERED)
+	int current_scope = -1;
+	ReadNode(tree, &tree->root, nametables, &current_scope, ast_file, errors);
 	
 	valid_args_num = fscanf(ast_file, " }%n", &cmd_len);
 	SET_ERROR_AND_RET_IF_NEEDED(cmd_len, INVALID_AST_FORMAT);
 }
+
 
 const int REC_INDENT_SIZE = 2;
 
@@ -135,12 +166,12 @@ char* ASTTreeElemPrinter(const TreeNode_t* elem_to_print)
 		else
 			sprintf(str_to_output, "%lf", elem_to_print->elem.num);
 	}
-	else if (elem_to_print->type == VAR)
+	else if (elem_to_print->type == ID)
 	{
-		if(!elem_to_print->elem.var)
+		if(!elem_to_print->elem.id)
 			sprintf(str_to_output, "%s", "Elem Var PIZDEC NULL");
 		else
-			sprintf(str_to_output, "%s", elem_to_print->elem.var->str);
+			sprintf(str_to_output, "%s type:%d", elem_to_print->elem.id->str, elem_to_print->elem.id->type);
 	}
 	else if (elem_to_print->type == OPER)
 		sprintf(str_to_output, "%s", GetOperDesignation(elem_to_print->elem.oper));

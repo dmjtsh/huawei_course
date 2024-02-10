@@ -19,6 +19,7 @@ void SetErrorBit(unsigned* error, int error_bit);
 void UnsetErrorBit(unsigned* error, int error_bit);
 
 double StrToNum(const char* str, size_t str_len, bool* is_str_num);
+void   CleanStr(char* str);
 
 bool IsCharLetter(char ch);
 bool IsCharDigit (char ch);
