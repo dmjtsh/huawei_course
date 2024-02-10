@@ -128,6 +128,8 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 				return;
 			case SEPARATOR:
 				break;
+			case FUNC_SEP:
+				break;
 			default:
 				break;
 		}
@@ -144,10 +146,17 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 		case ID:
 			if(current_node->node_elem.elem.id->type == FUNCTION)
 			{
-				size_t     func_scope_number = NameTableFind(&nametables->functions_nametable, current_node->node_elem.elem.id->str)->code;
-				NameTable* curr_scope_nametable = &nametables->scopes_nametables[func_scope_number];
+				size_t         func_scope_number = 0;
+				char*          func_str          = current_node->node_elem.elem.id->str;
+				NameTableElem* func              = NameTableFind(&nametables->functions_nametable, func_str, &func_scope_number);
+				size_t         func_params_count = func->code;
+				
+				NameTable* curr_scope_nametable  = &nametables->scopes_nametables[func_scope_number];
 
-				fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", curr_scope_nametable->elems[0].code, curr_scope_nametable->elems[0].str); // TODO: ADD >1 VARS
+				for(size_t i = 0; i < func_params_count; i++)
+				{
+					fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", curr_scope_nametable->elems[i].code, curr_scope_nametable->elems[i].str);
+				}
 				fprintf(asm_code_file, "\tCALL %s\n", current_node->node_elem.elem.id->str);
 			}
 			else if (current_node->node_elem.elem.id->type == VARIABLE)

@@ -29,4 +29,5 @@ bool IsKeyword(NameTable* nametable, const char* name_str);
 void           ReadNameTable (NameTable* nametable, FILE* ast_file, const char* nametable_header, unsigned* errors);
 void           WriteNameTable(NameTable* nametable, const char* needed_nametable_header, FILE* output_file);
 NameTableElem* NameTableAdd  (NameTable* nametable, const char* designation, int elem_code);
+NameTableElem* NameTableFind (NameTable* nametable, const char* elem_to_find, size_t* elem_num);
 NameTableElem* NameTableFind (NameTable* nametable, const char* elem_to_find);

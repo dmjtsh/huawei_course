@@ -186,6 +186,47 @@ TreeNode* GetAssign(TreeNode** tokens, size_t* current_token_num, ProgramNameTab
 	return tokens[assign_token_num];
 }
 
+TreeNode* GetFunctionArgs(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables, size_t* args_count)
+{
+	TreeNode* func_args_node1 = GetId(tokens, current_token_num);
+
+	if(!func_args_node1)
+		return nullptr;
+
+	if(func_args_node1 && (TOKEN_TYPE == OPER && TOKEN_OPER == FUNC_SEP))
+	{
+		(*args_count)++;
+
+		size_t sep_token_num = *current_token_num;
+		(*current_token_num)++;
+
+		TreeNode* func_args_node2 = nullptr;
+
+		while(func_args_node2 = GetId(tokens, current_token_num))
+		{
+			(*args_count)++;
+
+			SYN_ASSERT(func_args_node2);
+
+			tokens[sep_token_num]->left  = func_args_node1;
+			tokens[sep_token_num]->right = func_args_node2;
+
+			func_args_node1 = tokens[sep_token_num];
+
+			if(TOKEN_TYPE == OPER && TOKEN_OPER == FUNC_SEP)
+			{
+				sep_token_num = *current_token_num;
+				(*current_token_num)++;
+				continue;
+			}
+			else
+				break;
+		}
+	}
+	
+	return func_args_node1;
+}
+
 TreeNode* GetFunctionCall(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	TreeNode* func_name_node = GetId(tokens, current_token_num);
@@ -204,12 +245,13 @@ TreeNode* GetFunctionCall(TreeNode** tokens, size_t* current_token_num, ProgramN
 	char* func_name = func_name_node->node_elem.elem.id->str;
 	SYN_ASSERT(func_name_node->node_elem.elem.id = NameTableFind(&nametables->functions_nametable, func_name));
 
-	TreeNode* func_args_node = GetId(tokens, current_token_num);
+	size_t args_count = 0;
+	func_name_node->left = GetFunctionArgs(tokens, current_token_num, nametables, &args_count);
+	// CHEKING THAT ARGS COUNT == PARAMS COUNT
+	SYN_ASSERT(args_count == func_name_node->node_elem.elem.id->code);
 
 	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 	(*current_token_num)++;
-
-	func_name_node->left = func_args_node;
 
 	return func_name_node;
 }
@@ -326,6 +368,54 @@ TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num, ProgramNameTable
 	return nullptr;
 }
 
+TreeNode* GetFunctionParams(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables, size_t* params_count)
+{
+	TreeNode* func_param_node1 = GetId(tokens, current_token_num);
+
+	if(!func_param_node1)
+		return nullptr;
+
+	// ADDING FUNC PARAMS TO SCOPE NAMETABLE
+	char* func_param_name1 = func_param_node1->node_elem.elem.id->str;
+	func_param_node1->node_elem.elem.id = ProgramNameTablesAddVar(nametables, func_param_name1);
+	
+	if(func_param_node1 && (TOKEN_TYPE == OPER && TOKEN_OPER == FUNC_SEP))
+	{
+		(*params_count)++;
+
+		size_t sep_token_num = *current_token_num;
+		(*current_token_num)++;
+
+		TreeNode* func_param_node2 = nullptr;
+
+		while(func_param_node2 = GetId(tokens, current_token_num))
+		{
+			SYN_ASSERT(func_param_node2);
+			(*params_count)++;
+
+			// ADDING FUNC PARAMS TO SCOPE NAMETABLE
+			char* func_param_name2 = func_param_node2->node_elem.elem.id->str;
+			func_param_node2->node_elem.elem.id = ProgramNameTablesAddVar(nametables, func_param_name2);
+
+			tokens[sep_token_num]->left  = func_param_node1;
+			tokens[sep_token_num]->right = func_param_node2;
+
+			func_param_node1 = tokens[sep_token_num];
+
+			if(TOKEN_TYPE == OPER && TOKEN_OPER == FUNC_SEP)
+			{
+				sep_token_num = *current_token_num;
+				(*current_token_num)++;
+				continue;
+			}
+			else
+				break;
+		}
+	}
+
+	return func_param_node1;
+}
+
 TreeNode* GetFunctionDefinition(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	if(!tokens[*current_token_num])
@@ -343,15 +433,13 @@ TreeNode* GetFunctionDefinition(TreeNode** tokens, size_t* current_token_num, Pr
 	char* func_name = func_name_node->node_elem.elem.id->str;
 	SYN_ASSERT(func_name_node->node_elem.elem.id = ProgramNameTablesAddFunc(nametables, func_name));
 
-
 	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
 	(*current_token_num)++;
 
-	TreeNode* func_param_node = GetId(tokens, current_token_num);
-
-	// ADDING FUNC PARAMS TO SCOPE NAMETABLE
-	char*  func_param_name = func_param_node->node_elem.elem.id->str;
-	func_param_node->node_elem.elem.id = ProgramNameTablesAddVar(nametables, func_param_name);
+	size_t params_count = 0;
+	TreeNode* func_param_node = GetFunctionParams(tokens, current_token_num, nametables, &params_count);
+	// SETTING PARAMS COUNT
+	func_name_node->node_elem.elem.id->code = params_count;
 
 	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 	(*current_token_num)++;

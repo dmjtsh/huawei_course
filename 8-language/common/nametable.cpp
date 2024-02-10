@@ -101,6 +101,20 @@ NameTableElem* NameTableFind(NameTable* nametable, const char* elem_to_find)
 	return nullptr;
 }
 
+NameTableElem* NameTableFind(NameTable* nametable, const char* elem_to_find, size_t* elem_num)
+{
+	for(size_t i = 0; i < nametable->size; i++)
+	{
+		if(strcmp(nametable->elems[i].str, elem_to_find) == 0)
+		{
+			*elem_num = i;
+			return &nametable->elems[i];
+		}
+	}
+
+	return nullptr;
+}
+
 void NameTableCtor(NameTable* nametable)
 {
 	assert(nametable != nullptr);

@@ -18,7 +18,7 @@ OPER_DEF(SEPARATOR, "НЫА")
 
 OPER_DEF(FUNC,      "ПодрубалитиИзРеалити")
 
-OPER_DEF(RETURN,    "ОтлетайОчередняра")
+OPER_DEF(FUNC_SEP,  "ХАХАХА")
 
 OPER_DEF(OBR,       "(")
 
@@ -26,4 +26,4 @@ OPER_DEF(CBR,       ")")
 
 OPER_DEF(OFBR,		"РофланЗдарова")
 
-OPER_DEF(CFBR,		"РофланПока")
+OPER_DEF(CFBR,		"ОтлетайОчередняра")
