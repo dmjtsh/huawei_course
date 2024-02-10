@@ -28,6 +28,8 @@ char* GetOperDesignation(Operation oper)
 
 Operation GetOperValue(const char* design)
 {
+	assert(design != nullptr);
+
 	Operation oper = WRONG_OPER;
 
 	if(0);
@@ -145,6 +147,9 @@ size_t TrySetOperSymb(Tree* expr_tree, TreeNode** token_ptr, const char* code)
 
 size_t SetIdStr(const char* code, char* id_str)
 {
+	assert(code   != nullptr);
+	assert(id_str != nullptr);
+
 	size_t curr_ch_num = 0;
 	
 	// First letter must be letter
@@ -163,9 +168,11 @@ size_t SetIdStr(const char* code, char* id_str)
 
 size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTable* common_nametable, size_t* scopes_counter)
 {
-	assert(expr_tree != nullptr);
-	assert(token_ptr != nullptr);
-	assert(code      != nullptr);
+	assert(expr_tree        != nullptr);
+	assert(token_ptr        != nullptr);
+	assert(code             != nullptr);
+	assert(common_nametable != nullptr);
+	assert(scopes_counter   != nullptr);
 
 	char   id_str[MAX_ID_SIZE] = "";
 	size_t curr_ch_num         = 0;
@@ -175,9 +182,9 @@ size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTab
 	// Id name must contain smth
 	if(!curr_ch_num)
 		return 0;
-
+																																																																																											printf("SASAT");
 	if(IsOper(id_str))
-	{
+	{																																							
 		*token_ptr = CreateOperNode(expr_tree, GetOperValue(id_str), nullptr, nullptr);
 
 		if(GetOperValue(id_str) == FUNC)
