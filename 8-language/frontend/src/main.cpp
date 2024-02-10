@@ -12,7 +12,6 @@ int main(int argc, char* argv[])
 {	
 	ProgramNameTables nametables = {};
 
-	// TODO: сделать либо контекст либо SetCodeTree 
 	Tree tree = GetCodeTree((argc > 1)? argv[1] : "source.txt", &nametables);
 
 	TreeGraphPrint(&tree, "expr_tree");

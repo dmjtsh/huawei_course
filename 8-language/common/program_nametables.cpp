@@ -10,10 +10,11 @@
 void ReadProgramNameTables(ProgramNameTables* nametables, FILE* ast_file, unsigned* errors)
 {
 	assert(nametables != nullptr);
-	assert(ast_file  != nullptr);
+	assert(ast_file   != nullptr);
+	assert(errors     != nullptr);
 
 	assert(fscanf(ast_file, "Scopes Count: %zu", &nametables->scopes_counter) == 1);
-	ProgramNameTablesCtor(nametables, nametables->scopes_counter); // TODO: FIX THAT
+	ProgramNameTablesCtor(nametables, nametables->scopes_counter);
 
 	ReadNameTable(&nametables->functions_nametable, ast_file, "FunctionsNameTable", errors);
 
@@ -23,6 +24,9 @@ void ReadProgramNameTables(ProgramNameTables* nametables, FILE* ast_file, unsign
 
 void WriteProgramNameTables(ProgramNameTables* nametables, FILE* input_file)
 {
+	assert(nametables != nullptr);
+	assert(input_file != nullptr);
+
 	fprintf(input_file, "Scopes Count:%zu\n\n", nametables->scopes_counter);
 
 	WriteNameTable(&nametables->functions_nametable, "FunctionsNameTable", input_file);
@@ -33,6 +37,9 @@ void WriteProgramNameTables(ProgramNameTables* nametables, FILE* input_file)
 
 NameTableElem* ProgramNameTablesAddVar(ProgramNameTables* nametables, char* var_name)
 {
+	assert(nametables != nullptr);
+	assert(var_name   != nullptr);
+
 	NameTableElem* var_id = nullptr;
 
 	if(var_id = NameTableFind(&CURRENT_SCOPES_NAMETABLE, var_name))
@@ -48,6 +55,9 @@ NameTableElem* ProgramNameTablesAddVar(ProgramNameTables* nametables, char* var_
 
 NameTableElem* ProgramNameTablesAddFunc(ProgramNameTables* nametables, char* func_name)
 {
+	assert(nametables != nullptr);
+	assert(func_name  != nullptr);
+
 	if(!NameTableFind(&FUNCS_NAMETABLE, func_name))
 	{
 		NameTableElem* func_id = NameTableAdd(&nametables->functions_nametable, func_name, FUNCS_COUNT);

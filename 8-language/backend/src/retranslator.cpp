@@ -1,15 +1,21 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <assert.h>
 
 #include "../../common/nametable.h"
 #include "../../common/program_nametables.h"
+#include "../../common/ast_tree.h"
 #include "../../common/DimasLIB/DimasTree/tree.h"
+#include "../../common/DimasLIB/DimasUtilities/utilities.h"
 
 #define NODE_OPER current_node->node_elem.elem.oper
 #define NODE_TYPE current_node->node_elem.type 
 
+#define RETRANSLATE_LEFT_NODE()  RetranslateNode(tree, current_node->left,  nametables, asm_code_file)
+#define RETRANSLATE_RIGHT_NODE() RetranslateNode(tree, current_node->right, nametables, asm_code_file)
+
 #define RETRANSLATE_BINARY_OP(operation)								   \
-	RetranslateNode(tree, current_node->left, nametables, asm_code_file);  \
-	RetranslateNode(tree, current_node->right, nametables, asm_code_file); \
+	RETRANSLATE_LEFT_NODE();											   \
+	RETRANSLATE_RIGHT_NODE();											   \
 	fprintf(asm_code_file, "\t" #operation "\n");                          \
 
 void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file);
@@ -26,12 +32,12 @@ void RetranslateWhileNode(Tree* tree, TreeNode* current_node, ProgramNameTables*
 
 	fprintf(asm_code_file, "\n\tstartwhile%zu:\n", current_while_count);
 
-	RetranslateNode(tree, current_node->left, nametables, asm_code_file);
+	RETRANSLATE_LEFT_NODE();
 
 	fprintf(asm_code_file, "\tPUSH 0\n");
 	fprintf(asm_code_file, "\tJE endwhile%zu\n", current_while_count); // TODO: static var
 	
-	RetranslateNode(tree, current_node->right, nametables, asm_code_file);
+	RETRANSLATE_RIGHT_NODE();
 
 	fprintf(asm_code_file, "\tJMP startwhile%zu\n", current_while_count);
 	fprintf(asm_code_file, "\tendwhile%zu:\n", current_while_count);
@@ -51,12 +57,12 @@ void RetranslateIfNode(Tree* tree, TreeNode* current_node, ProgramNameTables* na
 
 	fprintf(asm_code_file, "\n\tstartif%zu:\n", current_if_count);
 
-	RetranslateNode(tree, current_node->left, nametables, asm_code_file);
+	RETRANSLATE_LEFT_NODE();
 
 	fprintf(asm_code_file, "\tPUSH 0\n");
 	fprintf(asm_code_file, "\tJE endif%zu\n", current_if_count); // TODO: static var
 	
-	RetranslateNode(tree, current_node->right, nametables, asm_code_file);
+	RETRANSLATE_RIGHT_NODE();
 
 	fprintf(asm_code_file, "\tendif%zu:\n", current_if_count);
 
@@ -72,7 +78,7 @@ void RetranslateFuncDefNode(Tree* tree, TreeNode* current_node, ProgramNameTable
 
 	fprintf(asm_code_file, "\n%s:\n", current_node->left->node_elem.elem.id->str);
 
-	RetranslateNode(tree, current_node->right, nametables, asm_code_file);
+	RETRANSLATE_RIGHT_NODE();
 
 	fprintf(asm_code_file, "\n\tRET\n");
 }
@@ -84,7 +90,7 @@ void RetranslateAssignNode(Tree* tree, TreeNode* current_node, ProgramNameTables
 	assert(nametables     != nullptr);
 	assert(asm_code_file != nullptr);
 
-	RetranslateNode(tree, current_node->right, nametables, asm_code_file);
+	RETRANSLATE_RIGHT_NODE();
 
 	fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", current_node->left->node_elem.elem.id->code, current_node->left->node_elem.elem.id->str);
 }
@@ -135,8 +141,8 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 		}
 	}
 
-	RetranslateNode(tree, current_node->left,  nametables, asm_code_file);
-	RetranslateNode(tree, current_node->right, nametables, asm_code_file);
+	RETRANSLATE_LEFT_NODE();
+	RETRANSLATE_RIGHT_NODE();
 
 	switch(current_node->node_elem.type)
 	{
@@ -178,6 +184,23 @@ void RetranslateTree(Tree* tree, ProgramNameTables* nametables, FILE* asm_code_f
 	assert(asm_code_file != nullptr);
 
 	RetranslateNode(tree, tree->root, nametables, asm_code_file);
+}
+
+void ReadTreeAndNameTables(ProgramNameTables* nametables, Tree* tree, const char* ast_file_name)
+{
+	assert(nametables    != nullptr);
+	assert(tree          != nullptr);
+	assert(ast_file_name != nullptr);
+
+	FILE* ast_file = fopen(ast_file_name, "r");
+	assert(ast_file);
+
+	unsigned errors = 0;
+
+	setvbuf(ast_file, nullptr, _IOFBF, GetFileSize(ast_file_name));
+
+	ReadProgramNameTables(nametables, ast_file, &errors);
+	ReadASTTree(tree, nametables, ast_file, &errors);
 }
 
 #undef RETRANSLATE_BINARY_OP

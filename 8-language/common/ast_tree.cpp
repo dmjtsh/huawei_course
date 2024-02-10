@@ -11,10 +11,13 @@
 #include <assert.h>
 #include <string.h>
 
-extern FILE* ded32hui;
-
 TreeNode* GetProperNode(Tree* tree, ProgramNameTables* nametables, int* current_scope, FILE* ast_file)
 {
+	assert(tree          != nullptr);
+	assert(nametables    != nullptr);
+	assert(current_scope != nullptr);
+	assert(ast_file      != nullptr);
+
 	double num_node_arg            = 0;
 	char str_node_arg[MAX_ID_SIZE] = "";
 	size_t file_cursor_pos         = 0;
@@ -74,9 +77,11 @@ TreeNode* GetProperNode(Tree* tree, ProgramNameTables* nametables, int* current_
 
 void ReadNode(Tree* tree, TreeNode** node_ptr, ProgramNameTables* nametables, int* current_scope, FILE* ast_file, unsigned* errors)
 {
-	assert(tree     != nullptr);
-	assert(node_ptr != nullptr);
-	assert(ast_file != nullptr);
+	assert(tree          != nullptr);
+	assert(node_ptr      != nullptr);
+	assert(ast_file      != nullptr);
+	assert(current_scope != nullptr);
+	assert(errors        != nullptr);
 
 	if(*errors)
 		return;
@@ -129,7 +134,8 @@ const int REC_INDENT_SIZE = 2;
 
 void WriteNodePreOrder(Tree* tree, const TreeNode* node, FILE* ast_file, int rec_depth)
 {
-	assert(tree   != nullptr);
+	assert(tree     != nullptr);
+	assert(node     != nullptr);
 	assert(ast_file != nullptr);
 	
 	if (!node) { fprintf(ast_file, "%*s" EMPTY_NODE "\n", rec_depth * REC_INDENT_SIZE, ""); return; }

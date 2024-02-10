@@ -197,7 +197,6 @@ TreeNode* GetExpr(TreeNode** tokens, size_t* current_token_num, ProgramNameTable
 	return term_node1;
 }
 
-// TODO: ÀÑÑÅĞÒÛ È ÄÅÔÀÉÍÛ!!!!!!!!!!!!!!!!!!!!!!!!!!
 TreeNode* GetAssign(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	assert(tokens            != nullptr);
@@ -302,7 +301,6 @@ TreeNode* GetFunctionCall(TreeNode** tokens, size_t* current_token_num, ProgramN
 	return func_name_node;
 }
 
-// TODO: ÂÎÒ ÒÓÒÀ ÄÅÔÀÉÍÛ
 TreeNode* GetIf(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	assert(tokens            != nullptr);
@@ -519,8 +517,6 @@ TreeNode* GetFunctionDefinition(TreeNode** tokens, size_t* current_token_num, Pr
 	return tokens[func_token_num];
 }
 
-
-// TODO: Âåçäå Àññåğòû ğàññòàâèòü
 TreeNode* GetProgram(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	assert(tokens            != nullptr);

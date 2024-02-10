@@ -1,5 +1,4 @@
-#ifndef BACKEND_H
-#define BACKEND_H
+#pragma once
 
 #include <stdio.h>
 
@@ -8,4 +7,4 @@
 
 void RetranslateTree(Tree* tree, ProgramNameTables* nametables, FILE* asm_code_file);
 
-#endif BACKEND_H
+void ReadTreeAndNameTables(ProgramNameTables* nametables, Tree* tree, const char* ast_file_name);

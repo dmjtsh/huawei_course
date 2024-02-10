@@ -8,8 +8,6 @@
 
 #include <locale.h>
 
-FILE* ded32hui = NULL; 
-
 int main(int argc, char* argv[])
 {	
 	ProgramNameTables nametables = {};
@@ -19,16 +17,7 @@ int main(int argc, char* argv[])
 
 	const char* ast_file_name = (argc > 2)? argv[1] : "../../frontend/src/database.txt"; 
 
-	FILE* ast_file = fopen(ast_file_name, "r");
-	      ded32hui = fopen(ast_file_name, "r");
-	assert(ast_file);
-
-	unsigned errors = 0;
-
-	setvbuf(ast_file, nullptr, _IOFBF, GetFileSize(ast_file_name));
-
-	ReadProgramNameTables(&nametables, ast_file, &errors);
-	ReadASTTree(&tree, &nametables, ast_file, &errors);
+	ReadTreeAndNameTables(&nametables, &tree, ast_file_name);
 
 	TreeGraphPrint(&tree, "expr_tree");
 

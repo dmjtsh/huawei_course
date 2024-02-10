@@ -111,7 +111,7 @@ size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code)
 
 	while (isdigit(code[curr_ch_num]))
 	{
-		num = num * 10 + (code[curr_ch_num] - '0'); // TODO: добавить счет папича
+		num = num * 10 + (code[curr_ch_num] - '0');
 
 		curr_ch_num++;
 	}
@@ -182,7 +182,7 @@ size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTab
 	// Id name must contain smth
 	if(!curr_ch_num)
 		return 0;
-																																																																																											printf("SASAT");
+
 	if(IsOper(id_str))
 	{																																							
 		*token_ptr = CreateOperNode(expr_tree, GetOperValue(id_str), nullptr, nullptr);
