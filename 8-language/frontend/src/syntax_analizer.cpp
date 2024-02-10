@@ -18,20 +18,25 @@
 #define INC_TOKEN_NUM            (*current_token_num)++
 #define DEC_TOKEN_NUM			 (*current_token_num)--
 
-#define GET_NUM(...)         GetN                 (tokens, current_token_num, __VA_ARGS__)
-#define GET_ID(...)          GetId                (tokens, current_token_num, __VA_ARGS__)
-#define GET_EXPR(...)        GetExpr              (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_OPER(...)        GetOper              (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_PRIMARY(...)     GetPrimary           (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_TERM(...)        GetTerm              (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_ASSIGN(...)      GetAssign            (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_FUNC_ARGS(...)   GetFunctionArgs      (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_FUNC_CALL(...)   GetFunctionCall      (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_IF(...)          GetIf                (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_WHILE(...)       GetWhile             (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_OPER(...)        GetOper              (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_FUNC_PARAMS(...) GetFunctionParams    (tokens, current_token_num, nametables, __VA_ARGS__)
-#define GET_FUNC_DEF(...)    GetFunctionDefinition(tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_NUM(...)         GetN                  (tokens, current_token_num, __VA_ARGS__)
+#define GET_ID(...)          GetId                 (tokens, current_token_num, __VA_ARGS__)
+#define GET_EXPR(...)        GetExpr               (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_OPER(...)        GetOper               (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_PRIMARY(...)     GetPrimary            (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_TERM(...)        GetTerm               (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_ASSIGN(...)      GetAssign             (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_FUNC_ARGS(...)   GetFunctionArgs       (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_FUNC_CALL(...)   GetFunctionCall       (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_IF(...)          GetIf                 (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_WHILE(...)       GetWhile              (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_OPER(...)        GetOper               (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_FUNC_PARAMS(...) GetFunctionParams     (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_FUNC_DEF(...)    GetFunctionDefinition (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_USER_INPUT(...)  GetUserInput          (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_USER_OUTPUT(...) GetUserOutput         (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_RETURN(...)      GetReturn             (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_LOGIC(...)		 GetLogic              (tokens, current_token_num, nametables, __VA_ARGS__)
+#define GET_POW(...)         GetPow                (tokens, current_token_num, nametables, __VA_ARGS__)
 
  //---/\---/\-------Это ASCII KOT!--//
  //  {  '-'  }                      //
@@ -78,8 +83,9 @@ void PrintCurrentToken(TreeNode** tokens, size_t* current_token_num)
 * 
 *****************************************************************************************************************/
 
-TreeNode* GetExpr(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables);
-TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables);
+TreeNode* GetLogic(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables);
+TreeNode* GetExpr (TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables);
+TreeNode* GetOper (TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables);
 
 TreeNode* GetN(TreeNode** tokens, size_t* current_token_num)
 {
@@ -109,6 +115,8 @@ TreeNode* GetId(TreeNode** tokens,  size_t* current_token_num)
 	return nullptr;
 }
 
+TreeNode* GetFunctionCall(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables);
+
 TreeNode* GetPrimary(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	assert(tokens            != nullptr);
@@ -118,36 +126,39 @@ TreeNode* GetPrimary(TreeNode** tokens, size_t* current_token_num, ProgramNameTa
 	if (TOKEN_TYPE == OPER && TOKEN_OPER == OBR)
 	{
 		INC_TOKEN_NUM;
-		TreeNode* expr_token = GET_EXPR();
+		TreeNode* logic_node = GET_LOGIC();
 		
-		SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
+		SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 		INC_TOKEN_NUM;
 		
-		SYN_ASSERT(expr_token != nullptr);
-		return expr_token;
+		SYN_ASSERT(logic_node != nullptr);
+		return logic_node;
 	}
 	else if (TOKEN_TYPE == NUM)
 	{
-		TreeNode* num_token = GET_NUM();
+		TreeNode* num_node = GET_NUM();
 	
-		SYN_ASSERT(num_token != nullptr);
-		return num_token;
+		SYN_ASSERT(num_node != nullptr);
+		return num_node;
 	}
 	else if (TOKEN_TYPE == ID)
 	{
-		TreeNode* id_token = GET_ID();
+		TreeNode* id_node = GET_FUNC_CALL();
+		
+		if(!id_node)
+		{
+			id_node = GET_ID();
+			// CHECKING IF THIS VAR IS NOT DEFINED
+			SYN_ASSERT(NameTableFind(&CURRENT_SCOPES_NAMETABLE, id_node->node_elem.elem.id->str));
+		}
 
-		// CHECKING IF THIS VAR IS NOT DEFINED
-		SYN_ASSERT(NameTableFind(&CURRENT_SCOPES_NAMETABLE, id_token->node_elem.elem.id->str));
-
-		SYN_ASSERT(id_token != nullptr);
-		return id_token;
+		return id_node;
 	}
 	else
 		SYN_ASSERT(0);
 }
 
-TreeNode* GetTerm(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
+TreeNode* GetPow(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	assert(tokens            != nullptr);
 	assert(current_token_num != nullptr);
@@ -155,7 +166,7 @@ TreeNode* GetTerm(TreeNode** tokens, size_t* current_token_num, ProgramNameTable
 	
 	TreeNode* primary_node1 = GET_PRIMARY();
 	
-	while(TOKEN_OPER == MUL || TOKEN_OPER == DIV)
+	while(TOKEN_OPER == POW)
 	{
 		size_t oper_token_num = *current_token_num;
 
@@ -167,8 +178,33 @@ TreeNode* GetTerm(TreeNode** tokens, size_t* current_token_num, ProgramNameTable
 		tokens[oper_token_num]->right = primary_node2;	
 
 		primary_node1 = tokens[oper_token_num];
-	}
+	}																																																												
+																																																																																										
+	return primary_node1;
+}
 
+TreeNode* GetTerm(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
+{
+	assert(tokens            != nullptr);
+	assert(current_token_num != nullptr);
+	assert(nametables        != nullptr);	
+	
+	TreeNode* primary_node1 = GET_POW();
+	
+	while(TOKEN_OPER == MUL || TOKEN_OPER == DIV)
+	{
+		size_t oper_token_num = *current_token_num;
+
+		INC_TOKEN_NUM;
+
+		TreeNode* primary_node2 = GET_POW();
+		
+		tokens[oper_token_num]->left  = primary_node1;
+		tokens[oper_token_num]->right = primary_node2;	
+
+		primary_node1 = tokens[oper_token_num];
+	}																																																																																									
+																																																																																										
 	return primary_node1;
 }
 
@@ -197,6 +233,31 @@ TreeNode* GetExpr(TreeNode** tokens, size_t* current_token_num, ProgramNameTable
 	return term_node1;
 }
 
+TreeNode* GetLogic(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
+{
+	assert(tokens            != nullptr);
+	assert(current_token_num != nullptr);
+	assert(nametables        != nullptr);	
+	
+	TreeNode* expr_node1 = GET_EXPR();
+	
+	while(TOKEN_OPER == LG || TOKEN_OPER == LE || TOKEN_OPER == LNE || TOKEN_OPER == LL)
+	{
+		size_t oper_token_num = *current_token_num;
+
+		INC_TOKEN_NUM;
+
+		TreeNode* expr_node2 = GET_EXPR();
+		
+		tokens[oper_token_num]->left  = expr_node1;
+		tokens[oper_token_num]->right = expr_node2;	
+
+		expr_node1 = tokens[oper_token_num];
+	}
+
+	return expr_node1;
+}
+
 TreeNode* GetAssign(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
 {
 	assert(tokens            != nullptr);
@@ -218,7 +279,7 @@ TreeNode* GetAssign(TreeNode** tokens, size_t* current_token_num, ProgramNameTab
 	var_name_node->node_elem.elem.id = ProgramNameTablesAddVar(nametables, var_name);
 	
 	tokens[assign_token_num]->left  = var_name_node;
-	tokens[assign_token_num]->right = GET_EXPR();
+	tokens[assign_token_num]->right = GET_LOGIC();
 
 	return tokens[assign_token_num];
 }
@@ -317,16 +378,16 @@ TreeNode* GetIf(TreeNode** tokens, size_t* current_token_num, ProgramNameTables*
 	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
 	INC_TOKEN_NUM;
 	
-	TreeNode* expr_node = GET_EXPR();
+	TreeNode* logic_node = GET_LOGIC();
 	
 	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 	INC_TOKEN_NUM;
 
 	TreeNode* oper_node = GET_OPER();
 
-	SYN_ASSERT(oper_node != nullptr && expr_node != nullptr);
+	SYN_ASSERT(oper_node != nullptr && logic_node != nullptr);
 
-	tokens[if_token_num]->left  = expr_node;
+	tokens[if_token_num]->left  = logic_node;
 	tokens[if_token_num]->right = oper_node;
 
 	return tokens[if_token_num];
@@ -344,25 +405,109 @@ TreeNode* GetWhile(TreeNode** tokens, size_t* current_token_num, ProgramNameTabl
 	size_t while_token_num = *current_token_num;
 
 	INC_TOKEN_NUM;
-	tokens[*current_token_num-1];
-	tokens[*current_token_num];
 
 	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
 	INC_TOKEN_NUM;
 	
-	TreeNode* expr_node = GET_EXPR();
+	TreeNode* logic_node = GET_LOGIC();
 	
 	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 	INC_TOKEN_NUM;
 
 	TreeNode* oper_node = GET_OPER();
 
-	SYN_ASSERT(oper_node != nullptr && expr_node != nullptr);
+	SYN_ASSERT(oper_node != nullptr && logic_node != nullptr);
 
-	tokens[while_token_num]->left  = expr_node;
+	tokens[while_token_num]->left  = logic_node;
 	tokens[while_token_num]->right = oper_node;
 
 	return tokens[while_token_num];
+}
+
+TreeNode* GetUserInput(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
+{
+	assert(tokens            != nullptr);
+	assert(current_token_num != nullptr);
+	assert(nametables        != nullptr);
+
+	if(!(TOKEN_TYPE == OPER && TOKEN_OPER == USER_INPUT))
+		return nullptr;
+
+	size_t user_input_token_num = *current_token_num;
+
+	INC_TOKEN_NUM;
+
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
+	INC_TOKEN_NUM;
+
+	TreeNode* id_node = GET_ID();
+	// CHECKING IF THIS VAR IS NOT DEFINED
+	SYN_ASSERT(NameTableFind(&CURRENT_SCOPES_NAMETABLE, id_node->node_elem.elem.id->str));
+
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
+	INC_TOKEN_NUM;
+
+	tokens[user_input_token_num]->left = id_node;
+
+	return tokens[user_input_token_num];
+}
+
+TreeNode* GetUserOutput(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
+{
+	assert(tokens            != nullptr);
+	assert(current_token_num != nullptr);
+	assert(nametables        != nullptr);
+
+	if(!(TOKEN_TYPE == OPER && TOKEN_OPER == USER_OUTPUT) && !(TOKEN_TYPE == OPER && TOKEN_OPER == USER_С_OUTPUT))
+		return nullptr;
+
+	size_t user_output_token_num = *current_token_num;
+
+	INC_TOKEN_NUM;
+
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == OBR);
+	INC_TOKEN_NUM;
+
+	TreeNode* id_node = GET_ID();
+	// CHECKING IF THIS VAR IS NOT DEFINED
+	SYN_ASSERT(NameTableFind(&CURRENT_SCOPES_NAMETABLE, id_node->node_elem.elem.id->str));
+
+	SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
+	INC_TOKEN_NUM;
+
+	tokens[user_output_token_num]->left = id_node;
+
+	return tokens[user_output_token_num];
+}
+
+TreeNode* GetReturn(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
+{
+	assert(tokens            != nullptr);
+	assert(current_token_num != nullptr);
+	assert(nametables        != nullptr);
+
+	if(!(TOKEN_TYPE == OPER && TOKEN_OPER == RETURN))
+		return nullptr;
+
+	size_t return_token_num = *current_token_num;
+
+	INC_TOKEN_NUM;
+
+	TreeNode* return_obj_node = GET_ID();
+	if(!return_obj_node)
+	{
+		return_obj_node = GET_NUM();
+		SYN_ASSERT(return_obj_node);
+	}
+	else
+	{
+		// CHECKING IF THIS VAR IS NOT DEFINED
+		SYN_ASSERT(NameTableFind(&CURRENT_SCOPES_NAMETABLE, return_obj_node->node_elem.elem.id->str));
+	}
+
+	tokens[return_token_num]->left = return_obj_node;
+
+	return tokens[return_token_num];
 }
 
 TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num, ProgramNameTables* nametables)
@@ -371,11 +516,23 @@ TreeNode* GetOper(TreeNode** tokens, size_t* current_token_num, ProgramNameTable
 	assert(current_token_num != nullptr);
 	assert(nametables        != nullptr);	
 	
-	TreeNode* if_node     = GET_IF();
+	TreeNode* return_node = GET_RETURN();
+	if(return_node)
+		return return_node;
+
+	TreeNode* user_output_node = GET_USER_OUTPUT();
+	if(user_output_node)
+		return user_output_node;
+
+	TreeNode* user_input_node = GET_USER_INPUT();
+	if(user_input_node)
+		return user_input_node;
+
+	TreeNode* if_node = GET_IF();
 	if(if_node)
 		return if_node;
 
-	TreeNode* while_node  = GET_WHILE();
+	TreeNode* while_node = GET_WHILE();
 	if(while_node)
 		return while_node;
 
@@ -570,3 +727,25 @@ Tree GetCodeTree(const char* file_name, ProgramNameTables* nametables)
 
 	return expr_tree;
 }
+
+#undef TOKEN_TYPE			
+#undef TOKEN_OPER			
+#undef TOKEN_NUM			
+#undef TOKEN_ID_STR			
+#undef INC_TOKEN_NUM        
+#undef DEC_TOKEN_NUM		
+
+#undef GET_NUM     
+#undef GET_ID         
+#undef GET_EXPR       
+#undef GET_OPER      
+#undef GET_PRIMARY   
+#undef GET_TERM       
+#undef GET_ASSIGN    
+#undef GET_FUNC_ARGS  
+#undef GET_FUNC_CALL  
+#undef GET_IF         
+#undef GET_WHILE      
+#undef GET_OPER       
+#undef GET_FUNC_PARAMS
+#undef GET_FUNC_DEF   

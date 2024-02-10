@@ -106,12 +106,26 @@ size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code)
 	assert(expr_tree != nullptr);
 	assert(code      != nullptr);
 
-	size_t curr_ch_num = 0;
-	int    num         = 0;
+	size_t curr_ch_num                  = 0;
+	double num                          = 0;
+	bool   int_part_of_num              = true;
+	size_t fraction_part_digits_counter = 10;
 
-	while (isdigit(code[curr_ch_num]))
+	while (isdigit(code[curr_ch_num]) || code[curr_ch_num] == '.')
 	{
-		num = num * 10 + (code[curr_ch_num] - '0');
+		if(code[curr_ch_num] == '.')
+			int_part_of_num = false;
+		else
+		{
+			if(int_part_of_num)
+				num = num * 10 + (code[curr_ch_num] - '0');
+			else
+			{
+				num = num + (double)(code[curr_ch_num] - '0') / (fraction_part_digits_counter);
+				
+				fraction_part_digits_counter *= 10;
+			}
+		}
 
 		curr_ch_num++;
 	}
@@ -125,7 +139,7 @@ size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code)
 	return curr_ch_num;
 }
 
-// OPER SYMB ex: +, -, /, *, (, etc
+// OPER SYMB ex: +, -, /, *, etc
 size_t TrySetOperSymb(Tree* expr_tree, TreeNode** token_ptr, const char* code)
 {
 	assert(expr_tree != nullptr);

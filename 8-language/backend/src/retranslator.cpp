@@ -7,6 +7,8 @@
 #include "../../common/DimasLIB/DimasTree/tree.h"
 #include "../../common/DimasLIB/DimasUtilities/utilities.h"
 
+const char const MAIN_FUNC_NAME[] = "Тавырна";
+
 #define NODE_OPER current_node->node_elem.elem.oper
 #define NODE_TYPE current_node->node_elem.type 
 
@@ -14,8 +16,8 @@
 #define RETRANSLATE_RIGHT_NODE() RetranslateNode(tree, current_node->right, nametables, asm_code_file)
 
 #define RETRANSLATE_BINARY_OP(operation)								   \
-	RETRANSLATE_LEFT_NODE();											   \
 	RETRANSLATE_RIGHT_NODE();											   \
+	RETRANSLATE_LEFT_NODE();											   \
 	fprintf(asm_code_file, "\t" #operation "\n");                          \
 
 void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file);
@@ -95,6 +97,53 @@ void RetranslateAssignNode(Tree* tree, TreeNode* current_node, ProgramNameTables
 	fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", current_node->left->node_elem.elem.id->code, current_node->left->node_elem.elem.id->str);
 }
 
+void RetranslateUserInputNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+{
+	assert(tree          != nullptr);
+	assert(current_node  != nullptr);
+	assert(nametables     != nullptr);
+	assert(asm_code_file != nullptr);
+
+	fprintf(asm_code_file, "\tIN\n");
+
+	fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", current_node->left->node_elem.elem.id->code, current_node->left->node_elem.elem.id->str);
+}
+
+void RetranslateUserCOutputNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+{
+	assert(tree          != nullptr);
+	assert(current_node  != nullptr);
+	assert(nametables     != nullptr);
+	assert(asm_code_file != nullptr);
+
+	fprintf(asm_code_file, "\tPUSH [%d] \t; %s\n", current_node->left->node_elem.elem.id->code, current_node->left->node_elem.elem.id->str);
+
+	fprintf(asm_code_file, "\tOUTC\n");
+}
+
+void RetranslateUserOutputNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+{
+	assert(tree          != nullptr);
+	assert(current_node  != nullptr);
+	assert(nametables     != nullptr);
+	assert(asm_code_file != nullptr);
+
+	fprintf(asm_code_file, "\tPUSH [%d] \t; %s\n", current_node->left->node_elem.elem.id->code, current_node->left->node_elem.elem.id->str);
+
+	fprintf(asm_code_file, "\tOUT\n");
+}
+
+void RetranslateReturnNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+{
+	assert(tree          != nullptr);
+	assert(current_node  != nullptr);
+	assert(nametables    != nullptr);
+	assert(asm_code_file != nullptr);
+
+	fprintf(asm_code_file, "\tPUSH [%d] \t; %s\n", current_node->left->node_elem.elem.id->code, current_node->left->node_elem.elem.id->str);
+
+	fprintf(asm_code_file, "\tPOP RAX\n");
+}
 void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
 {
 	assert(tree          != nullptr);
@@ -106,6 +155,7 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 
 	if (NODE_TYPE == OPER)
 	{
+		static size_t logic_opers_count = 0;
 		switch(NODE_OPER)
 		{
 			case WHILE:
@@ -120,6 +170,18 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 			case FUNC:
 				RetranslateFuncDefNode(tree, current_node, nametables, asm_code_file);
 				return;
+			case USER_INPUT:
+				RetranslateUserInputNode(tree, current_node, nametables, asm_code_file);
+				return;
+			case USER_OUTPUT:
+				RetranslateUserOutputNode(tree, current_node, nametables, asm_code_file);
+				return;
+			case USER_С_OUTPUT:
+				RetranslateUserCOutputNode(tree, current_node, nametables, asm_code_file);
+				return;
+			case RETURN:
+				RetranslateReturnNode(tree, current_node, nametables, asm_code_file);
+				return;
 			case ADD:
 				RETRANSLATE_BINARY_OP(ADD);
 				return;
@@ -131,6 +193,53 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 				return;
 			case DIV:
 				RETRANSLATE_BINARY_OP(DIV);
+				return;
+			case POW:
+				RETRANSLATE_BINARY_OP(POW);
+				return;
+			case LG:
+				RETRANSLATE_RIGHT_NODE();
+				RETRANSLATE_LEFT_NODE();											   			
+				fprintf(asm_code_file, "\tJBE lbe%zu\n"
+									   "\tPUSH 1\n"
+									   "\tJMP l_end%zu\n"
+									   "\tlbe%zu:\n"
+									   "\tPUSH 0\n"
+									   "\tl_end:\n", logic_opers_count, logic_opers_count, logic_opers_count, logic_opers_count);	
+				logic_opers_count++;
+				return;
+			case LL:
+				RETRANSLATE_RIGHT_NODE();
+				RETRANSLATE_LEFT_NODE();											   			
+				fprintf(asm_code_file, "\tJAE lae%zu\n"
+									   "\tPUSH 1\n"
+									   "\tJMP l_end%zu\n"
+									   "\tlae%zu:\n"
+									   "\tPUSH 0\n"
+									   "\tl_end%zu:\n", logic_opers_count, logic_opers_count, logic_opers_count, logic_opers_count);	
+				logic_opers_count++;
+				return;
+			case LE:
+				RETRANSLATE_RIGHT_NODE();
+				RETRANSLATE_LEFT_NODE();											   			
+				fprintf(asm_code_file, "\tJNE lne%zu\n"
+									   "\tPUSH 1\n"
+									   "\tJMP l_end%zu\n"
+									   "\tlne%zu:\n"
+									   "\tPUSH 0\n"
+									   "\tl_end%zu:\n", logic_opers_count, logic_opers_count, logic_opers_count, logic_opers_count);	
+				logic_opers_count++;
+				return;
+			case LNE:
+				RETRANSLATE_RIGHT_NODE();	
+				RETRANSLATE_LEFT_NODE();											   
+				fprintf(asm_code_file, "\tJE le%zu\n"
+									   "\tPUSH 1\n"
+									   "\tJMP l_end%zu\n"
+									   "\tle%zu:\n"
+									   "\tPUSH 0\n"
+									   "\tl_end%zu:\n", logic_opers_count, logic_opers_count, logic_opers_count, logic_opers_count);	
+				logic_opers_count++;
 				return;
 			case SEPARATOR:
 				break;
@@ -164,6 +273,8 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 					fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", curr_scope_nametable->elems[i].code, curr_scope_nametable->elems[i].str);
 				}
 				fprintf(asm_code_file, "\tCALL %s\n", current_node->node_elem.elem.id->str);
+
+				fprintf(asm_code_file, "\tPUSH RAX\n");
 			}
 			else if (current_node->node_elem.elem.id->type == VARIABLE)
 				fprintf(asm_code_file, "\tPUSH [%d] \t; %s\n", current_node->node_elem.elem.id->code, current_node->node_elem.elem.id->str);
@@ -182,6 +293,9 @@ void RetranslateTree(Tree* tree, ProgramNameTables* nametables, FILE* asm_code_f
 	assert(tree          != nullptr);
 	assert(nametables    != nullptr);
 	assert(asm_code_file != nullptr);
+
+	fprintf(asm_code_file, "CALL %s\n"
+						   "HLT\n", MAIN_FUNC_NAME);
 
 	RetranslateNode(tree, tree->root, nametables, asm_code_file);
 }

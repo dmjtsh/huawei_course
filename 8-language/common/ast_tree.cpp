@@ -135,7 +135,6 @@ const int REC_INDENT_SIZE = 2;
 void WriteNodePreOrder(Tree* tree, const TreeNode* node, FILE* ast_file, int rec_depth)
 {
 	assert(tree     != nullptr);
-	assert(node     != nullptr);
 	assert(ast_file != nullptr);
 	
 	if (!node) { fprintf(ast_file, "%*s" EMPTY_NODE "\n", rec_depth * REC_INDENT_SIZE, ""); return; }
