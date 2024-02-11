@@ -141,7 +141,7 @@ void RetranslateReturnNode(Tree* tree, TreeNode* current_node, ProgramNameTables
 	if(current_node->left->node_elem.type == ID)
 		fprintf(asm_code_file, "\tPUSH [%d] \t; %s\n", current_node->left->node_elem.elem.id->code, current_node->left->node_elem.elem.id->str);
 	else if(current_node->left->node_elem.type == NUM)
-		fprintf(asm_code_file, "\tPUSH %lf\n", current_node->left->node_elem.elem.num);
+		fprintf(asm_code_file, "\tPUSH %lg\n", current_node->left->node_elem.elem.num);
 
 	fprintf(asm_code_file, "\tPOP RAX\n");
 

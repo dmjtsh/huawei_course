@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 {	
 	ProgramNameTables nametables = {};
 
-	Tree tree = GetCodeTree((argc > 1)? argv[1] : "examples/kvadratka.txt", &nametables);
+	Tree tree = GetCodeTree((argc > 1)? argv[1] : "examples/factorial.txt", &nametables);
 
 	TreeGraphPrint(&tree, "expr_tree");
 
