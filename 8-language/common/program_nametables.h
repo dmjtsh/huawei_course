@@ -20,7 +20,6 @@ struct ProgramNameTables
 	NameTable  common_nametable;
 
 	size_t scopes_counter;
-	size_t vars_counter;
 };
 
 void WriteProgramNameTables(ProgramNameTables* nametables, FILE* input_file);

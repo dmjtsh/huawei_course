@@ -45,8 +45,7 @@ NameTableElem* ProgramNameTablesAddVar(ProgramNameTables* nametables, char* var_
 	if(var_id = NameTableFind(&CURRENT_SCOPES_NAMETABLE, var_name))
 		return var_id;
 	
-	var_id = NameTableAdd(&CURRENT_SCOPES_NAMETABLE, var_name, nametables->vars_counter); 
-	nametables->vars_counter++;
+	var_id = NameTableAdd(&CURRENT_SCOPES_NAMETABLE, var_name, CURRENT_SCOPES_NAMETABLE.size); 
 
 	var_id->type = VARIABLE;
 
@@ -79,7 +78,6 @@ void ProgramNameTablesCtor(ProgramNameTables* nametables, size_t scopes_counter)
 
 	nametables->scopes_counter = scopes_counter;
 
-	nametables->vars_counter = 0;
 	nametables->functions_nametable.size = 0;
 	
 	for(size_t i = 0; i < scopes_counter; i++)

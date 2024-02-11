@@ -12,17 +12,17 @@ const char const MAIN_FUNC_NAME[] = "Тавырна";
 #define NODE_OPER current_node->node_elem.elem.oper
 #define NODE_TYPE current_node->node_elem.type 
 
-#define RETRANSLATE_LEFT_NODE()  RetranslateNode(tree, current_node->left,  nametables, asm_code_file)
-#define RETRANSLATE_RIGHT_NODE() RetranslateNode(tree, current_node->right, nametables, asm_code_file)
+#define RETRANSLATE_LEFT_NODE()  RetranslateNode(tree, current_node->left,  current_scope_num, nametables, asm_code_file)
+#define RETRANSLATE_RIGHT_NODE() RetranslateNode(tree, current_node->right, current_scope_num, nametables, asm_code_file)
 
 #define RETRANSLATE_BINARY_OP(operation)								   \
 	RETRANSLATE_RIGHT_NODE();											   \
 	RETRANSLATE_LEFT_NODE();											   \
 	fprintf(asm_code_file, "\t" #operation "\n");                          \
 
-void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file);
+void RetranslateNode(Tree* tree, TreeNode* current_node, size_t* current_scope_num, ProgramNameTables* nametables, FILE* asm_code_file);
 
-void RetranslateWhileNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+void RetranslateWhileNode(Tree* tree, TreeNode* current_node, size_t* current_scope_num, ProgramNameTables* nametables, FILE* asm_code_file)
 {
 	assert(tree          != nullptr);
 	assert(current_node  != nullptr);
@@ -47,7 +47,7 @@ void RetranslateWhileNode(Tree* tree, TreeNode* current_node, ProgramNameTables*
 	while_count++;
 }
 
-void RetranslateIfNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+void RetranslateIfNode(Tree* tree, TreeNode* current_node, size_t* current_scope_num, ProgramNameTables* nametables, FILE* asm_code_file)
 {
 	assert(tree          != nullptr);
 	assert(current_node  != nullptr);
@@ -71,19 +71,22 @@ void RetranslateIfNode(Tree* tree, TreeNode* current_node, ProgramNameTables* na
 	if_count++;
 }
 
-void RetranslateFuncDefNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+void RetranslateFuncDefNode(Tree* tree, TreeNode* current_node, size_t* current_scope_num, ProgramNameTables* nametables, FILE* asm_code_file)
 {
 	assert(tree          != nullptr);
 	assert(current_node  != nullptr);
 	assert(nametables    != nullptr);
 	assert(asm_code_file != nullptr);
 
+	// DEFINING SCOPE WE ARE IN
+	NameTableFind(&nametables->functions_nametable, current_node->left->node_elem.elem.id->str, current_scope_num);
+	
 	fprintf(asm_code_file, "\n%s:\n", current_node->left->node_elem.elem.id->str);
 
 	RETRANSLATE_RIGHT_NODE();
 }
 
-void RetranslateAssignNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+void RetranslateAssignNode(Tree* tree, TreeNode* current_node, size_t* current_scope_num, ProgramNameTables* nametables, FILE* asm_code_file)
 {
 	assert(tree          != nullptr);
 	assert(current_node  != nullptr);
@@ -147,7 +150,7 @@ void RetranslateReturnNode(Tree* tree, TreeNode* current_node, ProgramNameTables
 
 	fprintf(asm_code_file, "\tRET\n");
 }
-void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* nametables, FILE* asm_code_file)
+void RetranslateNode(Tree* tree, TreeNode* current_node, size_t* current_scope_num, ProgramNameTables* nametables, FILE* asm_code_file)
 {
 	assert(tree          != nullptr);
 	assert(nametables    != nullptr);
@@ -159,20 +162,20 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 	if (NODE_TYPE == OPER)
 	{
 		static size_t logic_opers_count = 0;
-		size_t tmp_logic_opers_count     = 0;
+		size_t tmp_logic_opers_count    = 0;
 		switch(NODE_OPER)
 		{
 			case WHILE:
-				RetranslateWhileNode(tree, current_node, nametables, asm_code_file);
+				RetranslateWhileNode(tree, current_node, current_scope_num, nametables, asm_code_file);
 				return;
 			case ASSIGN:
-				RetranslateAssignNode(tree, current_node, nametables, asm_code_file);
+				RetranslateAssignNode(tree, current_node, current_scope_num, nametables, asm_code_file);
 				return;
 			case IF:
-				RetranslateIfNode(tree, current_node, nametables, asm_code_file);
+				RetranslateIfNode(tree, current_node, current_scope_num, nametables, asm_code_file);
 				return;
 			case FUNC:
-				RetranslateFuncDefNode(tree, current_node, nametables, asm_code_file);
+				RetranslateFuncDefNode(tree, current_node, current_scope_num, nametables ,asm_code_file);
 				return;
 			case USER_INPUT:
 				RetranslateUserInputNode(tree, current_node, nametables, asm_code_file);
@@ -289,6 +292,16 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 		}
 	}
 
+	if(current_node->node_elem.type == ID && current_node->node_elem.elem.id->type == FUNCTION)
+	{
+		NameTable* current_scope_nametable = &nametables->scopes_nametables[*current_scope_num];
+		// GETTING VARIABLES ON STAKE TO NOT LOSE THEM
+		for(size_t i = 0; i < current_scope_nametable->size; i++)
+		{
+			fprintf(asm_code_file, "\tPUSH [%d] \t; %s\n", current_scope_nametable->elems[i].code, current_scope_nametable->elems[i].str);
+		}
+	}
+
 	RETRANSLATE_LEFT_NODE();
 	RETRANSLATE_RIGHT_NODE();
 
@@ -300,21 +313,27 @@ void RetranslateNode(Tree* tree, TreeNode* current_node, ProgramNameTables* name
 		case ID:
 			if(current_node->node_elem.elem.id->type == FUNCTION)
 			{
-				size_t         func_scope_number = 0;
-				char*          func_str          = current_node->node_elem.elem.id->str;
-				NameTableElem* func              = NameTableFind(&nametables->functions_nametable, func_str, &func_scope_number);
-				size_t         func_params_count = func->code;
-				
-				NameTable* curr_scope_nametable  = &nametables->scopes_nametables[func_scope_number];
+				size_t         func_scope_number    = 0;
+				char*          func_str             = current_node->node_elem.elem.id->str;
+				NameTableElem* func                 = NameTableFind(&nametables->functions_nametable, func_str, &func_scope_number);
+				size_t         func_params_count    = func->code;
+				NameTable*     func_scope_nametable = &nametables->scopes_nametables[func_scope_number];
 
 				if(func_params_count)
-					for(int i = func_params_count; i > 0; i--)
+					for(size_t i = func_params_count; i > 0; i--)
 					{
-						fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", curr_scope_nametable->elems[i-1].code, curr_scope_nametable->elems[i-1].str);
+						fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", func_scope_nametable->elems[i-1].code, func_scope_nametable->elems[i-1].str);
 					}
 
 				fprintf(asm_code_file, "\tCALL %s\n", current_node->node_elem.elem.id->str);
 				
+				NameTable* current_scope_nametable = &nametables->scopes_nametables[*current_scope_num];
+				// GETTING VARIABLES FROM STACK
+				for(size_t i = current_scope_nametable->size; i > 0; i--)
+				{
+					fprintf(asm_code_file, "\tPOP [%d] \t; %s\n", current_scope_nametable->elems[i-1].code, current_scope_nametable->elems[i-1].str);
+				}
+
 				fprintf(asm_code_file, "\tPUSH RAX\n");
 			}
 			else if (current_node->node_elem.elem.id->type == VARIABLE)
@@ -337,8 +356,10 @@ void RetranslateTree(Tree* tree, ProgramNameTables* nametables, FILE* asm_code_f
 
 	fprintf(asm_code_file, "CALL %s\n"
 						   "HLT\n", MAIN_FUNC_NAME);
+	
+	size_t current_scope_num = 0;
 
-	RetranslateNode(tree, tree->root, nametables, asm_code_file);
+	RetranslateNode(tree, tree->root, &current_scope_num, nametables, asm_code_file);
 }
 
 void ReadTreeAndNameTables(ProgramNameTables* nametables, Tree* tree, const char* ast_file_name)
