@@ -5,7 +5,7 @@
 
 #include "elems_type.h"
 
-const size_t MAX_COMMAND_LENGTH     = 20;
+const size_t MAX_COMMAND_LENGTH     = 50;
 const size_t MAX_ARG_LENGTH         = 30;
 const size_t COMMANDS_NUM           = 10;
 const size_t COUNT_OF_CMD_ARG_TYPES = 4;

@@ -21,8 +21,11 @@ int main(int argc, char* argv[])
 
 	TreeGraphPrint(&tree, "expr_tree");
 
-	RetranslateTree(&tree, &nametables, stdout);
-	
+	const char* assemblered_file_name = "assemblered.txt";
+	FILE* assemblered_file            = fopen(assemblered_file_name, "w");
+
+	RetranslateTree(&tree, &nametables, assemblered_file);
+
 	ProgramNameTablesDtor(&nametables);
 	TreeDtor(&tree);
 

@@ -241,7 +241,7 @@ TreeNode* GetLogic(TreeNode** tokens, size_t* current_token_num, ProgramNameTabl
 	
 	TreeNode* expr_node1 = GET_EXPR();
 	
-	while(TOKEN_OPER == LG || TOKEN_OPER == LE || TOKEN_OPER == LNE || TOKEN_OPER == LL)
+	while(TOKEN_OPER == LG || TOKEN_OPER == LE || TOKEN_OPER == LNE || TOKEN_OPER == LL || TOKEN_OPER == AND || TOKEN_OPER == OR)
 	{
 		size_t oper_token_num = *current_token_num;
 
@@ -295,10 +295,10 @@ TreeNode* GetFunctionArgs(TreeNode** tokens, size_t* current_token_num, ProgramN
 	if(!func_args_node1)
 		return nullptr;
 
+	(*args_count)++;
+
 	if(func_args_node1 && (TOKEN_TYPE == OPER && TOKEN_OPER == FUNC_SEP))
 	{
-		(*args_count)++;
-
 		size_t sep_token_num = *current_token_num;
 		INC_TOKEN_NUM;
 
@@ -596,10 +596,10 @@ TreeNode* GetFunctionParams(TreeNode** tokens, size_t* current_token_num, Progra
 	char* func_param_name1 = func_param_node1->node_elem.elem.id->str;
 	func_param_node1->node_elem.elem.id = ProgramNameTablesAddVar(nametables, func_param_name1);
 	
+	(*params_count)++;
+
 	if(func_param_node1 && (TOKEN_TYPE == OPER && TOKEN_OPER == FUNC_SEP))
 	{
-		(*params_count)++;
-
 		size_t sep_token_num = *current_token_num;
 		INC_TOKEN_NUM;
 

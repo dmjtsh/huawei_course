@@ -13,8 +13,12 @@ OPER_DEF(LG,            "анкэье")
 OPER_DEF(LL,            "люкю")
 					    
 OPER_DEF(LE,            "пеюкхярхвмю")
-					    
+
 OPER_DEF(LNE,           "мепеюкхярхвмю")
+
+OPER_DEF(AND,           "х")
+
+OPER_DEF(OR,            "хкх")
 					    
 OPER_DEF(IF,            "дЮдЮъоПНБЕПЪИ")
 					    

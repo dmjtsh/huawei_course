@@ -58,7 +58,7 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 			Elem_t     current_cmd_cpu_arg_code = *(Elem_t*)(    (char*)cpu->CS + (current_line-1) * sizeof(CPUCommandWithArg) + 8);
 
 			fprintf(logger, "(%2zu) %3d " ELEM_T_IDENTIFIER, current_line, current_cmd_cpu_code, current_cmd_cpu_arg_code);
-			if (current_line == cpu->current_line_num+1)
+			if (current_line == cpu->current_line_num+2)
 				fprintf(logger, " <-----");
 			fprintf(logger, "\n");
 		}
@@ -68,6 +68,9 @@ void CPUDump(CPU* cpu, size_t num_of_line, FILE* logger)
 	#include "../../cpu_source/regs_defs.h"
 
 	#undef REG_DEF
+
+	fprintf(logger, "R[0]: %lg, R[1]: %lg\n" , cpu->RAM[0], cpu->RAM[1]);
+
 	fprintf(logger, "\n");
 	CommandDump(&cpu->current_command, logger);
 	fprintf(logger,
@@ -203,7 +206,7 @@ unsigned CPUProcessFile(CPU* cpu)
 	for (*line_num = 1; *line_num < cpu->commands_num + 1; (*line_num)++)
 	{
 
-		command->CPU_cmd_with_arg.cmd = *(CPUCommand*)((char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg));
+		command->CPU_cmd_with_arg.cmd  = *(CPUCommand*)((char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg));
 		command->CPU_cmd_with_arg.arg  = *(Elem_t*)(   (char*)cpu->CS + (*line_num-1) * sizeof(CPUCommandWithArg) + 8);
 
 		if (IsValidCommand(command))
@@ -211,8 +214,7 @@ unsigned CPUProcessFile(CPU* cpu)
 			Elem_t num_to_output = {};
 			Elem_t input_num = {};
 			size_t correct_inputs_num = 0;
-			if (command->CPU_cmd_with_arg.cmd == PUSH)
-				printf("");
+
 			switch (command->CPU_cmd_with_arg.cmd)
 			{
 				#define CMD_DEF(name, cpu_code, num_of_args, handle) case name: handle; break;
@@ -239,7 +241,7 @@ Elem_t GetProperArgument(CPU* cpu)
 	CommandArgType cmd_type = cpu->current_command.cmd_arg_type;
 	Elem_t cmd_arg  = cpu->current_command.CPU_cmd_with_arg.arg;
 
-	if (cmd_type & NUMBER_TYPE & MEMORY_TYPE)
+	if (cmd_type & NUMBER_TYPE && cmd_type & MEMORY_TYPE)
 		return cpu->RAM[(size_t)cmd_arg];
 	else if (cmd_type & REGISTER_TYPE & MEMORY_TYPE)		        
 		return cpu->RAM[(size_t)GetReg(cpu, cmd_arg)];         

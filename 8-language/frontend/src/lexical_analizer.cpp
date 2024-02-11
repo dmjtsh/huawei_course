@@ -121,7 +121,7 @@ size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code)
 				num = num * 10 + (code[curr_ch_num] - '0');
 			else
 			{
-				num = num + (double)(code[curr_ch_num] - '0') / (fraction_part_digits_counter);
+				num = num + (double)(code[curr_ch_num] - '0') / fraction_part_digits_counter;
 				
 				fraction_part_digits_counter *= 10;
 			}
@@ -139,7 +139,7 @@ size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code)
 	return curr_ch_num;
 }
 
-// OPER SYMB ex: +, -, /, *, etc
+// OPER SYMB ex: -, /, *, etc
 size_t TrySetOperSymb(Tree* expr_tree, TreeNode** token_ptr, const char* code)
 {
 	assert(expr_tree != nullptr);
@@ -149,7 +149,7 @@ size_t TrySetOperSymb(Tree* expr_tree, TreeNode** token_ptr, const char* code)
 	char oper_symb[MAX_ID_SIZE] = "";
 	oper_symb[0] = code[0];
 
-	if(IsOper(oper_symb))
+	if(IsOper(oper_symb) && !IsCharLetter(oper_symb[0]))
 	{
 		*token_ptr = CreateOperNode(expr_tree, GetOperValue(oper_symb), nullptr, nullptr);
 

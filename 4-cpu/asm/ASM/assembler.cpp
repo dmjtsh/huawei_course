@@ -8,6 +8,7 @@
 
 #include "assembler.h"
 #include "../../cpu_source/error_processing.h"
+#include "../../../8-language/common/TX/TXLib.h"
 
 const char  LABEL_SYMB   = ':';
 const char* LABEL_STRING = ":";
@@ -352,14 +353,13 @@ unsigned ASMProcessFile(ASM* assembler)
 	for (size_t line_num = 1; line_num < assembler->text_info.strings_num + 1; line_num++)
 	{
 		char* source_command_str = assembler->text_info.text_strings[line_num - 1].str;
-		
+
 		ReadLine(source_command_str, command);
 		if (*command->ASM_cmd_code == 0 && *command->ASM_cmd_arg == 0)
 		{
 			blank_lines_counter++;
 			continue;
 		}
-
 		if (IsCommandLabel(command))
 		{
 			if (command->arguments_num > 0)
@@ -395,6 +395,8 @@ unsigned ASMProcessFile(ASM* assembler)
 	}
 
 	fwrite(assembler->CS, sizeof(CPUCommandWithArg), assembler->commands_quatity, assembler->compiled_file);
+
+	return 0;
 }
 
 unsigned ASMCtor(ASM* assembler, const char* original_file_path, const char* compiled_file_path)

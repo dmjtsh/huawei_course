@@ -94,10 +94,18 @@ bool IsDoubleNumsEqual(double num1, double num2)
 
 double StrToNum(const char* str, size_t str_len, bool* is_str_num)
 {
-	*is_str_num = true;
+	*is_str_num      = true;
 	bool is_negative = false;
-	size_t char_num = 0;
+
+	if(strcmp(str, "0.5") == 0)
+		printf("");
+
+	size_t char_num  = 0;
 	double final_num = 0;
+
+	bool   int_part_of_num              = true;
+	size_t fraction_part_digits_counter = 10;
+
 	if (str[0] == '-')
 	{
 		is_negative = true;
@@ -106,14 +114,30 @@ double StrToNum(const char* str, size_t str_len, bool* is_str_num)
 
 	for (;char_num < str_len; char_num++)
 	{
-		if(!isdigit(str[char_num]))
+		if(str[char_num] == '.')
+		{
+			int_part_of_num = false;
+			continue;
+		}
+		else if(!isdigit(str[char_num]))
 		{
 			*is_str_num = false;
 			break;
 		}
-		final_num += (str[char_num] - '0') * pow(10, str_len-char_num-1);  
+
+		if(int_part_of_num)
+			final_num += (str[char_num] - '0') * pow(10, str_len-char_num-1); 
+		else
+		{
+			final_num = final_num + (double)(str[char_num] - '0') / fraction_part_digits_counter;
+			
+			fraction_part_digits_counter *= 10;
+		}
+
 	}
+
 	if(is_negative)
 		return -final_num;
+	
 	return final_num;
 }
