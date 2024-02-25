@@ -194,11 +194,7 @@ Tree GetDifferentiatedNTimesTree(Tree expr_tree, char var, size_t n)
 	Tree result = expr_tree;
 
 	for(size_t i = 0; i < n; i++)
-	{
-		TreeNode* old_node = result.root;  
 		result.root = DifferentiateNode(&result, result.root, var);
-		DestroyNode(&result, old_node);
-	}
 
 	return result;
 }

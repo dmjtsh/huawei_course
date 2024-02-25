@@ -15,7 +15,7 @@ enum TreeElemType { NUM, OPER, VAR };
 struct Variable
 {
 	double value;
-	char   name[MAX_NAME_SIZE];
+	char   name;
 };
 
 union TreeNodeElem

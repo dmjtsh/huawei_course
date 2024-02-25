@@ -131,7 +131,8 @@ TreeNode* GetPrimary(TreeNode** tokens, size_t* current_token_num, ProgramNameTa
 		SYN_ASSERT(TOKEN_TYPE == OPER && TOKEN_OPER == CBR);
 		INC_TOKEN_NUM;
 		
-		SYN_ASSERT(logic_node != nullptr);
+		SYN_ASSERT(logic_node != nullptr)
+
 		return logic_node;
 	}
 	else if (TOKEN_TYPE == NUM)

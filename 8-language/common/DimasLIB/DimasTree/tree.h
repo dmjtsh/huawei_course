@@ -91,8 +91,8 @@ struct Tree
 	unsigned errors;
 };
 
-unsigned TreeCtor(Tree* tree, void  (*ElemCtor) (TreeNode_t*, TreeNode_t*), 
-							  void  (*ElemDtor) (TreeNode_t*), 
+unsigned TreeCtor(Tree* tree, void  (*ElemCtor)    (TreeNode_t*, TreeNode_t*), 
+							  void  (*ElemDtor)    (TreeNode_t*), 
 							  char* (*ElemPrinter) (const TreeNode_t*));
 unsigned TreeDtor(Tree* tree);
 
