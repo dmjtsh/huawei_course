@@ -351,4 +351,4 @@ fill_cell:
 ![#1](program_example5.png)
 
 
- **MIPT 2023**
+ **Dmit DREC MIPT 2023**
