@@ -30,15 +30,15 @@ The entire program is based on one recursive algorithm. Recursively transforming
 
 ![Multiply Transformation Example](tree_transf3.png)
 
-### Optimizations:
+### Optimizations: \
 But by doing this algorithm we will face a problem connected with unnecessary exceptions that spoil final result.
 To solve these we have different optimizations that will help us to make a good-looking result.
-**Constant Folding**
+**Constant Folding** \
 If we have some sub-tree that consist only from constants we will calculate this tree and turn it into one constant node:
 
 ![Constant Folding Example](tree_optimization1.png)
 
-**Multiplying on One/Summing with Zero**
+**Multiplying on One/Summing with Zero** \
 If we have sub-tree with multiply on one/summing with zero nodes we can simply delete them:
 
 ![Multiplying on One Example](tree_optimization2.png)
