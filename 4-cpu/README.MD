@@ -232,6 +232,10 @@ solve_quadratic:
 
 **Inputs && Outputs:**
 
+![#1](program_examplel.png)
+![#2](program_example2.png)
+
+
 ### #2 Factorial Calculator:
 **Program Code:**
 ```
@@ -271,6 +275,10 @@ factorial_count_end:
 ```
 
 **Inputs && Outputs:**
+
+![#1](program_example3.png)
+![#2](program_example4.png)
+
 
 ### #3 Circle Drawer:
 **Program Code:**
@@ -337,4 +345,8 @@ fill_cell:
 	JMP fill_cell_cycle_end
 ```
 **Output**
+
+![#1](program_example5.png)
+
+
  **MIPT 2023**
