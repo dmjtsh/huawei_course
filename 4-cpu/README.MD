@@ -1,6 +1,6 @@
 
 
-Dmit's Virtual Machine (DVM)
+💥Dmit's Virtual Machine (DVM)💥
 =========================
 Description
 --------------
@@ -351,4 +351,4 @@ fill_cell:
 ![#1](program_example5.png)
 
 
- **Dmit DREC MIPT 2023**
+ **💘 Dmit DREC MIPT 2023**
