@@ -64,7 +64,7 @@ PlotTreeGraph(&expr_tree, "Graph");
 ```
 **cos(x) output:**
 
-![cos(x) graph example](Graph.png)
+![cos(x) graph example](graph.png)
 
 **Teylor Series**
 Also you can plot Taylor Series Graph, And Taylor Series and initial function subtract graph
