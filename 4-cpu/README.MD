@@ -65,7 +65,7 @@ If you want to write programs, there is Dmit's Assembler for it.  Assembler tran
 ### #1 Quadratic Equation Solver:
 **Program Code:**
 
-'''
+```
 CALL user_input
 CALL solve_quadratic
 CALL print_roots
@@ -219,7 +219,7 @@ solve_quadratic:
 	POP RDIMAS
 	solve_quadratic_end:
 	RET
-'''
+```
 
 **Inputs && Outputs:**
 
