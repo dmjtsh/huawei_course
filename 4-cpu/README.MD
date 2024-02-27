@@ -233,6 +233,7 @@ solve_quadratic:
 **Inputs && Outputs:**
 
 ![#1](program_examplel.png)
+
 ![#2](program_example2.png)
 
 
@@ -277,6 +278,7 @@ factorial_count_end:
 **Inputs && Outputs:**
 
 ![#1](program_example3.png)
+
 ![#2](program_example4.png)
 
 
