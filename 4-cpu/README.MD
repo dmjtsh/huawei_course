@@ -44,7 +44,7 @@ Each command has its number. All commands has one byte size. The bytecode also d
     <td class="tg-0pky">Arg is Memory Ref</td>
     <td class="tg-0pky">Arg is Register</td>
     <td class="tg-0pky">Arg is Imm Number</td>
-    <td class="tg-dvpl">Command Number</td>
+    <td class="tg-dvpl" column-span:2>Command Number</td>
   </tr>
   <tr>
     <td class="tg-0pky">Byte Code</td>
