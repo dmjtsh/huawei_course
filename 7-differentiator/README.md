@@ -64,7 +64,7 @@ PlotTreeGraph(&expr_tree, "Graph");
 ```
 **cos(x) output:**
 
-![cos(x) graph example](graph.png)
+![cos(x) graph example](Graph.png)
 
 **Teylor Series**
 Also you can plot Taylor Series Graph, And Taylor Series and initial function subtract graph
@@ -75,9 +75,9 @@ PlotTaylorDiffGraph(&expr_tree, "Taylor Diff Graph", 'x', 3, 0);
 
 **cos(x) output:**
 
-![cos(x) taylor graph example](Taylor Graph.png)
+![cos(x) taylor graph example](TaylorGraph.png)
 
-![cos(x) taylor diff graph example](Taylor Diff Graph.png)
+![cos(x) taylor diff graph example](TaylorDiffGraph.png)
 
 ### Latex Print
 This program automatically save all your differentiating actions in LaTex file with Bailando explanations, so feel free to use it!
