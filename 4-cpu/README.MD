@@ -15,14 +15,14 @@ DVM can execute different commands with their unique bytecode.
 Each command has its number. All commands has one byte size. The bytecode also depends on the arguments type.
 ...
 ### Examples
-**#1: 0110 0011**
-Right four bytes of this command are 0011 => PUSH command has 3 number.
-Left four bytes of this command are 0110 => It has memory and register arg.
-This command is **PUSH [RAX]**.
-**#2: 0000 0101**
- Right four bytes of this command are 0101 => ADD command has 5 num.
-Left four bytes of this command are 0000 => It has no args.
-This command is **ADD**.
+**#1: 0110 0011** \
+Right four bytes of this command are 0011 => PUSH command has 3 number. \
+Left four bytes of this command are 0110 => It has memory and register arg. \
+This command is **PUSH [RAX]**. \
+**#2: 0000 0101** \
+ Right four bytes of this command are 0101 => ADD command has 5 num. \
+Left four bytes of this command are 0000 => It has no args. \
+This command is **ADD**. \
 ### Execution
 After defining exact command by reading its byte code, DVM executes it.
 ## Dmit's Assembler
