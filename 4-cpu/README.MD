@@ -233,6 +233,7 @@ solve_quadratic:
 **Inputs && Outputs:**
 
 ### #2 Factorial Calculator:
+**Program Code:**
 ```
 start:
 	CALL user_input
@@ -268,7 +269,11 @@ factorial_count:
 factorial_count_end:
 	RET
 ```
+
+**Inputs && Outputs:**
+
 ### #3 Circle Drawer:
+**Program Code:**
 ```
 CALL fill_bublic
 	DRAW
@@ -331,4 +336,5 @@ fill_cell:
 	POP [RCX]
 	JMP fill_cell_cycle_end
 ```
+**Output**
  **MIPT 2023**
