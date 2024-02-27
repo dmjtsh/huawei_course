@@ -1,4 +1,4 @@
-Bailando Differentiator
+💥Bailando Differentiator💥
 ====
 ## Description
 This differentiator is the part of C language, Data Structures and Compilers course in **MIPT**. 
@@ -86,4 +86,4 @@ This program automatically save all your differentiating actions in LaTex file w
 
 ![Latex file example](tree_latex.png)
 
-**Dmit DREC MIPT 2023**
+**💘 Dmit DREC MIPT 2023**
