@@ -6,7 +6,7 @@ Description
 --------------
 
 This virtual machine is the part of C language, Data Structures and Compilers course in MIPT. 
-DVM executes any programs that are represented on its bytecode.
+ DVM executes any programs that are represented on its bytecode. \
  For programming on DVM I created Dmit's ASM that translates ASM commands into their bytecodes.
 
  How It Works?
@@ -351,4 +351,4 @@ fill_cell:
 ![#1](program_example5.png)
 
 
- **MIPT 2023**
+ **Dmit DREC MIPT 2023**
