@@ -39,6 +39,7 @@ If we have some sub-tree that consist only from constants we will calculate this
 ![Constant Folding Example](tree_optimization1.png)
 
 **Multiplying on One/Summing with Zero**
+If we have sub-tree with multiply on one/summing with zero nodes we can simply delete them:
 
 ![Multiplying on One Example](tree_optimization2.png)
 
