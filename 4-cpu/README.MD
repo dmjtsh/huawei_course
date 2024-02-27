@@ -66,7 +66,6 @@ If you want to write programs, there is Dmit's Assembler for it.  Assembler tran
 **Program Code:**
 
 ```
-
 ; LET ME TELL YOU FOR WHAT I USE MY REGS
 ; RAX FOR a COEFF 
 ; RBX FOR b COEFF
@@ -234,5 +233,102 @@ solve_quadratic:
 **Inputs && Outputs:**
 
 ### #2 Factorial Calculator:
+```
+start:
+	CALL user_input
+	CALL factorial_count
+	CALL output
+	HLT
+
+user_input:
+	IN
+	POP RAX
+	RET
+
+output:
+	PUSH RAX
+	OUT
+	RET
+
+factorial_count:
+	PUSH RAX
+	PUSH 1
+	JE factorial_count_end ; induction base when 1!
+
+	PUSH RAX
+	PUSH 1
+	PUSH RAX
+	SUB
+	POP RAX
+	CALL factorial_count
+	PUSH RAX
+	MUL
+	POP RAX
+
+factorial_count_end:
+	RET
+```
 ### #3 Circle Drawer:
+```
+CALL fill_bublic
+	DRAW
+	HLT
+
+increase_height:
+	PUSH 1
+	PUSH RBX
+	ADD
+	POP RBX
+	PUSH 0
+	POP RAX
+	JMP fill_cell_cycle
+
+fill_bublic:
+
+fill_cell_cycle:
+	PUSH RBX
+	PUSH 10
+	JE fill_bublic_end
+	PUSH RAX
+	PUSH 10
+	JE increase_height
+
+	PUSH 5
+	PUSH RAX
+	SUB
+	PUSH 5
+	PUSH RAX
+	SUB
+	MUL ; (x-5)^2
+	PUSH 5
+	PUSH RBX
+	SUB
+	PUSH 5
+	PUSH RBX
+	SUB
+	MUL ; (y-5)^2
+	ADD ; (x-5)^2 + (y-5)^2
+	PUSH 16
+	JAE fill_cell ; (x-5)^2 + (y-5)^2 <= 16
+	fill_cell_cycle_end:
+	PUSH 1
+	PUSH RAX
+	ADD
+	POP RAX
+	JMP fill_cell_cycle
+
+fill_bublic_end:
+	RET
+
+fill_cell:
+	PUSH RAX
+	PUSH RBX
+	PUSH 10
+	MUL
+	ADD
+	POP RCX
+	PUSH 1
+	POP [RCX]
+	JMP fill_cell_cycle_end
+```
  **MIPT 2023**
