@@ -6,7 +6,7 @@ It can differentiate any superposition of functions.
 ## How it works?
 ### Input:
 In the input this program takes formatted tree string, that contains functions, num and variables.
-**Example of tree str:**
+**Example of tree string:**
 
 ![Tree String Example](tree_str.png)
 
