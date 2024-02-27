@@ -22,7 +22,7 @@ This command is **PUSH [RAX]**. \
 **#2: 0000 0101** \
  Right four bytes of this command are 0101 => ADD command has 5 num. \
 Left four bytes of this command are 0000 => It has no args. \
-This command is **ADD**. \
+This command is **ADD**. 
 ### Execution
 After defining exact command by reading its byte code, DVM executes it.
 ## Dmit's Assembler
