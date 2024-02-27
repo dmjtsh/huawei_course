@@ -66,6 +66,16 @@ If you want to write programs, there is Dmit's Assembler for it.  Assembler tran
 **Program Code:**
 
 ```
+
+; LET ME TELL YOU FOR WHAT I USE MY REGS
+; RAX FOR a COEFF 
+; RBX FOR b COEFF
+; RCX FOR c COEFF
+; RDX FOR Discriminant
+; RDI FOR First Root
+; RSI FOR Second Root
+; RDIMAS FOR Number of Roots
+
 CALL user_input
 CALL solve_quadratic
 CALL print_roots
