@@ -13,7 +13,52 @@ DVM executes any programs that are represented on its bytecode.
 --------------
 DVM can execute different commands with their unique bytecode.
 Each command has its number. All commands has one byte size. The bytecode also depends on the arguments type.
-...
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-dvpl{border-color:inherit;text-align:right;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky">Bit Number</th>
+    <th class="tg-c3ow">7</th>
+    <th class="tg-c3ow">6</th>
+    <th class="tg-c3ow">5</th>
+    <th class="tg-c3ow">4</th>
+    <th class="tg-c3ow">3</th>
+    <th class="tg-c3ow">2</th>
+    <th class="tg-c3ow">1</th>
+    <th class="tg-c3ow">0</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">Meaning</td>
+    <td class="tg-0pky">Padding to 0 bit</td>
+    <td class="tg-0pky">Arg is Memory Ref</td>
+    <td class="tg-0pky">Arg is Register</td>
+    <td class="tg-0pky">Arg is Imm Number</td>
+    <td class="tg-dvpl">Command Number</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">Byte Code</td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">1 bit</td>
+    <td class="tg-c3ow">1 bit</td>
+    <td class="tg-c3ow">1 bit</td>
+    <td class="tg-c3ow">1 bit</td>
+    <td class="tg-c3ow">1 bit</td>
+    <td class="tg-c3ow">1 bit</td>
+    <td class="tg-c3ow">1 bit</td>
+  </tr>
+</tbody>
+</table>
 ### Examples
 **#1: 0110 0011** \
 Right four bytes of this command are 0011 => PUSH command has 3 number. \
