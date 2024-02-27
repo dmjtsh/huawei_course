@@ -13,6 +13,7 @@ DVM executes any programs that are represented on its bytecode.
 --------------
 DVM can execute different commands with their unique bytecode.
 Each command has its number. All commands has one byte size. The bytecode also depends on the arguments type.
+![Bytecode](bytecode_expl.png)
 ### Examples
 **#1: 0110 0011** \
 Right four bytes of this command are 0011 => PUSH command has 3 number. \
