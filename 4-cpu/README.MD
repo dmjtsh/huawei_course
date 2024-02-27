@@ -232,7 +232,7 @@ solve_quadratic:
 
 **Inputs && Outputs:**
 
-![#1](program_examplel.png)
+![#1](program_example1.png)
 
 ![#2](program_example2.png)
 
