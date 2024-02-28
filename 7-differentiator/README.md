@@ -5,7 +5,7 @@ This differentiator is the part of C language, Data Structures and Compilers cou
 It can differentiate any superposition of functions.
 ## How it works?
 ### Input:
-In the input this program takes formatted tree string, that contains functions, num and variables.
+In the input this program takes formatted tree string, that contains functions, numbers and variables. \
 **Example of tree string:**
 
 ![Tree String Example](tree_str.png)
@@ -66,7 +66,7 @@ PlotTreeGraph(&expr_tree, "Graph");
 
 ![cos(x) graph example](graph.png)
 
-**Teylor Series**
+**Taylor Series**
 Also you can plot Taylor Series Graph, And Taylor Series and initial function subtract graph
 ```c
 PlotTaylorTreeGraph(&expr_tree, "Taylor Graph", 'x', 3, 0);
