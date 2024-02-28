@@ -31,7 +31,7 @@ The entire program is based on one recursive algorithm. Recursively transforming
 ![Multiply Transformation Example](tree_transf3.png)
 
 ### Optimizations: 
-But by implementing this algorithm we will face a problem with overcomplicated expretions which we need to simplify.
+But by implementing this algorithm we will face a problem with overcomplicated expressions which we need to simplify.
 To solve these issues we have different optimizations that will help us to make a good-looking result. \
 **Constant Folding** \
 If we have some sub-tree that consist only from constants we will calculate this tree and turn it into one constant node:
