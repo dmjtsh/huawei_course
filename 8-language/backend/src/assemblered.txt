@@ -1,14 +1,488 @@
-
-
-
 CALL Тавырна
 HLT
 
-Тавырна:
+ПосчитайДискриминат:
+	PUSH [2] 	; С
+	PUSH [0] 	; А
 	PUSH 4
-	POP [0] 	; Папизи
+	MUL
+	MUL
+	PUSH 2
+	PUSH [1] 	; Б
+	POW
+	SUB
+	POP [3] 	; Д
+	PUSH [3] 	; Д
+	POP RAX
+	RET
+
+РешиЛинейноеУравнение:
+	PUSH [0] 	; Б
+	PUSH [1] 	; С
+	PUSH 0
+	SUB
+	DIV
+	POP [2] 	; х0
+	PUSH [2] 	; х0
+	POP RAX
+	RET
+
+ПосчитайОдинКорень:
+	PUSH [0] 	; А
+	PUSH 2
+	MUL
+	PUSH [1] 	; Б
+	PUSH 0
+	SUB
+	DIV
+	POP [2] 	; х0
+	PUSH [2] 	; х0
+	POP RAX
+	RET
+
+ПосчитайПервыйКорень:
+	PUSH [0] 	; А
+	PUSH 2
+	MUL
+	PUSH 0.5
+	PUSH [2] 	; Д
+	POW
+	PUSH [1] 	; Б
+	PUSH 0
+	SUB
+	ADD
+	DIV
+	POP [3] 	; х1
+	PUSH [3] 	; х1
+	POP RAX
+	RET
+
+ПосчитайВторойКорень:
+	PUSH [0] 	; А
+	PUSH 2
+	MUL
+	PUSH 0.5
+	PUSH [2] 	; Д
+	POW
+	PUSH [1] 	; Б
+	PUSH 0
+	SUB
+	SUB
+	DIV
+	POP [3] 	; х1
+	PUSH [3] 	; х1
+	POP RAX
+	RET
+
+ВыведиОдинКорень:
+	PUSH [0] 	; х0
+	OUT
 	PUSH 0
 	POP RAX
 	RET
 
+ВыведиБесконечноКорней:
+	PUSH 73
+	POP [0] 	; Дядя
+	PUSH 78
+	POP [1] 	; Не
+	PUSH 70
+	POP [2] 	; Надо
+	PUSH [0] 	; Дядя
+	OUTC
+	PUSH [1] 	; Не
+	OUTC
+	PUSH [2] 	; Надо
+	OUTC
+	PUSH 0
+	POP RAX
+	RET
 
+ВыведиНетКорней:
+	PUSH 78
+	POP [0] 	; Кто
+	PUSH 79
+	POP [1] 	; Мяукает
+	PUSH [0] 	; Кто
+	OUTC
+	PUSH [1] 	; Мяукает
+	OUTC
+	PUSH 0
+	POP RAX
+	RET
+
+Тавырна:
+	PUSH 0
+	POP [0] 	; А
+	PUSH 0
+	POP [1] 	; Б
+	PUSH 0
+	POP [2] 	; С
+	PUSH 0
+	POP [3] 	; ВозврЗнач
+	IN
+	POP [0] 	; А
+	IN
+	POP [1] 	; Б
+	IN
+	POP [2] 	; С
+
+	startif1:
+	PUSH 0
+	PUSH [2] 	; С
+	JNE lne0
+	PUSH 1
+	JMP l_end0
+	lne0:
+	PUSH 0
+	l_end0:
+	PUSH 0
+	JE false1
+	PUSH 0
+	PUSH [1] 	; Б
+	JNE lne1
+	PUSH 1
+	JMP l_end1
+	lne1:
+	PUSH 0
+	l_end1:
+	PUSH 0
+	JE false2
+	PUSH 0
+	PUSH [0] 	; А
+	JNE lne2
+	PUSH 1
+	JMP l_end2
+	lne2:
+	PUSH 0
+	l_end2:
+	PUSH 0
+	JE false2
+	PUSH 1
+	JMP and_end2
+	false2:
+	PUSH 0
+	and_end2:
+	PUSH 0
+	JE false1
+	PUSH 1
+	JMP and_end1
+	false1:
+	PUSH 0
+	and_end1:
+	PUSH 0
+	JE endif1
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	CALL ВыведиБесконечноКорней
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [3] 	; ВозврЗнач
+	PUSH 0
+	POP RAX
+	RET
+	endif1:
+
+	startif2:
+	PUSH 0
+	PUSH [0] 	; А
+	JNE lne5
+	PUSH 1
+	JMP l_end5
+	lne5:
+	PUSH 0
+	l_end5:
+	PUSH 0
+	JE endif2
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	POP [1] 	; С
+	POP [0] 	; Б
+	CALL РешиЛинейноеУравнение
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [4] 	; х0
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [4] 	; х0
+	POP [0] 	; х0
+	CALL ВыведиОдинКорень
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [3] 	; ВозврЗнач
+	PUSH 0
+	POP RAX
+	RET
+	endif2:
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	CALL ПосчитайДискриминат
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [5] 	; Д
+
+	startif3:
+	PUSH 0
+	PUSH [5] 	; Д
+	JAE lae6
+	PUSH 1
+	JMP l_end6
+	lae6:
+	PUSH 0
+	l_end6:
+	PUSH 0
+	JE endif3
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	CALL ВыведиНетКорней
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [3] 	; ВозврЗнач
+	PUSH 0
+	POP RAX
+	RET
+	endif3:
+
+	startif4:
+	PUSH 0
+	PUSH [5] 	; Д
+	JNE lne7
+	PUSH 1
+	JMP l_end7
+	lne7:
+	PUSH 0
+	l_end7:
+	PUSH 0
+	JE endif4
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	POP [1] 	; Б
+	POP [0] 	; А
+	CALL ПосчитайОдинКорень
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [4] 	; х0
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [4] 	; х0
+	POP [0] 	; х0
+	CALL ВыведиОдинКорень
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [3] 	; ВозврЗнач
+	PUSH 0
+	POP RAX
+	RET
+	endif4:
+
+	startif5:
+	PUSH 0
+	PUSH [5] 	; Д
+	JBE lbe8
+	PUSH 1
+	JMP l_end8
+	lbe8:
+	PUSH 0
+	l_end8:
+	PUSH 0
+	JE endif5
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [5] 	; Д
+	POP [2] 	; Д
+	POP [1] 	; Б
+	POP [0] 	; А
+	CALL ПосчитайПервыйКорень
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [6] 	; х1
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [5] 	; Д
+	POP [2] 	; Д
+	POP [1] 	; Б
+	POP [0] 	; А
+	CALL ПосчитайВторойКорень
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [7] 	; х2
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [6] 	; х1
+	POP [0] 	; х0
+	CALL ВыведиОдинКорень
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [3] 	; ВозврЗнач
+	PUSH [0] 	; А
+	PUSH [1] 	; Б
+	PUSH [2] 	; С
+	PUSH [3] 	; ВозврЗнач
+	PUSH [4] 	; х0
+	PUSH [5] 	; Д
+	PUSH [6] 	; х1
+	PUSH [7] 	; х2
+	PUSH [7] 	; х2
+	POP [0] 	; х0
+	CALL ВыведиОдинКорень
+	POP [7] 	; х2
+	POP [6] 	; х1
+	POP [5] 	; Д
+	POP [4] 	; х0
+	POP [3] 	; ВозврЗнач
+	POP [2] 	; С
+	POP [1] 	; Б
+	POP [0] 	; А
+	PUSH RAX
+	POP [3] 	; ВозврЗнач
+	PUSH 0
+	POP RAX
+	RET
+	endif5:
+	PUSH 0
+	POP RAX
+	RET
