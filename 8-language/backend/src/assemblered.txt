@@ -1,3 +1,6 @@
+
+
+
 CALL Тавырна
 HLT
 
@@ -7,3 +10,5 @@ HLT
 	PUSH 0
 	POP RAX
 	RET
+
+
