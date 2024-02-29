@@ -9,13 +9,13 @@ This language is inspired by famous video game streamer *Arthas*.
 This program divides on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
 You can read about assembler and CPU parts on this link: ---.
 ### Frontend
-**Recursive Decent grammar**
+**Recursive Decent algorithm** \
 Entire frontend works on Recursive Decent algorithm. \
 Firstly frontend divides program on tokens, this part of program is called **lexical analysis**:
 
 ![Lexical Analysis](lexical_analysis.png)
 
-After dividing program on tokens, we will use Recursive Decent  algorithm that creates Scope Nametables and builds Code Tree from these tokens. \
+After dividing program on tokens, we will use Recursive Decent algorithm that creates Scope Nametables and builds Code Tree from these tokens. \
 **Example of Code Tree:**
 
 ![Code Tree Example](example1.png)
