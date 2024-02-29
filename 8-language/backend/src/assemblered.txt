@@ -1,66 +1,9 @@
 CALL “авырна
 HLT
 
-Ѕез“ильта:
-
-	startif1:
-	PUSH 1
-	PUSH [0] 	; Ќольќшибок
-	JNE lne0
-	PUSH 1
-	JMP l_end0
-	lne0:
-	PUSH 0
-	l_end0:
-	PUSH 0
-	JE endif1
-	PUSH 1
-	POP RAX
-	RET
-	endif1:
-	PUSH 1
-	PUSH [0] 	; Ќольќшибок
-	SUB
-	POP [1] 	; ’елпƒауны
-	PUSH [0] 	; Ќольќшибок
-	PUSH [1] 	; ’елпƒауны
-	PUSH [2] 	; »зи атка
-	PUSH [3] 	; √ыыыы
-	PUSH [1] 	; ’елпƒауны
-	POP [0] 	; Ќольќшибок
-	CALL Ѕез“ильта
-	POP [3] 	; √ыыыы
-	POP [2] 	; »зи атка
-	POP [1] 	; ’елпƒауны
-	POP [0] 	; Ќольќшибок
-	PUSH RAX
-	POP [2] 	; »зи атка
-	PUSH [2] 	; »зи атка
-	PUSH [0] 	; Ќольќшибок
-	MUL
-	POP [3] 	; √ыыыы
-	PUSH [3] 	; √ыыыы
-	POP RAX
-	RET
-
 “авырна:
-	PUSH 0
-	POP [0] 	; Ќольќшибок
-	PUSH 0
-	POP [1] 	;  тоћ€укает
-	IN
-	POP [0] 	; Ќольќшибок
-	PUSH [0] 	; Ќольќшибок
-	PUSH [1] 	;  тоћ€укает
-	PUSH [0] 	; Ќольќшибок
-	POP [0] 	; Ќольќшибок
-	CALL Ѕез“ильта
-	POP [1] 	;  тоћ€укает
-	POP [0] 	; Ќольќшибок
-	PUSH RAX
-	POP [1] 	;  тоћ€укает
-	PUSH [1] 	;  тоћ€укает
-	OUT
+	PUSH 4
+	POP [0] 	; ѕапизи
 	PUSH 0
 	POP RAX
 	RET

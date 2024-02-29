@@ -26,7 +26,7 @@ OPER_DEF(USER_INPUT,    "ДобрыйПочанток")
 
 OPER_DEF(USER_С_OUTPUT, "НАНАНА")
 					  
-OPER_DEF(USER_OUTPUT,   "ЕшьГовна")
+OPER_DEF(USER_OUTPUT,   "ОпаФКу")
 					    
 OPER_DEF(WHILE,         "ЛучшийВМиреЗаРаботой")
 					    
