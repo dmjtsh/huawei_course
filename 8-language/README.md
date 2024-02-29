@@ -208,9 +208,9 @@ The main idea of backend part is translating code tree into an assembler code. I
 
 **Inputs & Outputs:**
 
+![]()
 
-
-**#2 Factorial Calculator:** \
+**#2 Factorial Calculator:** 
 ```
 ПодрубалитиИзРеалити БезТильта Опа НольОшибок ВСолянава
 РофланЗдарова
@@ -244,5 +244,7 @@ The main idea of backend part is translating code tree into an assembler code. I
 НЫА
 ```
 **Inputs & Outputs:**
+
+![]()
 
 **💘 Dmit DREC MIPT 2023**
