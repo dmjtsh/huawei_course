@@ -2,7 +2,9 @@
 ## Description
 This language is the part of C language, Data Structures and Compilers course in **MIPT**. On Papich language you can write any program because it is Turing Complete.
 This language is inspired by famous video game streamer *Arthas*.
-...
+
+![Papich Image](papich.jpg)
+
 ## How it works?
 This program divides on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
 You can read about assembler and CPU parts on this link: ---.
@@ -10,18 +12,26 @@ You can read about assembler and CPU parts on this link: ---.
 **Recursive Decent grammar**
 Entire frontend works on Recursive Decent algorithm. \
 Firstly frontend divides program on tokens, this part of program is called **lexical analysis**:
-...
+
+![Lexical Analysis](lexical_analysis.png)
+
 After dividing program on tokens, we will use Recursive Decent  algorithm that creates Scope Nametables and builds Code Tree from these tokens. \
 **Example of Code Tree:**
-...
+
+![Code Tree Example](example1.png)
+
 We need to save this tree and nametables for backend transformations. For this there is a special format of .txt file, in which we save our information about program.
 **Example of database file:** 
-...
+
+![Database Example](database_example.png)
+
 ### Backend
 **Code Tree translating**
 The main idea of backend part is translating code tree into an assembler code. It recursively processes every node in exact way and in the end we will get our program fully translated into assembler code.
 **Examples of transformation:**
-...
+
+![Backend Transformation Example](example2.png)
+
 ### Commands in Papich Language
 
 **Here is the list of all commands in Papich Language:** 
