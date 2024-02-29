@@ -208,7 +208,8 @@ The main idea of backend part is translating code tree into an assembler code. I
 
 **Inputs & Outputs:**
 
-![]()
+![Kvadratka IO1](program_example1.png)
+![Kvadratka IO2](program_example2.png)
 
 **#2 Factorial Calculator:** 
 ```
@@ -245,6 +246,7 @@ The main idea of backend part is translating code tree into an assembler code. I
 ```
 **Inputs & Outputs:**
 
-![]()
+![Factorial IO1](program_example3.png)
+![Factorial IO2](program_example4.png)
 
 **💘 Dmit DREC MIPT 2023**
