@@ -20,15 +20,15 @@ After dividing program on tokens, we will use Recursive Decent  algorithm that c
 
 ![Code Tree Example](example1.png)
 
-We need to save this tree and nametables for backend transformations. For this there is a special format of .txt file, in which we save our information about program.
+We need to save this tree and nametables for backend transformations. For this there is a special format of .txt file, in which we save our information about program. \
 **Example of database file:** 
 
 ![Database Example](database_example.png)
 
 ### Backend
-**Code Tree translating**
-The main idea of backend part is translating code tree into an assembler code. It recursively processes every node in exact way and in the end we will get our program fully translated into assembler code.
-**Examples of transformation:**
+**Code Tree translating** \
+The main idea of backend part is translating code tree into an assembler code. It recursively processes every node in exact way and in the end we will get our program fully translated into assembler code. \
+**Example of transformation:**
 
 ![Backend Transformation Example](example2.png)
 
