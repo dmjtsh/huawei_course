@@ -5,7 +5,7 @@ This differentiator is the part of System Programing Course in **MIPT**.
 It can differentiate any expressions.
 ## How it works?
 ### Input:
-In the input this program takes formatted tree string, that contains functions, numbers and variables. \
+This program takes formatted tree string, that contains functions, numbers and variables. \
 **Example of tree string:**
 
 ![Tree String Example](tree_str.png)
