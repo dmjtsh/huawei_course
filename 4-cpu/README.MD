@@ -14,7 +14,7 @@ This virtual machine is the part of System Programing course in MIPT.
 DVM can execute different commands with their unique bytecode.
 Each command has its number. All commands has one byte size. The bytecode also depends on the arguments type: 
 
-<image src="bytecode_expl.png" width = 400px>
+<image src="bytecode_expl.png" width = 600px>
 
 ### Examples
 **#1: 0110 0011** \
