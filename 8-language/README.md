@@ -65,6 +65,10 @@ fully translates into assembler code.\
 |  **24** | ОтлетайОчередянра    | Return Operator. Returns Num\|Var from function and exites it.                                                                                                | ОтлетайОчередняра *Num\|Var* НЫА                                                                                   |
 ### Examples of Programms in Papich Language
 
+<details>
+
+<summary> Factorial Calculator </summary>
+
 **#1 Factorial Calculator:** 
 ```
 ПодрубалитиИзРеалити БезТильта Опа НольОшибок ВСолянава
@@ -103,6 +107,8 @@ fully translates into assembler code.\
 ![Factorial IO1](program_example3.png)
 
 ![Factorial IO2](program_example4.png)
+
+</details>
 
 <details>
 
