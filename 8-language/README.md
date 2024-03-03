@@ -29,7 +29,7 @@ The main idea of backend part is to translate code tree into an assembler code. 
 fully translates into assembler code.\
 **Example of transformation:**
 
-![Backend Transformation Example](example2.png)
+<img src="example2.png" width="400">
 
 ### Commands in Papich Language
 
