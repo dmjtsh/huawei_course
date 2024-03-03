@@ -14,7 +14,7 @@ This virtual machine is the part of System Programing course in MIPT.
 DVM can execute different commands with their unique bytecode.
 Each command has its number. All commands has one byte size. The bytecode also depends on the arguments type: 
 
-<image src="bytecode_expl.png" width = 700px>
+<image src="assets/bytecode_expl.png" width = 700px>
 
 ### Examples
 **#1: 0110 0011** \
@@ -236,9 +236,9 @@ solve_quadratic:
 
 **Inputs && Outputs:**
 
-![#1](program_example1.png)
+![#1](assets/program_example1.png)
 
-![#2](program_example2.png)
+![#2](assets/program_example2.png)
 
 </details>
 
@@ -285,9 +285,9 @@ factorial_count_end:
 
 **Inputs && Outputs:**
 
-![#1](program_example3.png)
+![#1](assets/program_example3.png)
 
-![#2](program_example4.png)
+![#2](assets/program_example4.png)
 
 </details>
 
@@ -361,7 +361,7 @@ fill_cell:
 ```
 **Output**
 
-![#1](program_example5.png)
+![#1](assets/program_example5.png)
 
 </details>
 
