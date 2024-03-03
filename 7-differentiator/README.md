@@ -1,8 +1,8 @@
 💥Bailando Differentiator💥
 ====
 ## Description
-This differentiator is the part of C language, Data Structures and Compilers course in **MIPT**. 
-It can differentiate any superposition of functions.
+This differentiator is the part of System Programing Course in **MIPT**. 
+It can differentiate any expressions that you want.
 ## How it works?
 ### Input:
 In the input this program takes formatted tree string, that contains functions, numbers and variables. \
@@ -34,7 +34,7 @@ The entire program is based on one recursive algorithm. Recursively transforming
 But by implementing this algorithm we will face a problem with overcomplicated expressions which we need to simplify.
 To solve these issues we have different optimizations that will help us to make a good-looking result. \
 **Constant Folding** \
-If we have some sub-tree that consist only from constants we will calculate this tree and turn it into one constant node:
+If we have some sub-tree that consists only from constants we will calculate this tree and turn it into one constant node:
 
 ![Constant Folding Example](tree_optimization1.png)
 
@@ -56,6 +56,7 @@ If you want to use Optimizations (First and Second) you are free to use this fun
 ```c
 OptimizeTree(&expr_tree);
 ```
+
 ## Another Features
 **Python Graphs**
 You can plot Tree Graph, by using function PlotTreeGraph, it will automatically generate .py file with graph and will open it.
