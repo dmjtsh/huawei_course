@@ -16,19 +16,19 @@ The entire program is based on one recursive algorithm. Recursively transforming
 ### Examples of transformation:
 **Constant Transformation:**
 
-<image src="tree_transf2.png" width=500px>
+<image src="tree_transf2.png" width=600px>
 
 **Variable Transformation:**
 
-<image src="tree_transf1.png" width=500px>
+<image src="tree_transf1.png" width=600px>
 
 **Summary Transformation:**
 
-<image src="tree_transf4.png" width=500px>
+<image src="tree_transf4.png" width=600px>
 
 **Multiply Transformation:**
 
-<image src="tree_transf3.png" width=500px>
+<image src="tree_transf3.png" width=600px>
 
 ### Optimizations: 
 But by simbply implementing this algorithm there will be a problem with overcomplicated expressions that need to be simplified.
@@ -36,12 +36,12 @@ To solve these issues there are different optimizations that help to make a good
 **Constant Folding** \
 If there is a sub-tree that consists only from constants optimization function calculates this tree and turns it into one constant node:
 
-<image src="tree_optimization1.png" width=400px>
+<image src="tree_optimization1.png" width=600px>
 
 **Multiplying on One/Summing with Zero** \
 If there is a sub-tree with multiply on one/summing with zero nodes optimization function simply deletes them:
 
-<image src="tree_optimization2.png" width=400px>
+<image src="tree_optimization2.png" width=600px>
 
 ## How to use it?
 Firstly you need to initialize expression tree:
