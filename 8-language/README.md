@@ -3,7 +3,7 @@
 This language is the part of System Programing course in **MIPT**. On Papich language you can write any program because it is Turing Complete.
 This language is inspired by famous video game streamer *Arthas*.
 
-<img src="papich.jpg" width="500" height ="400">
+<img src="papich.jpg" width="400">
 
 ## How it works?
 This program is divided on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
