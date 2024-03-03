@@ -2,7 +2,7 @@
 ====
 ## Description
 This differentiator is the part of System Programing Course in **MIPT**. 
-It can differentiate any expressions that you want.
+It can differentiate any expressions.
 ## How it works?
 ### Input:
 In the input this program takes formatted tree string, that contains functions, numbers and variables. \
