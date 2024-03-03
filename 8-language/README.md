@@ -7,7 +7,7 @@ This language is inspired by famous video game streamer *Arthas*.
 
 ## How it works?
 This program is divided on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
-You can read about assembler and CPU parts on this link: https://github.com/dmjtsh/huawei_course/tree/main/4-cpu#readme.
+You can read about assembler and CPU parts on this [link](https://github.com/dmjtsh/huawei_course/tree/main/4-cpu#readme).
 ### Frontend
 **Recursive Decent algorithm** \
 Entire frontend works on Recursive Decent algorithm. \
