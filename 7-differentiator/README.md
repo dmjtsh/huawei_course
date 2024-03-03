@@ -10,7 +10,7 @@ This program takes formatted tree string, that contains functions, numbers and v
 
 ![Tree String Example](tree_str.png)
 
-Then after the read of the tree, we are free to use our algorithm
+Then after the read of the tree, differentiator executes an algorithm 
 ### Algorithm:
 The entire program is based on one recursive algorithm. Recursively transforming every node in the exact way we will get differentiated function tree in the end. So what are these transformations?
 ### Examples of transformation:
@@ -31,15 +31,15 @@ The entire program is based on one recursive algorithm. Recursively transforming
 ![Multiply Transformation Example](tree_transf3.png)
 
 ### Optimizations: 
-But by implementing this algorithm we will face a problem with overcomplicated expressions which we need to simplify.
-To solve these issues we have different optimizations that will help us to make a good-looking result. \
+But by simbply implementing this algorithm there will be a problem with overcomplicated expressions that need to be simplified.
+To solve these issues there are different optimizations that help to make a good-looking result. \
 **Constant Folding** \
-If we have some sub-tree that consists only from constants we will calculate this tree and turn it into one constant node:
+If there is a sub-tree that consists only from constants optimization function calculates this tree and turns it into one constant node:
 
 ![Constant Folding Example](tree_optimization1.png)
 
 **Multiplying on One/Summing with Zero** \
-If we have sub-tree with multiply on one/summing with zero nodes we can simply delete them:
+If there is a sub-tree with multiply on one/summing with zero nodes optimization function simply deletes them:
 
 ![Multiplying on One Example](tree_optimization2.png)
 
