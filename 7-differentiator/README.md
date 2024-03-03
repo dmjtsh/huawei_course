@@ -10,7 +10,7 @@ This program takes formatted tree string, that contains functions, numbers and v
 
 ![Tree String Example](tree_str.png)
 
-Then after the read of the tree, differentiator executes an algorithm 
+Then after the read of the tree, differentiator executes an algorithm.
 ### Algorithm:
 The entire program is based on one recursive algorithm. Recursively transforming every node in the exact way we will get differentiated function tree in the end. So what are these transformations?
 ### Examples of transformation:
@@ -44,11 +44,11 @@ If there is a sub-tree with multiply on one/summing with zero nodes optimization
 ![Multiplying on One Example](tree_optimization2.png)
 
 ## How to use it?
-Firstly you need to initialize expression tree
+Firstly you need to initialize expression tree:
 ```c
 InitializeExprTree(&expr_tree, "source.txt");
 ```
-After it you can use GetDifferentiatedTree function, and specify the variable by which you want to differentiate
+After it you can use GetDifferentiatedTree function, and specify the variable by which you want to differentiate:
 ```c
 expr_tree = GetDifferentiatedTree(expr_tree, 'x');
 ```
@@ -59,7 +59,7 @@ OptimizeTree(&expr_tree);
 
 ## Another Features
 **Python Graphs**
-You can plot Tree Graph, by using function PlotTreeGraph, it will automatically generate .py file with graph and will open it.
+You can plot Tree Graph, by using function PlotTreeGraph, it will automatically generate .py file with graph and will open it:
 ```c
 PlotTreeGraph(&expr_tree, "Graph");
 ```
@@ -68,7 +68,7 @@ PlotTreeGraph(&expr_tree, "Graph");
 ![cos(x) graph example](graph.png)
 
 **Taylor Series**
-Also you can plot Taylor Series Graph, And Taylor Series and initial function subtract graph
+Also you can plot Taylor Series Graph, And Taylor Series and initial function subtract graph:
 ```c
 PlotTaylorTreeGraph(&expr_tree, "Taylor Graph", 'x', 3, 0);
 PlotTaylorDiffGraph(&expr_tree, "Taylor Diff Graph", 'x', 3, 0);
