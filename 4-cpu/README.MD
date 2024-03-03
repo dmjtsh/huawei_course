@@ -62,11 +62,15 @@ If you want to write programs, there is Dmit's Assembler for it.  Assembler tran
 |      -1     |      HLT     | Exits Program                                                                                                              |      0     |
 
 ## Program Examples
+
+<details>
+<summary> Quadratic Equation Solver </summary>
+
 ### #1 Quadratic Equation Solver:
+
 **Program Code:**
 
 ```
-; LET ME TELL YOU FOR WHAT I USE MY REGS
 ; RAX FOR a COEFF 
 ; RBX FOR b COEFF
 ; RCX FOR c COEFF
@@ -236,6 +240,10 @@ solve_quadratic:
 
 ![#2](program_example2.png)
 
+</details>
+
+<details>
+<summary> Factorial Calculator </summary>
 
 ### #2 Factorial Calculator:
 **Program Code:**
@@ -281,6 +289,7 @@ factorial_count_end:
 
 ![#2](program_example4.png)
 
+</details>
 
 ### #3 Circle Drawer:
 **Program Code:**
