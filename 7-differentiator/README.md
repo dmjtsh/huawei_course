@@ -8,7 +8,7 @@ It can differentiate any expressions.
 This program takes formatted tree string, that contains functions, numbers and variables. \
 **Example of tree string(sin(x^2) function):**
 
-<image src="tree_str.png" width=400px>
+<image src="assets/tree_str.png" width=400px>
 
 Then after the read of the tree, differentiator executes an algorithm.
 ### Algorithm:
@@ -16,19 +16,19 @@ The entire program is based on one recursive algorithm. Recursively transforming
 ### Examples of transformation:
 **Constant Transformation:**
 
-<image src="tree_transf2.png" width=600px>
+<image src="assets/tree_transf2.png" width=600px>
 
 **Variable Transformation:**
 
-<image src="tree_transf1.png" width=600px>
+<image src="assets/tree_transf1.png" width=600px>
 
 **Summary Transformation:**
 
-<image src="tree_transf4.png" width=600px>
+<image src="assets/tree_transf4.png" width=600px>
 
 **Multiply Transformation:**
 
-<image src="tree_transf3.png" width=600px>
+<image src="assets/tree_transf3.png" width=600px>
 
 ### Optimizations: 
 But by simbply implementing this algorithm there will be a problem with overcomplicated expressions that need to be simplified.
@@ -36,12 +36,12 @@ To solve these issues there are different optimizations that help to make a good
 **Constant Folding** \
 If there is a sub-tree that consists only from constants optimization function calculates this tree and turns it into one constant node:
 
-<image src="tree_optimization1.png" width=600px>
+<image src="assets/tree_optimization1.png" width=600px>
 
 **Multiplying on One/Summing with Zero** \
 If there is a sub-tree with multiply on one/summing with zero nodes optimization function simply deletes them:
 
-<image src="tree_optimization2.png" width=600px>
+<image src="assets/tree_optimization2.png" width=600px>
 
 ## How to use it?
 Firstly you need to initialize expression tree:
@@ -65,7 +65,7 @@ PlotTreeGraph(&expr_tree, "Graph");
 ```
 **cos(x) output:**
 
-<image src="graph.png" width=500px>
+<image src="assets/graph.png" width=500px>
 
 **Taylor Series**
 Also you can plot Taylor Series Graph, And Taylor Series and initial function subtract graph:
@@ -76,15 +76,15 @@ PlotTaylorDiffGraph(&expr_tree, "Taylor Diff Graph", 'x', 3, 0);
 
 **cos(x) output:**
 
-<image src="TaylorGraph.png" width=500px>
+<image src="assets/TaylorGraph.png" width=500px>
 
-<image src="TaylorDiffGraph.png" width=500px>
+<image src="assets/TaylorDiffGraph.png" width=500px>
 
 ### Latex Print
 This program automatically save all your differentiating actions in LaTex file with Bailando explanations, so feel free to use it!
 
 **Latex File Example:**
 
-<image src="tree_latex.png" width=800px>
+<image src="assets/tree_latex.png" width=800px>
 
 **💘 Dmit DREC MIPT 2023**
