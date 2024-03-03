@@ -19,7 +19,7 @@ After dividing code on tokens, frontend uses Recursive Decent algorithm that cre
 program is called **syntax analysis**:\
 **Example of Code Tree:**
 
-![Code Tree Example](example1.png)
+<img src="example1.png" width="400">
 
 To save code tree and nametables for backend transformations, there is a special .txt database file.
 
