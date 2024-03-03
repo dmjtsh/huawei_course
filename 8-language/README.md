@@ -105,7 +105,11 @@ fully translates into assembler code.\
 ![Factorial IO2](program_example4.png)
 
 <details>
+
+<summary> Quadratic equation solver </summary>
+
 **#2 Quadratic equation solver:** 
+	
 ```
 ПодрубалитиИзРеалити ПосчитайДискриминат Опа А ХАХАХА Б ХАХАХА С ВСолянава
 РофланЗдарова
@@ -245,6 +249,7 @@ fully translates into assembler code.\
 СтрашнаВырубай
 НЫА
 ```
+
 **Inputs & Outputs:**
 
 ![Kvadratka IO1](program_example1.png)
