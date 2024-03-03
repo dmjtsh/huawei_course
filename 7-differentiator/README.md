@@ -16,19 +16,19 @@ The entire program is based on one recursive algorithm. Recursively transforming
 ### Examples of transformation:
 **Constant Transformation:**
 
-<image src="tree_transf2.png" width=400px>
+<image src="tree_transf2.png" width=500px>
 
 **Variable Transformation:**
 
-<image src="tree_transf1.png" width=400px>
+<image src="tree_transf1.png" width=500px>
 
 **Summary Transformation:**
 
-<image src="tree_transf4.png" width=400px>
+<image src="tree_transf4.png" width=500px>
 
 **Multiply Transformation:**
 
-<image src="tree_transf3.png" width=400px>
+<image src="tree_transf3.png" width=500px>
 
 ### Optimizations: 
 But by simbply implementing this algorithm there will be a problem with overcomplicated expressions that need to be simplified.
@@ -65,7 +65,7 @@ PlotTreeGraph(&expr_tree, "Graph");
 ```
 **cos(x) output:**
 
-<image src="graph.png" width=400px>
+<image src="graph.png" width=500px>
 
 **Taylor Series**
 Also you can plot Taylor Series Graph, And Taylor Series and initial function subtract graph:
@@ -76,15 +76,15 @@ PlotTaylorDiffGraph(&expr_tree, "Taylor Diff Graph", 'x', 3, 0);
 
 **cos(x) output:**
 
-<image src="TaylorGraph.png" width=400px>
+<image src="TaylorGraph.png" width=500px>
 
-<image src="TaylorDiffGraph.png" width=400px>
+<image src="TaylorDiffGraph.png" width=500px>
 
 ### Latex Print
 This program automatically save all your differentiating actions in LaTex file with Bailando explanations, so feel free to use it!
 
 **Latex File Example:**
 
-<image src="tree_latex.png" width=400px>
+<image src="tree_latex.png" width=800px>
 
 **💘 Dmit DREC MIPT 2023**
