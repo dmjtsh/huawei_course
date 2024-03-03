@@ -3,7 +3,7 @@
 This language is the part of System Programing course in **MIPT**. On Papich language you can write any program because it is Turing Complete.
 This language is inspired by famous video game streamer *Arthas*.
 
-<img src="papich.jpg" width="400">
+<img src="assets/papich.jpg" width="400">
 
 ## How it works?
 This program is divided on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
@@ -13,13 +13,13 @@ You can read about assembler and CPU parts on this [link](https://github.com/dmj
 Entire frontend works on Recursive Decent algorithm. \
 Firstly frontend divides code on tokens. This part of program is called **lexical analysis**:
 
-<img src="lexical_analysis.png" width="400">
+<img src="assets/lexical_analysis.png" width="400">
 
 After dividing code on tokens, frontend uses Recursive Decent algorithm that creates Scope Nametables and builds Code Tree from these tokens. This part of 
 program is called **syntax analysis**:\
 **Example of Code Tree:**
 
-<img src="example1.png" width="400">
+<img src="assets/example1.png" width="400">
 
 To save code tree and nametables for backend transformations, there is a special .txt database file.
 
@@ -29,7 +29,7 @@ The main idea of backend part is to translate code tree into an assembler code. 
 fully translates into assembler code.\
 **Example of transformation:**
 
-<img src="example2.png" width="400">
+<img src="assets/example2.png" width="400">
 
 ### Commands in Papich Language
 
@@ -104,9 +104,9 @@ fully translates into assembler code.\
 ```
 **Inputs & Outputs:**
 
-![Factorial IO1](program_example3.png)
+![Factorial IO1](assets/program_example3.png)
 
-![Factorial IO2](program_example4.png)
+![Factorial IO2](assets/program_example4.png)
 
 </details>
 
@@ -258,9 +258,9 @@ fully translates into assembler code.\
 
 **Inputs & Outputs:**
 
-![Kvadratka IO1](program_example1.png)
+![Kvadratka IO1](assets/program_example1.png)
 
-![Kvadratka IO2](program_example2.png)
+![Kvadratka IO2](assets/program_example2.png)
 
 </details>
 
