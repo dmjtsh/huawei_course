@@ -1,33 +1,32 @@
 # 💥Papich Language 💥
 ## Description
-This language is the part of C language, Data Structures and Compilers course in **MIPT**. On Papich language you can write any program because it is Turing Complete.
+This language is the part of System Programing course in **MIPT**. On Papich language you can write any program because it is Turing Complete.
 This language is inspired by famous video game streamer *Arthas*.
 
 ![Papich Image](papich.jpg)
 
 ## How it works?
-This program divides on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
+This program is divided on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
 You can read about assembler and CPU parts on this link: https://github.com/dmjtsh/huawei_course/tree/main/4-cpu#readme.
 ### Frontend
 **Recursive Decent algorithm** \
 Entire frontend works on Recursive Decent algorithm. \
-Firstly frontend divides program on tokens. This part of program is called **lexical analysis**:
+Firstly frontend divides code on tokens. This part of program is called **lexical analysis**:
 
 ![Lexical Analysis](lexical_analysis.png)
 
-After dividing program on tokens, we will use Recursive Decent algorithm that creates Scope Nametables and builds Code Tree from these tokens. \
+After dividing code on tokens, frontend uses Recursive Decent algorithm that creates Scope Nametables and builds Code Tree from these tokens. This part of 
+program is called **syntax analysis**:\
 **Example of Code Tree:**
 
 ![Code Tree Example](example1.png)
 
-We need to save this tree and nametables for backend transformations. For this there is a special format of .txt file, in which we save our information about program. \
-**Example of database file:** 
-
-![Database Example](database_example.png)
+To save code tree and nametables for backend transformations, there is a special .txt database file.
 
 ### Backend
 **Code Tree translating** \
-The main idea of backend part is translating code tree into an assembler code. It recursively processes every node in exact way and in the end we will get our program fully translated into assembler code. \
+The main idea of backend part is to translate code tree into an assembler code. It recursively processes every node in exact way and in the end code tree
+fully translates into assembler code.\
 **Example of transformation:**
 
 ![Backend Transformation Example](example2.png)
@@ -65,7 +64,48 @@ The main idea of backend part is translating code tree into an assembler code. I
 |  **23** | СтрашнаВырубай       | Close Figure Bracket.                                                                                                                                         | РофланЗдарова     *Sequence of Operators* СтрашнаВырубай НЫА                                                       |
 |  **24** | ОтлетайОчередянра    | Return Operator. Returns Num\|Var from function and exites it.                                                                                                | ОтлетайОчередняра *Num\|Var* НЫА                                                                                   |
 ### Examples of Programms in Papich Language
-**#1 Quadratic equation solver:** 
+
+**#1 Factorial Calculator:** 
+```
+ПодрубалитиИзРеалити БезТильта Опа НольОшибок ВСолянава
+РофланЗдарова
+	ДаДаЯПроверяй Опа НольОшибок РЕАЛИСТИЧНА 1 ВСолянава
+	РофланЗдарова
+		ОтлетайОчередняра 1 НЫА
+	СтрашнаВырубай
+	НЫА
+
+	ХелпДауны ЭтоМНЕ НольОшибок - 1 НЫА
+	ИзиКатка  ЭтоМНЕ БезТильта Опа ХелпДауны ВСолянава НЫА
+	Гыыыы     ЭтоМНЕ НольОшибок * ИзиКатка НЫА
+	
+	ОтлетайОчередняра Гыыыы НЫА
+СтрашнаВырубай
+НЫА
+
+ПодрубалитиИзРеалити Тавырна Опа ВСолянава
+РофланЗдарова
+	НольОшибок ЭтоМНЕ 0 НЫА
+	КтоМяукает ЭтоМНЕ 0 НЫА
+	
+	ДобрыйПочанток Опа НольОшибок ВСолянава НЫА
+
+	КтоМяукает ЭтоМНЕ БезТильта Опа НольОшибок ВСолянава НЫА
+	
+	ОпаФКу Опа КтоМяукает ВСолянава НЫА
+	
+	ОтлетайОчередняра 0 НЫА
+СтрашнаВырубай
+НЫА
+```
+**Inputs & Outputs:**
+
+![Factorial IO1](program_example3.png)
+
+![Factorial IO2](program_example4.png)
+
+<details>
+**#2 Quadratic equation solver:** 
 ```
 ПодрубалитиИзРеалити ПосчитайДискриминат Опа А ХАХАХА Б ХАХАХА С ВСолянава
 РофланЗдарова
@@ -205,50 +245,12 @@ The main idea of backend part is translating code tree into an assembler code. I
 СтрашнаВырубай
 НЫА
 ```
-
 **Inputs & Outputs:**
 
 ![Kvadratka IO1](program_example1.png)
 
 ![Kvadratka IO2](program_example2.png)
 
-**#2 Factorial Calculator:** 
-```
-ПодрубалитиИзРеалити БезТильта Опа НольОшибок ВСолянава
-РофланЗдарова
-	ДаДаЯПроверяй Опа НольОшибок РЕАЛИСТИЧНА 1 ВСолянава
-	РофланЗдарова
-		ОтлетайОчередняра 1 НЫА
-	СтрашнаВырубай
-	НЫА
-
-	ХелпДауны ЭтоМНЕ НольОшибок - 1 НЫА
-	ИзиКатка  ЭтоМНЕ БезТильта Опа ХелпДауны ВСолянава НЫА
-	Гыыыы     ЭтоМНЕ НольОшибок * ИзиКатка НЫА
-	
-	ОтлетайОчередняра Гыыыы НЫА
-СтрашнаВырубай
-НЫА
-
-ПодрубалитиИзРеалити Тавырна Опа ВСолянава
-РофланЗдарова
-	НольОшибок ЭтоМНЕ 0 НЫА
-	КтоМяукает ЭтоМНЕ 0 НЫА
-	
-	ДобрыйПочанток Опа НольОшибок ВСолянава НЫА
-
-	КтоМяукает ЭтоМНЕ БезТильта Опа НольОшибок ВСолянава НЫА
-	
-	ОпаФКу Опа КтоМяукает ВСолянава НЫА
-	
-	ОтлетайОчередняра 0 НЫА
-СтрашнаВырубай
-НЫА
-```
-**Inputs & Outputs:**
-
-![Factorial IO1](program_example3.png)
-
-![Factorial IO2](program_example4.png)
+</details>
 
 **💘 Dmit DREC MIPT 2023**
