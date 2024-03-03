@@ -6,7 +6,7 @@ It can differentiate any expressions.
 ## How it works?
 ### Input:
 This program takes formatted tree string, that contains functions, numbers and variables. \
-**Example of tree string:**
+**Example of tree string(sin(x^2) function):**
 
 <image src="tree_str.png" width=400px>
 
