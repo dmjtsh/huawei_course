@@ -291,6 +291,10 @@ factorial_count_end:
 
 </details>
 
+<details>
+
+<summary> Circle Drawer </summary>
+
 ### #3 Circle Drawer:
 **Program Code:**
 ```
@@ -359,5 +363,6 @@ fill_cell:
 
 ![#1](program_example5.png)
 
+</details>
 
  **💘 Dmit DREC MIPT 2023**
