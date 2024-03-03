@@ -13,7 +13,7 @@ You can read about assembler and CPU parts on this link: https://github.com/dmjt
 Entire frontend works on Recursive Decent algorithm. \
 Firstly frontend divides code on tokens. This part of program is called **lexical analysis**:
 
-![Lexical Analysis](lexical_analysis.png)
+<img src="lexical_analysis.png" width="400">
 
 After dividing code on tokens, frontend uses Recursive Decent algorithm that creates Scope Nametables and builds Code Tree from these tokens. This part of 
 program is called **syntax analysis**:\
