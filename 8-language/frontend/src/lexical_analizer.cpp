@@ -1,3 +1,4 @@
+//! @file
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <assert.h>
@@ -36,11 +37,11 @@ Operation GetOperValue(const char* design)
 	#define OPER_DEF(value, designation, ...) \
 	else if(strcmp(design, designation) == 0) \
 		oper = value;
-	
+
 	#include "../../common/opers_defs.h"
 
 	#undef OPER_DEF
-		
+
 	return oper;
 }
 
@@ -68,8 +69,8 @@ TreeNode* CreateNumNode(Tree* expr_tree, double num)
 
 	TreeNode*  new_node = {};
 	TreeNode_t new_data = {};
-	
-	new_data.type     = NUM;       
+
+	new_data.type     = NUM;
 	new_data.elem.num = num;
 
 	return CreateNode(expr_tree, &new_data, &new_node, nullptr, nullptr);
@@ -81,7 +82,7 @@ TreeNode* CreateOperNode(Tree* expr_tree, Operation oper, TreeNode* left_node, T
 
 	TreeNode*  new_node = {};
 	TreeNode_t new_data = {};
-	
+
 	new_data.type      = OPER;
 	new_data.elem.oper = oper;
 
@@ -122,7 +123,7 @@ size_t TrySetNum(Tree* expr_tree, TreeNode** token_ptr, char* code)
 			else
 			{
 				num = num + (double)(code[curr_ch_num] - '0') / fraction_part_digits_counter;
-				
+
 				fraction_part_digits_counter *= 10;
 			}
 		}
@@ -165,9 +166,9 @@ size_t SetIdStr(const char* code, char* id_str)
 	assert(id_str != nullptr);
 
 	size_t curr_ch_num = 0;
-	
+
 	// First letter must be letter
-	if(!IsCharLetter(code[curr_ch_num])) 
+	if(!IsCharLetter(code[curr_ch_num]))
 		return 0;
 
 	while (IsCharLetter(code[curr_ch_num]) || isdigit(code[curr_ch_num]))
@@ -198,7 +199,7 @@ size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTab
 		return 0;
 
 	if(IsOper(id_str))
-	{																																							
+	{
 		*token_ptr = CreateOperNode(expr_tree, GetOperValue(id_str), nullptr, nullptr);
 
 		if(GetOperValue(id_str) == FUNC)
@@ -209,7 +210,7 @@ size_t TrySetId(Tree* expr_tree, TreeNode** token_ptr, const char* code, NameTab
 		NameTableElem* nametable_elem_ptr = NameTableFind(common_nametable, id_str);
 		if(!nametable_elem_ptr)
 			nametable_elem_ptr = NameTableAdd(common_nametable, id_str, common_nametable->size);
-		
+
 		*token_ptr = CreateIdNode(expr_tree, nametable_elem_ptr);
 	}
 	return curr_ch_num;
@@ -229,7 +230,7 @@ TreeNode** DoLexicalAnalisys(Tree* expr_tree, const char* file_name, NameTable* 
 	assert(expr_tree        != nullptr);
 	assert(file_name        != nullptr);
 	assert(common_nametable != nullptr);
-	
+
 	size_t file_size   = GetFileSize(file_name);
 	TreeNode** tokens  = (TreeNode**)calloc(file_size, sizeof(TreeNode*));
 	assert(tokens != nullptr);
@@ -244,7 +245,7 @@ TreeNode** DoLexicalAnalisys(Tree* expr_tree, const char* file_name, NameTable* 
 		if(code[curr_ch_num] == '\0')
 			break;
 
-		if (isspace(code[curr_ch_num])) 
+		if (isspace(code[curr_ch_num]))
 		{
 			curr_ch_num++;
 			continue;
