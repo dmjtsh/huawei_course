@@ -29,7 +29,7 @@ This command is **ADD**.
 After defining exact command by reading its byte code, DVM executes it.
 ## Dmit's Assembler
 If you want to write programs, there is Dmit's Assembler for it.  Assembler translates commands into their bytecodes. There is a table that represent each command purpose and number:
-| Command Num | Command Name |                                                           Purpose                                                          | Args Count |
+| Command Num | Command Name | Purpose | Args Count |
 |-------------|:------------:|:--------------------------------------------------------------------------------------------------------------------------:|:----------:|
 |      0      |      IN      | Gets Num input from Command Line and then Pushes it on Stack                                                                 |      0     |
 |      1      |      OUT     | Pop's Num from Stack and then displays it on screen                                                                        |      0     |
