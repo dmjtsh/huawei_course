@@ -5,7 +5,7 @@
 Description
 --------------
 
-This virtual machine is the part of System Programing course in MIPT. 
+This virtual machine is a part of the System Programing course in MIPT. 
  DVM executes any programs that are represented on its bytecode. \
  For programming on DVM I created Dmit's ASM that translates ASM commands into their bytecodes.
 
