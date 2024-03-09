@@ -1,5 +1,6 @@
 
 
+
 💥Dmit's Virtual Machine (DVM)💥
 =========================
 Description
@@ -11,8 +12,30 @@ This virtual machine is a part of the System Programing course in MIPT.
 
  How It Works?
 --------------
+
 DVM can execute different commands with their unique bytecode.
-Each command has its number. All commands has one byte size. The bytecode also depends on the arguments type: 
+Each command has its number. All commands has one byte size. 
+
+DVM contains: 
+1. **Registers**, holding double float values (8 bytes).
+2.  **RAM** as an array of double values (currently array size is 100 configured through RAM_SIZE constant). The data on RAM is displayed on console window, so RAM works is a kind of **Video Memory**.
+3. **Stack**, holding temporary data as double float values and return adresses from functions (in this case fractional part of float are ignored).
+
+| Register Num | Register Name |
+|:------------:|:-------------:|
+|       1      | RAX           |
+|       2      | RBX           |
+|       3      | RCX           |
+|       4      | RDX           |
+|       5      | RDI           |
+|       6      | RDED          |
+|       7      | RANI          |
+|       8      | RSI           |
+|       9      | RDIMAS        |
+|      10      | RUSAL         |
+
+
+The bytecode also depends on the arguments type: 
 
 <image src="assets/bytecode_expl.png" width = 700px>
 
