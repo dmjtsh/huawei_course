@@ -1,20 +1,44 @@
 
 
+
 💥Dmit's Virtual Machine (DVM)💥
 =========================
 Description
 --------------
 
-This virtual machine is the part of System Programing course in MIPT. 
+This virtual machine is a part of the System Programing course in MIPT. 
  DVM executes any programs that are represented on its bytecode. \
  For programming on DVM I created Dmit's ASM that translates ASM commands into their bytecodes.
 
  How It Works?
 --------------
-DVM can execute different commands with their unique bytecode.
-Each command has its number. All commands has one byte size. The bytecode also depends on the arguments type: 
 
-<image src="bytecode_expl.png" width = 700px>
+DVM can execute different commands with their unique bytecode.
+Each command has its number. All commands has one byte size. 
+
+DVM contains: 
+1. **Registers**, holding double float values (8 bytes).
+
+| Register Num | Register Name |
+|:------------:|:-------------:|
+|       1      | RAX           |
+|       2      | RBX           |
+|       3      | RCX           |
+|       4      | RDX           |
+|       5      | RDI           |
+|       6      | RDED          |
+|       7      | RANI          |
+|       8      | RSI           |
+|       9      | RDIMAS        |
+|      10      | RUSAL         |
+
+2.  **RAM** as an array of double values (currently array size is 100 configured through RAM_SIZE constant). The data on RAM is displayed on console window, so RAM works is a kind of **Video Memory**.
+3. **Stack**, holding temporary data as double float values and return adresses from functions (in this case fractional part of float are ignored).
+
+
+The bytecode also depends on the arguments type: 
+
+<image src="assets/bytecode_expl.png" width = 700px>
 
 ### Examples
 **#1: 0110 0011** \
@@ -29,7 +53,7 @@ This command is **ADD**.
 After defining exact command by reading its byte code, DVM executes it.
 ## Dmit's Assembler
 If you want to write programs, there is Dmit's Assembler for it.  Assembler translates commands into their bytecodes. There is a table that represent each command purpose and number:
-| Command Num | Command Name |                                                           Purpose                                                          | Args Count |
+| Command Num | Command Name | Purpose | Args Count |
 |-------------|:------------:|:--------------------------------------------------------------------------------------------------------------------------:|:----------:|
 |      0      |      IN      | Gets Num input from Command Line and then Pushes it on Stack                                                                 |      0     |
 |      1      |      OUT     | Pop's Num from Stack and then displays it on screen                                                                        |      0     |
@@ -236,9 +260,9 @@ solve_quadratic:
 
 **Inputs && Outputs:**
 
-![#1](program_example1.png)
+![#1](assets/program_example1.png)
 
-![#2](program_example2.png)
+![#2](assets/program_example2.png)
 
 </details>
 
@@ -285,9 +309,9 @@ factorial_count_end:
 
 **Inputs && Outputs:**
 
-![#1](program_example3.png)
+![#1](assets/program_example3.png)
 
-![#2](program_example4.png)
+![#2](assets/program_example4.png)
 
 </details>
 
@@ -361,7 +385,7 @@ fill_cell:
 ```
 **Output**
 
-![#1](program_example5.png)
+![#1](assets/program_example5.png)
 
 </details>
 
