@@ -7,13 +7,14 @@
 
 extern IntermediatePrinter INTERMEDIATE_PRINTER;
 
-int main()
+int main(int argc, const char** argv)
 {
 	IntermediatePrinterCtor(&INTERMEDIATE_PRINTER);
 
 	Tree expr_tree = {};
 	TreeCtor(&expr_tree, DifferentiatorElemCtor, DifferentiatorElemDtor, DifferentiatorElemPrinter);
-	InitializeExprTree(&expr_tree, "source.txt");
+	
+    InitializeExprTree(&expr_tree, (argc >= 2) ? argv[1] : "source.txt");
 
 	expr_tree = GetDifferentiatedTree(expr_tree, 'x');
 
@@ -26,7 +27,6 @@ int main()
 	OptimizeTree(&expr_tree);
 
 	TreeDtor(&expr_tree);
-
 	IntermediatePrinterDtor(&INTERMEDIATE_PRINTER);
 }
 
