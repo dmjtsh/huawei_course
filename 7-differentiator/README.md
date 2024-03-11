@@ -25,11 +25,11 @@ So what are these transformations?
 
 **Constant Transformation:**
 
-<image src="assets/tree_transf2.png" width=600px>
+<image src="assets/tree_transf2.png" width=290px>
 
 **Variable Transformation:**
 
-<image src="assets/tree_transf1.png" width=600px>
+<image src="assets/tree_transf1.png" width=290px>
 
 **Summary Transformation:**
 
@@ -41,7 +41,7 @@ So what are these transformations?
 
 ### Optimizations: 
 But by simbply implementing this algorithm there will be a problem with overcomplicated expressions that need to be simplified.
-To solve these issues there are different optimizations that help to make a good-looking result. \
+To solve these issues there are different optimizations that help to make a good-looking result. 
 
 **Constant Folding** \
 If there is a sub-tree that consists only from constants optimization function calculates this tree and turns it into one constant node:
