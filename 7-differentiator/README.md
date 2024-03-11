@@ -1,7 +1,7 @@
 💥Bailando Differentiator💥
 ====
 ## Description
-This differentiator is the part of System Programing Course in **MIPT**. 
+This differentiator is a part of the System Programing course in MIPT. 
 It can differentiate any expressions.
 ## How it works?
 ### Input:
