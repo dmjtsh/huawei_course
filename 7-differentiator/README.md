@@ -25,12 +25,6 @@ So what are these transformations?
 
 **Constant Transformation:**
 
-<image src="tree_transf2.png" width=280px>
-
-**Variable Transformation:**
-
-<image src="tree_transf1.png" width=280px>
-=======
 <image src="assets/tree_transf2.png" width=600px>
 
 **Variable Transformation:**
