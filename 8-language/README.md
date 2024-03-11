@@ -1,39 +1,44 @@
 # 💥Papich Language 💥
 ## Description
-This language is the part of System Programing course in **MIPT**. On Papich language you can write any program because it is Turing Complete.
-This language is inspired by famous video game streamer *Arthas*.
+
+This language is a part of the System Programming course in **MIPT**. This project is for Vitaly Tsal, well-known as Papich (Papizi, the-best-one-in-the-world) a Ukrainian video game streamer. You can write any program on Papich language because it is Turing-complete.
 
 <img src="assets/papich.jpg" width="400">
 
 ## How it works?
-This program is divided on four independent parts: **frontend**, **backend**, **assembler** and **CPU**. \
+
+This program is divided on four independent parts: **frontend**,
+**backend**, **assembler** and **CPU**. \
 You can read about assembler and CPU parts on this [link](https://github.com/dmjtsh/huawei_course/tree/main/4-cpu#readme).
+
 ### Frontend
-**Recursive Decent algorithm** \
-Entire frontend works on Recursive Decent algorithm. \
-Firstly frontend divides code on tokens. This part of program is called **lexical analysis**:
+
+**Lexical analysis** \
+First, the frontend divides code on tokens:
 
 <img src="assets/lexical_analysis.png" width="400">
 
-After dividing code on tokens, frontend uses Recursive Decent algorithm that creates Scope Nametables and builds Code Tree from these tokens. This part of 
-program is called **syntax analysis**:\
-**Example of Code Tree:**
+**Syntax analysis** \
+Second, the frontend uses Recursive Decent algorithm that builds Abstract Syntax Tree (AST) from these tokens. It also creates scope-oriented nametables.
+
+**Example of AST:**
 
 <img src="assets/example1.png" width="400">
 
-To save code tree and nametables for backend transformations, there is a special .txt database file.
+To save AST and nametables for backend transformations, frontend creates a special .txt database file.
 
 ### Backend
+
 **Code Tree translating** \
-The main idea of backend part is to translate code tree into an assembler code. It recursively processes every node in exact way and in the end code tree
-fully translates into assembler code.\
-**Example of transformation:**
+The main goal of backend part is to translate AST to assembler code. It recursively processes every AST node during this translation.
+
+**Example of transformation**
 
 <img src="assets/example2.png" width="400">
 
-### Commands in Papich Language
+### Commands of Papich Language
 
-**Here is the list of all commands in Papich Language:** 
+**Here is the list of all commands in Papich Language:**
 
 
 | **Num** |     **Operator**     |                                                                        **Description**                                                                        |                                                    **Syntax**                                                    |
@@ -69,7 +74,7 @@ fully translates into assembler code.\
 
 <summary> Factorial Calculator </summary>
 
-**#1 Factorial Calculator:** 
+**#1 Factorial Calculator:**
 ```
 ПодрубалитиИзРеалити БезТильта Опа НольОшибок ВСолянава
 РофланЗдарова
@@ -82,7 +87,7 @@ fully translates into assembler code.\
 	ХелпДауны ЭтоМНЕ НольОшибок - 1 НЫА
 	ИзиКатка  ЭтоМНЕ БезТильта Опа ХелпДауны ВСолянава НЫА
 	Гыыыы     ЭтоМНЕ НольОшибок * ИзиКатка НЫА
-	
+
 	ОтлетайОчередняра Гыыыы НЫА
 СтрашнаВырубай
 НЫА
@@ -91,13 +96,13 @@ fully translates into assembler code.\
 РофланЗдарова
 	НольОшибок ЭтоМНЕ 0 НЫА
 	КтоМяукает ЭтоМНЕ 0 НЫА
-	
+
 	ДобрыйПочанток Опа НольОшибок ВСолянава НЫА
 
 	КтоМяукает ЭтоМНЕ БезТильта Опа НольОшибок ВСолянава НЫА
-	
+
 	ОпаФКу Опа КтоМяукает ВСолянава НЫА
-	
+
 	ОтлетайОчередняра 0 НЫА
 СтрашнаВырубай
 НЫА
@@ -114,8 +119,8 @@ fully translates into assembler code.\
 
 <summary> Quadratic equation solver </summary>
 
-**#2 Quadratic equation solver:** 
-	
+**#2 Quadratic equation solver:**
+
 ```
 ПодрубалитиИзРеалити ПосчитайДискриминат Опа А ХАХАХА Б ХАХАХА С ВСолянава
 РофланЗдарова
@@ -127,15 +132,15 @@ fully translates into assembler code.\
 
 ПодрубалитиИзРеалити РешиЛинейноеУравнение Опа Б ХАХАХА С ВСолянава
 РофланЗдарова
-	х0 ЭтоМНЕ Опа 0-С ВСолянава / Б НЫА 
-	
+	х0 ЭтоМНЕ Опа 0-С ВСолянава / Б НЫА
+
 	ОтлетайОчередняра х0 НЫА
 СтрашнаВырубай
 НЫА
 
 ПодрубалитиИзРеалити ПосчитайОдинКорень Опа А ХАХАХА Б ВСолянава
 РофланЗдарова
-	х0 ЭтоМНЕ Опа 0 - Б ВСолянава / Опа 2 * А ВСолянава НЫА	
+	х0 ЭтоМНЕ Опа 0 - Б ВСолянава / Опа 2 * А ВСолянава НЫА
 
 	ОтлетайОчередняра х0 НЫА
 СтрашнаВырубай
@@ -200,7 +205,7 @@ fully translates into assembler code.\
 	ДобрыйПочанток Опа А ВСолянава НЫА
 	ДобрыйПочанток Опа Б ВСолянава НЫА
 	ДобрыйПочанток Опа С ВСолянава НЫА
-	
+
 	ДаДаЯПроверяй Опа Опа А РЕАЛИСТИЧНА 0 ВСолянава И Опа Б РЕАЛИСТИЧНА 0 ВСолянава И Опа С РЕАЛИСТИЧНА 0 ВСолянава ВСолянава
 	РофланЗдарова
 		ВозврЗнач ЭтоМНЕ ВыведиБесконечноКорней Опа ВСолянава НЫА
@@ -212,9 +217,9 @@ fully translates into assembler code.\
 	ДаДаЯПроверяй Опа А РЕАЛИСТИЧНА 0 ВСолянава
 	РофланЗдарова
 		х0 ЭтоМНЕ РешиЛинейноеУравнение Опа Б ХАХАХА С ВСолянава НЫА
-		
+
 		ВозврЗнач ЭтоМНЕ ВыведиОдинКорень Опа х0 ВСолянава НЫА
-	
+
 		ОтлетайОчередняра 0 НЫА
 	СтрашнаВырубай
 	НЫА
@@ -228,7 +233,7 @@ fully translates into assembler code.\
 		ОтлетайОчередняра 0 НЫА
 	СтрашнаВырубай
 	НЫА
-	
+
 	ДаДаЯПроверяй Опа Д РЕАЛИСТИЧНА 0 ВСолянава
 	РофланЗдарова
 		х0 ЭтоМНЕ ПосчитайОдинКорень Опа А ХАХАХА Б ВСолянава НЫА
@@ -248,8 +253,8 @@ fully translates into assembler code.\
 
 		ОтлетайОчередняра 0 НЫА
 	СтрашнаВырубай
-	НЫА	
-	
+	НЫА
+
 	ОтлетайОчередняра 0 НЫА
 
 СтрашнаВырубай

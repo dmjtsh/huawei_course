@@ -36,7 +36,7 @@ So what are these transformations?
 
 <image src="assets/tree_transf3.png" width=600px>
 
-### Optimizations:
+### Optimizations
 After running this algorithm there will be a problem with overcomplicated expressions that are need to be simplified.
 
 To solve these issues there are different optimizations that help to make a good-looking result.
@@ -60,6 +60,7 @@ main.exe <expression file name>
 ````
 After that, you will receive the decent LaTex report for decent people.
 
+## How to use it as Developer?
 ### Initialization
 
 First, you need to initialize expression tree:
