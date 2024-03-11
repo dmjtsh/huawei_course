@@ -1,12 +1,8 @@
 ﻿💥Bailando Differentiator💥
 ====
 ## Description
-<<<<<<< HEAD
 
-This differentiator is the part of System Programing Course in **MIPT**. 
-=======
-This differentiator is a part of the System Programing course in MIPT. 
->>>>>>> b28d617bff16a5fe772505a9e4194f7a48fb32c2
+This differentiator is the part of System Programing Course in **MIPT**.
 It can differentiate any expressions.
 
 ## How it works?
@@ -29,7 +25,6 @@ So what are these transformations?
 
 **Constant Transformation:**
 
-<<<<<<< HEAD
 <image src="tree_transf2.png" width=280px>
 
 **Variable Transformation:**
@@ -41,7 +36,6 @@ So what are these transformations?
 **Variable Transformation:**
 
 <image src="assets/tree_transf1.png" width=600px>
->>>>>>> b28d617bff16a5fe772505a9e4194f7a48fb32c2
 
 **Summary Transformation:**
 
