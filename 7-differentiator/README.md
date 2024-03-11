@@ -1,26 +1,35 @@
 💥Bailando Differentiator💥
 ====
 ## Description
+
 This differentiator is the part of System Programing Course in **MIPT**. 
 It can differentiate any expressions.
+
 ## How it works?
-### Input:
-This program takes formatted tree string, that contains functions, numbers and variables. \
-**Example of tree string(sin(x^2) function):**
+### Input
+
+This program takes an expression as a string. This string contains a tree definition in the following form: \
 
 <image src="tree_str.png" width=400px>
 
-Then after the read of the tree, differentiator executes an algorithm.
-### Algorithm:
-The entire program is based on one recursive algorithm. Recursively transforming every node in the exact way we will get differentiated function tree in the end. So what are these transformations?
-### Examples of transformation:
+**This string coresponds to sin(x²) expression**
+
+Then after we read the tree, the program executes a symbolic differentiating algorithm.
+
+### The Algorithm
+
+This algorithm uses recursion to transform every node in a special way. In the end we will get differentiated function tree. 
+So what are these transformations?
+
+### Examples of transformations
+
 **Constant Transformation:**
 
-<image src="tree_transf2.png" width=600px>
+<image src="tree_transf2.png" width=280px>
 
 **Variable Transformation:**
 
-<image src="tree_transf1.png" width=600px>
+<image src="tree_transf1.png" width=280px>
 
 **Summary Transformation:**
 
@@ -33,6 +42,7 @@ The entire program is based on one recursive algorithm. Recursively transforming
 ### Optimizations: 
 But by simbply implementing this algorithm there will be a problem with overcomplicated expressions that need to be simplified.
 To solve these issues there are different optimizations that help to make a good-looking result. \
+
 **Constant Folding** \
 If there is a sub-tree that consists only from constants optimization function calculates this tree and turns it into one constant node:
 
