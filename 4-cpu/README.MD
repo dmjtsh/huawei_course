@@ -6,17 +6,17 @@
 Description
 --------------
 
-This virtual machine is a part of the System Programing course in MIPT. 
- DVM executes any programs that are represented on its bytecode. \
+This virtual machine is a part of the System Programming course in MIPT.
+ DVM executes any programs that are represented on its bytecode.  \
  For programming on DVM I created Dmit's ASM that translates ASM commands into their bytecodes.
 
  How It Works?
 --------------
 
 DVM can execute different commands with their unique bytecode.
-Each command has its number. All commands has one byte size. 
+Each command has its number. All commands has one byte size.
 
-DVM contains: 
+DVM contains:
 1. **Registers**, holding double float values (8 bytes).
 
 | Register Num | Register Name |
@@ -36,7 +36,7 @@ DVM contains:
 3. **Stack**, holding temporary data as double float values and return adresses from functions (in this case fractional part of float are ignored).
 
 
-The bytecode also depends on the arguments type: 
+The bytecode also depends on the arguments type:
 
 <image src="assets/bytecode_expl.png" width = 700px>
 
@@ -48,10 +48,12 @@ This command is **PUSH [RAX]**. \
 **#2: 0000 0101** \
  Right four bytes of this command are 0101 => ADD command has 5 num. \
 Left four bytes of this command are 0000 => It has no args. \
-This command is **ADD**. 
+This command is **ADD**.
+
 ### Execution
 After defining exact command by reading its byte code, DVM executes it.
-## Dmit's Assembler
+
+## Dmit's Assembly
 If you want to write programs, there is Dmit's Assembler for it.  Assembler translates commands into their bytecodes. There is a table that represent each command purpose and number:
 | Command Num | Command Name | Purpose | Args Count |
 |-------------|:------------:|:--------------------------------------------------------------------------------------------------------------------------:|:----------:|
@@ -65,7 +67,7 @@ If you want to write programs, there is Dmit's Assembler for it.  Assembler tran
 |      5      |      ADD     | Gets two Nums from Stack and SUMS them, pushing result on Stack                                                         |      0     |
 |      6      |      SUB     | Gets two Nums from Stack and SUBTRACTS them, pushing result on Stack                                                  |      0     |
 |      7      |      MUL     | Gets two Nums from Stack and MULTIPLIES  them, pushing result on Stack                                                  |      0     |
-|      8      |      POW     | Gets two Nums from Stack and then RAISES one number to the POWER of a second, pushing result on Stack 
+|      8      |      POW     | Gets two Nums from Stack and then RAISES one number to the POWER of a second, pushing result on Stack
 |      9      |      SIN     | Gets Num from Stack and then take it as an argument of SINE FUNCTION, pushing result on Stack                              |      0     |
 |      10     |      COS     | Gets Num from Stack and then take it as an argument of COSINE FUNCTION, pushing result on Stack                            |      0     |
 |      11     |     SQRT     | Gets Num from Stack and then take SQUARE ROOT of it, pushing result on Stack                                                |      0     |
@@ -95,7 +97,7 @@ If you want to write programs, there is Dmit's Assembler for it.  Assembler tran
 **Program Code:**
 
 ```
-; RAX FOR a COEFF 
+; RAX FOR a COEFF
 ; RBX FOR b COEFF
 ; RCX FOR c COEFF
 ; RDX FOR Discriminant
@@ -139,7 +141,7 @@ print_one_root:
 	JMP print_roots_end
 
 print_two_roots:
-	PUSH RDI ; x1 
+	PUSH RDI ; x1
 	PUSH RSI ; x2
 	OUT
 	OUT
